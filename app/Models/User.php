@@ -17,12 +17,30 @@ class User extends Authenticatable
      *
      * @var array<int, string>
      */
+    // 主キーカラムを変更
+    protected $primaryKey = 'role_id';
+    // 操作するカラムを許可
     protected $fillable = [
-        'name',
+        'user_id',
+        'last_name',
+        'first_name',
         'email',
         'password',
+        'role_id',
+        'base_id',
+        'status',
+        'last_login_at',
     ];
-
+    // 全て取得
+    public static function getAll()
+    {
+        return self::orderBy('id', 'asc');
+    }
+    // 指定されたレコードを取得
+    public static function getSpecify($id)
+    {
+        return self::where('id', $id);
+    }
     /**
      * The attributes that should be hidden for serialization.
      *

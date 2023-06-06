@@ -1,0 +1,19 @@
+$main_color: #FFE5B4;
+$sub_color: #B0E0E6;
+$third_color: #E6E6FA;
+
+// 画面全体に適用するスタイル
+body{
+    background-color: $main_color;
+    font-family: 'Kosugi Maru';
+}
+
+// 数字のフォント
+.Alkatra {
+    font-family: 'Alkatra'
+}
+
+// 英語のフォント
+.Arvo {
+    font-family: 'Arvo'
+}

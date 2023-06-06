@@ -1,0 +1,195 @@
+$color-base: #B0E0E6;
+$color-sub:#E6E6FA;
+$nav-height: 30px;
+// 余白と枠を横幅・高さに含める
+*{
+  box-sizing: border-box;
+}
+// ナビゲーションバー全体のスタイル
+nav{
+  position: sticky;
+  left: 0;right: 0;top: 0;
+  height: $nav-height;
+  background: $color-base;
+  box-shadow: 0 0px 9px 4px rgba(#000, .1), 0 -5px 2px 2px rgba(#000, .1);
+  z-index: 1000;
+  min-width: 580px;
+  // ロゴ部分のスタイル
+  .logo{
+    position:relative;
+    float:left;
+    height: $nav-height;
+    line-height: $nav-height;
+    padding:0 15px;
+    font-size:22px;
+    font-family: 'Arvo';
+    color: white;
+  }
+  // ナビゲーションバー直下のulタグのスタイル
+  .links{
+    float: left;
+    margin-right: 10px;    
+    position: relative;
+    font-size: 12px;
+    // liタグのスタイル
+    li{
+      float: left;
+      list-style: none;
+      position: relative;
+      display: inline-block;
+      padding: 0 20px;
+      // liタグ直下のaタグのスタイル
+      &>a{
+        position: relative;
+        display: inline-block;
+        padding: 0 10px;
+        line-height: $nav-height;
+        height: $nav-height;
+        // aタグホバー時のスタイル
+        &:hover{
+          
+        }
+      }
+      // ulタグのスタイル
+      ul{
+          position: absolute;          
+          left: 0; 
+          margin: 0;
+          background: $color-base;
+          border-radius: 2px;          
+          box-shadow: 0 0 5px rgba(#000, .15);
+          display: none;
+          // liタグのスタイル
+          >li{
+            clear: both;            
+            list-style: none;            
+            display: block;
+            padding: 0 10px;
+            margin: 0;
+            width: 300px;
+            // liタグホバー時のスタイル
+            &:hover{
+              // aタグのスタイル
+              >a{
+                
+              }
+              background-color: $color-sub;
+            }
+          }
+        }
+      // ドロップダウンのスタイル
+      &:hover {
+          > .drop{
+            display: block;
+            animation: fadeInRight .3s ease;
+            -webkit-animation: fadeInRight .3s ease;
+        }
+      }
+    }
+  }
+  // ログアウトボタン部分のスタイル
+  .logout{
+    position: relative;
+    float: right;
+    padding: 4px 15px;
+    font-size: 12px;
+  }
+}
+
+.user_info{
+  float: right;
+  margin-right: 10px;    
+  position: relative;
+  font-size: 12px;
+  // liタグのスタイル
+  li{
+    float: left;
+    list-style: none;
+    position: relative;
+    display: inline-block;
+    padding: 0 20px;
+    // liタグ直下のaタグのスタイル
+    &>a{
+      position: relative;
+      display: inline-block;
+      padding: 0 10px;
+      line-height: $nav-height;
+      height: $nav-height;
+      // aタグホバー時のスタイル
+      &:hover{
+        
+      }
+    }
+    // liタグ直下のaタグのスタイル
+    &>form>button{
+      position: relative;
+      display: inline-block;
+      padding: 0 10px;
+      line-height: $nav-height;
+      height: $nav-height;
+      // aタグホバー時のスタイル
+      &:hover{
+        
+      }
+    }
+    // ulタグのスタイル
+    ul{
+        position: absolute;          
+        left: 0; 
+        margin: 0;
+        background: $color-base;
+        border-radius: 2px;          
+        box-shadow: 0 0 5px rgba(#000, .15);
+        display: none;
+        // liタグのスタイル
+        >li{
+          clear: both;            
+          list-style: none;            
+          display: block;
+          padding: 0 10px;
+          margin: 0;
+          width: 100px;
+          // liタグホバー時のスタイル
+          &:hover{
+            // aタグのスタイル
+            >a{
+              
+            }
+            background-color: $color-sub;
+          }
+        }
+      }
+    // ドロップダウンのスタイル
+    &:hover {
+        > .drop{
+          display: block;
+          animation: fadeInTop .3s ease;
+          -webkit-animation: fadeInTop .3s ease;
+      }
+    }
+  }
+}
+
+
+// ドロップダウン（ホバー時）のアニメーション
+@keyframes fadeInRight{
+  0%{
+      opacity: 0;
+      transform: translate3d(100%,0,0)
+  }
+  100%{
+      opacity: 1;
+      transform: none
+  }
+}
+
+@keyframes fadeInTop{
+  0%{
+      opacity: 0;
+      transform: translate3d(0,100%,0)
+  }
+  100%{
+      opacity: 1;
+      transform: none
+  }
+}

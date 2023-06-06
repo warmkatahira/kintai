@@ -1,0 +1,150 @@
+* {
+  box-sizing: border-box;
+}
+
+nav {
+  position: sticky;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 30px;
+  background: #B0E0E6;
+  box-shadow: 0 0px 9px 4px rgba(0, 0, 0, 0.1), 0 -5px 2px 2px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+  min-width: 580px;
+}
+nav .logo {
+  position: relative;
+  float: left;
+  height: 30px;
+  line-height: 30px;
+  padding: 0 15px;
+  font-size: 22px;
+  font-family: "Arvo";
+  color: white;
+}
+nav .links {
+  float: left;
+  margin-right: 10px;
+  position: relative;
+  font-size: 12px;
+}
+nav .links li {
+  float: left;
+  list-style: none;
+  position: relative;
+  display: inline-block;
+  padding: 0 20px;
+}
+nav .links li > a {
+  position: relative;
+  display: inline-block;
+  padding: 0 10px;
+  line-height: 30px;
+  height: 30px;
+}
+nav .links li ul {
+  position: absolute;
+  left: 0;
+  margin: 0;
+  background: #B0E0E6;
+  border-radius: 2px;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.15);
+  display: none;
+}
+nav .links li ul > li {
+  clear: both;
+  list-style: none;
+  display: block;
+  padding: 0 10px;
+  margin: 0;
+  width: 300px;
+}
+nav .links li ul > li:hover {
+  background-color: #E6E6FA;
+}
+nav .links li:hover > .drop {
+  display: block;
+  animation: fadeInRight 0.3s ease;
+  -webkit-animation: fadeInRight 0.3s ease;
+}
+nav .logout {
+  position: relative;
+  float: right;
+  padding: 4px 15px;
+  font-size: 12px;
+}
+
+.user_info {
+  float: right;
+  margin-right: 10px;
+  position: relative;
+  font-size: 12px;
+}
+.user_info li {
+  float: left;
+  list-style: none;
+  position: relative;
+  display: inline-block;
+  padding: 0 20px;
+}
+.user_info li > a {
+  position: relative;
+  display: inline-block;
+  padding: 0 10px;
+  line-height: 30px;
+  height: 30px;
+}
+.user_info li > form > button {
+  position: relative;
+  display: inline-block;
+  padding: 0 10px;
+  line-height: 30px;
+  height: 30px;
+}
+.user_info li ul {
+  position: absolute;
+  left: 0;
+  margin: 0;
+  background: #B0E0E6;
+  border-radius: 2px;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.15);
+  display: none;
+}
+.user_info li ul > li {
+  clear: both;
+  list-style: none;
+  display: block;
+  padding: 0 10px;
+  margin: 0;
+  width: 100px;
+}
+.user_info li ul > li:hover {
+  background-color: #E6E6FA;
+}
+.user_info li:hover > .drop {
+  display: block;
+  animation: fadeInTop 0.3s ease;
+  -webkit-animation: fadeInTop 0.3s ease;
+}
+
+@keyframes fadeInRight {
+  0% {
+    opacity: 0;
+    transform: translate3d(100%, 0, 0);
+  }
+  100% {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes fadeInTop {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, 100%, 0);
+  }
+  100% {
+    opacity: 1;
+    transform: none;
+  }
+}
