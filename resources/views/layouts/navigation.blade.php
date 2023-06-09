@@ -10,7 +10,7 @@
             <ul class="drop">
                 <li><a href="{{ route('punch_manual.index') }}">手動打刻</a></li>
                 <li><a href="{{ route('customer_mgt.index') }}">荷主管理</a></li>
-                <li><a href="">荷主グループ管理</a></li>
+                <li><a href="{{ route('customer_group_mgt.index') }}">荷主グループ管理</a></li>
                 <li><a href="">勤怠提出</a></li>
             </ul>
         </li>

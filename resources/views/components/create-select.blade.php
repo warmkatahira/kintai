@@ -6,6 +6,7 @@
 </div>
 <div class="border px-10 py-5">
     <select name="{{ $id }}" class="w-96 text-sm">
+        <option value=""></option>
         @foreach($forValue as $value)
             <option value="{{ $value->$id }}" @if(old($id, $db) == $value->$id) selected @endif>{{ $value->$text }}</option>
         @endforeach

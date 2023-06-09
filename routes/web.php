@@ -23,7 +23,14 @@ use App\Http\Controllers\EmployeeMgt\EmployeeCreateController;
 use App\Http\Controllers\EmployeeMgt\EmployeeUpdateController;
 // +-+-+-+-+-+-+-+- 拠点管理 +-+-+-+-+-+-+-+-
 use App\Http\Controllers\Punch\PunchManualController;
-use App\Http\Controllers\BaseMgt\CustomerMgtController;
+// +-+-+-+-+-+-+-+- 荷主管理 +-+-+-+-+-+-+-+-
+use App\Http\Controllers\CustomerMgt\CustomerMgtController;
+use App\Http\Controllers\CustomerMgt\CustomerCreateController;
+use App\Http\Controllers\CustomerMgt\CustomerUpdateController;
+// +-+-+-+-+-+-+-+- 荷主グループ管理 +-+-+-+-+-+-+-+-
+use App\Http\Controllers\CustomerGroupMgt\CustomerGroupMgtController;
+use App\Http\Controllers\CustomerGroupMgt\CustomerGroupCreateController;
+use App\Http\Controllers\CustomerGroupMgt\CustomerGroupUpdateController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -117,9 +124,39 @@ Route::middleware(['auth'])->group(function () {
             Route::get('input', 'input')->name('input');
             Route::post('enter', 'enter')->name('enter');
         });
+    // ★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆ 荷主管理 ★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆
         // -+-+-+-+-+-+-+-+-+-+-+-+ 荷主管理 -+-+-+-+-+-+-+-+-+-+-+-+
         Route::controller(CustomerMgtController::class)->prefix('customer_mgt')->name('customer_mgt.')->group(function(){
             Route::get('', 'index')->name('index');
+            Route::get('search', 'search')->name('search');
+            Route::get('detail', 'detail')->name('detail');
+        });
+        // -+-+-+-+-+-+-+-+-+-+-+-+ 従業員追加 -+-+-+-+-+-+-+-+-+-+-+-+
+        Route::controller(CustomerCreateController::class)->prefix('customer_create')->name('customer_create.')->group(function(){
+            Route::get('', 'index')->name('index');
+            Route::post('create', 'create')->name('create');
+        });
+        // -+-+-+-+-+-+-+-+-+-+-+-+ 従業員更新 -+-+-+-+-+-+-+-+-+-+-+-+
+        Route::controller(CustomerUpdateController::class)->prefix('customer_update')->name('customer_update.')->group(function(){
+            Route::get('', 'index')->name('index');
+            Route::post('update', 'update')->name('update');
+        });
+    // ★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆ 荷主グループ管理 ★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆
+        // -+-+-+-+-+-+-+-+-+-+-+-+ 荷主グループ管理 -+-+-+-+-+-+-+-+-+-+-+-+
+        Route::controller(CustomerGroupMgtController::class)->prefix('customer_group_mgt')->name('customer_group_mgt.')->group(function(){
+            Route::get('', 'index')->name('index');
+            Route::get('search', 'search')->name('search');
+            Route::get('detail', 'detail')->name('detail');
+        });
+        // -+-+-+-+-+-+-+-+-+-+-+-+ 荷主グループ追加 -+-+-+-+-+-+-+-+-+-+-+-+
+        Route::controller(CustomerGroupCreateController::class)->prefix('customer_group_create')->name('customer_group_create.')->group(function(){
+            Route::get('', 'index')->name('index');
+            Route::post('create', 'create')->name('create');
+        });
+        // -+-+-+-+-+-+-+-+-+-+-+-+ 荷主グループ更新 -+-+-+-+-+-+-+-+-+-+-+-+
+        Route::controller(CustomerGroupUpdateController::class)->prefix('customer_group_update')->name('customer_group_update.')->group(function(){
+            Route::get('', 'index')->name('index');
+            Route::post('update', 'update')->name('update');
         });
 
 

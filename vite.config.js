@@ -30,6 +30,10 @@ export default defineConfig({
             'resources/js/kintai_mgt/kintai_mgt.js',
             'resources/js/employee_mgt/employee_create.js',
             'resources/js/employee_mgt/employee_update.js',
+            'resources/js/customer_mgt/customer_create.js',
+            'resources/js/customer_mgt/customer_update.js',
+            'resources/js/customer_group_mgt/customer_group_create.js',
+            'resources/js/customer_group_mgt/customer_group_update.js',
 		]),
 	],
 });

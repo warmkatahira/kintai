@@ -1,6 +1,6 @@
 {
   "resources/css/app.css": {
-    "file": "assets/app-362ffb17.css",
+    "file": "assets/app-1226c44a.css",
     "isEntry": true,
     "src": "resources/css/app.css"
   },
@@ -33,6 +33,26 @@
     "file": "assets/clock-c683f6c7.js",
     "isEntry": true,
     "src": "resources/js/clock.js"
+  },
+  "resources/js/customer_group_mgt/customer_group_create.js": {
+    "file": "assets/customer_group_create-386dd9f8.js",
+    "isEntry": true,
+    "src": "resources/js/customer_group_mgt/customer_group_create.js"
+  },
+  "resources/js/customer_group_mgt/customer_group_update.js": {
+    "file": "assets/customer_group_update-d8745e2b.js",
+    "isEntry": true,
+    "src": "resources/js/customer_group_mgt/customer_group_update.js"
+  },
+  "resources/js/customer_mgt/customer_create.js": {
+    "file": "assets/customer_create-4c43cd92.js",
+    "isEntry": true,
+    "src": "resources/js/customer_mgt/customer_create.js"
+  },
+  "resources/js/customer_mgt/customer_update.js": {
+    "file": "assets/customer_update-9d9949e6.js",
+    "isEntry": true,
+    "src": "resources/js/customer_mgt/customer_update.js"
   },
   "resources/js/employee_mgt/employee_create.js": {
     "file": "assets/employee_create-661f2f5e.js",

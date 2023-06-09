@@ -37,4 +37,9 @@ class CustomerGroup extends Model
         // Customerモデルのデータを引っ張てくる
         return $this->hasMany(Customer::class, 'customer_group_id', 'customer_group_id');
     }
+    // basesテーブルとのリレーション
+    public function base()
+    {
+        return $this->belongsTo(Base::class, 'base_id', 'base_id');
+    }
 }

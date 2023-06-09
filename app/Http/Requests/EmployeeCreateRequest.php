@@ -27,7 +27,6 @@ class EmployeeCreateRequest extends FormRequest
     public function rules()
     {
         return [
-            // 従業員番号は更新時に自分以外を対象とするようにしている
             'base_id' => 'required|exists:bases,base_id',
             'employee_category_id' => 'required|exists:employee_categories,employee_category_id',
             'employee_no' => 'required|unique:employees,employee_no,'.$this->employee_id.',employee_id',
