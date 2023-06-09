@@ -12,7 +12,7 @@ class Kintai extends Model
     protected $primaryKey = 'kintai_id';
     // 操作するカラムを許可
     protected $fillable = [
-        'employee_no',
+        'employee_id',
         'work_day',
         'begin_time',
         'finish_time',
@@ -33,7 +33,7 @@ class Kintai extends Model
         'is_early_worked',
         'is_modified',
         'is_manual_punched',
-        'checked_at',
+        'base_checked_at',
         'locked_at',
     ];
     // 全て取得
@@ -45,5 +45,10 @@ class Kintai extends Model
     public static function getSpecify($kintai_id)
     {
         return self::where('kintai_id', $kintai_id);
+    }
+    // employeesテーブルとのリレーション
+    public function employee()
+    {
+        return $this->belongsTo(Employee::class, 'employee_id', 'employee_id');
     }
 }

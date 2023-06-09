@@ -41,6 +41,11 @@ class User extends Authenticatable
     {
         return self::where('id', $id);
     }
+    // basesテーブルとのリレーション
+    public function base()
+    {
+        return $this->belongsTo(Base::class, 'base_id', 'base_id');
+    }
     /**
      * The attributes that should be hidden for serialization.
      *

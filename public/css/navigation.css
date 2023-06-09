@@ -61,7 +61,7 @@ nav .links li ul > li {
   width: 300px;
 }
 nav .links li ul > li:hover {
-  background-color: #E6E6FA;
+  background-color: #a3face;
 }
 nav .links li:hover > .drop {
   display: block;
@@ -120,7 +120,7 @@ nav .logout {
   width: 100px;
 }
 .user_info li ul > li:hover {
-  background-color: #E6E6FA;
+  background-color: #a3face;
 }
 .user_info li:hover > .drop {
   display: block;

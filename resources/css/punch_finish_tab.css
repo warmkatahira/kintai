@@ -1,0 +1,36 @@
+.tab{
+    border-bottom: 3px solid rgb(59 130 246);
+    display: flex;
+    justify-content: space-around;
+    padding:0;
+}
+                    
+.tab_menu{
+    background-color: white;
+    color: black;
+    list-style: none;
+    text-align: center;
+    padding:5px 0;
+    border: 1px solid black;
+    cursor: pointer;
+    transition: .3s;
+    font-size:22px;
+    border-top-left-radius: 0.5rem;
+    border-top-right-radius: 0.5rem;
+    flex: auto;
+}
+
+.tab_detail_wrap{
+    display: none;
+}
+
+.tab_menu.active{
+    display: block;
+    color: white;
+    background-color: rgb(59 130 246);
+    cursor: pointer;
+}
+
+.tab_detail_wrap.show{
+    display: block;
+}

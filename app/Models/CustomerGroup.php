@@ -26,4 +26,15 @@ class CustomerGroup extends Model
     {
         return self::where('customer_group_id', $customer_group_id);
     }
+    // 指定した拠点のレコードを取得
+    public static function getSpecifyBase($base_id)
+    {
+        return self::where('base_id', $base_id);
+    }
+    // customersテーブルとのリレーション
+    Public function customers()
+    {
+        // Customerモデルのデータを引っ張てくる
+        return $this->hasMany(Customer::class, 'customer_group_id', 'customer_group_id');
+    }
 }

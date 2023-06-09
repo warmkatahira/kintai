@@ -1,0 +1,10 @@
+// 無駄なスクロールバーを非表示
+.scroll_wrap::-webkit-scrollbar{
+    display: none;
+}
+
+// テーブルの親Div
+.table_parent_div{
+    width: 100%;
+    height: 400px;
+}

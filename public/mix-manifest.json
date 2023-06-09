@@ -1,6 +1,23 @@
 {
     "/js/app.js": "/js/app.js",
-    "/css/app.css": "/css/app.css",
+    "/js/clock.js": "/js/clock.js",
+    "/js/checkbox.js": "/js/checkbox.js",
+    "/js/punch_begin_type.js": "/js/punch_begin_type.js",
+    "/js/punch_common.js": "/js/punch_common.js",
+    "/js/punch_complete_popup.js": "/js/punch_complete_popup.js",
+    "/js/punch_finish.js": "/js/punch_finish.js",
+    "/js/punch_finish_input.js": "/js/punch_finish_input.js",
+    "/js/punch_finish_tab.js": "/js/punch_finish_tab.js",
+    "/js/search_date_period.js": "/js/search_date_period.js",
+    "/js/kintai_detail.js": "/js/kintai_detail.js",
+    "/js/kintai_mgt.js": "/js/kintai_mgt.js",
+    "/js/employee_create.js": "/js/employee_create.js",
+    "/js/employee_update.js": "/js/employee_update.js",
+    "/css/punch_complete_popup.css": "/css/punch_complete_popup.css",
+    "/css/clock.css": "/css/clock.css",
+    "/css/scroll.css": "/css/scroll.css",
     "/css/navigation.css": "/css/navigation.css",
-    "/css/theme.css": "/css/theme.css"
+    "/css/theme.css": "/css/theme.css",
+    "/css/app.css": "/css/app.css",
+    "/css/punch_finish_tab.css": "/css/punch_finish_tab.css"
 }

@@ -13,6 +13,8 @@ class EmployeeCategory extends Model
     // 操作するカラムを許可
     protected $fillable = [
         'employee_category_name',
+        'is_no_rest_available',
+        'is_add_rest_available',
     ];
     // 全て取得
     public static function getAll()

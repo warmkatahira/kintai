@@ -17,4 +17,9 @@ class KintaiDetail extends Model
         'customer_working_time',
         'is_supported',
     ];
+    // 指定した勤怠IDのレコードを取得
+    public static function getSpecifyKintai($kintai_id)
+    {
+        return self::where('kintai_id', $kintai_id);
+    }
 }

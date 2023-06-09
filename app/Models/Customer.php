@@ -29,4 +29,14 @@ class Customer extends Model
     {
         return self::where('customer_id', $customer_id);
     }
+    // 指定した拠点のレコードを取得
+    public static function getSpecifyBase($base_id)
+    {
+        return self::where('base_id', $base_id);
+    }
+    // basesテーブルとのリレーション
+    public function base()
+    {
+        return $this->belongsTo(Base::class, 'base_id', 'base_id');
+    }
 }

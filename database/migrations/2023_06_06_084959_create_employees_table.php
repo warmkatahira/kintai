@@ -15,8 +15,8 @@ return new class extends Migration
             $table->increments('employee_id');
             $table->string('employee_no', 4)->unique();
             $table->string('base_id', 20);
-            $table->string('employee_last_name', 20);
-            $table->string('employee_first_name', 20);
+            $table->string('employee_last_name', 10);
+            $table->string('employee_first_name', 10);
             $table->unsignedInteger('employee_category_id');
             $table->unsignedInteger('hourly_wage')->default(0);
             $table->double('monthly_workable_time', 5, 2)->default(0);

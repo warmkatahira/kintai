@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('kintais', function (Blueprint $table) {
             $table->increments('kintai_id');
-            $table->string('employee_no', 5);
+            $table->unsignedInteger('employee_id');
             $table->date('work_day');
             $table->time('begin_time');
             $table->time('finish_time')->nullable();
@@ -32,9 +32,9 @@ return new class extends Migration
             $table->unsignedInteger('working_time')->nullable();
             $table->unsignedInteger('over_time')->nullable();
             $table->boolean('is_early_worked');
-            $table->boolean('is_modified')->nullable();
-            $table->boolean('is_manual_punched')->nullable();
-            $table->timestamp('checked_at')->nullable();
+            $table->boolean('is_modified')->default(0);
+            $table->boolean('is_manual_punched')->default(0);
+            $table->timestamp('base_checked_at')->nullable();
             $table->timestamp('locked_at')->nullable();
             $table->timestamps();
         });

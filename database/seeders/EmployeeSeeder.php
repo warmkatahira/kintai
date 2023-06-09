@@ -58,5 +58,23 @@ class EmployeeSeeder extends Seeder
             'monthly_workable_time' => 80,
             'over_time_start' => 0,
         ]);
+        Employee::create([
+            'employee_no' => '1113',
+            'base_id' => '00_Honsha',
+            'employee_last_name' => 'パート',
+            'employee_first_name' => 'C',
+            'employee_category_id' => 2,
+            'monthly_workable_time' => 0,
+            'over_time_start' => 0,
+        ]);
+        Employee::create([
+            'employee_no' => '1114',
+            'base_id' => '00_Honsha',
+            'employee_last_name' => 'パート',
+            'employee_first_name' => 'D',
+            'employee_category_id' => 2,
+            'monthly_workable_time' => 0,
+            'over_time_start' => 0,
+        ]);
     }
 }

@@ -14,6 +14,8 @@ return new class extends Migration
         Schema::create('employee_categories', function (Blueprint $table) {
             $table->increments('employee_category_id');
             $table->string('employee_category_name', 10);
+            $table->boolean('is_no_rest_available');
+            $table->boolean('is_add_rest_available');
             $table->timestamps();
         });
     }

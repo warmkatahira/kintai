@@ -1,21 +1,17 @@
-<link rel="stylesheet" href="{{ asset('css/navigation.css') }}">
+@vite(['resources/sass/navigation.scss'])
 
 <nav id="navigation">
     <a href="{{ route('top.index') }}" class="logo">KINTAI</a>
     <ul class="links flex">
-        <li class="dropdown"><a href="#" class="trigger-drop">受注</a>
+        <li class="dropdown"><a href="{{ route('punch.index') }}" class="trigger-drop">打刻</a></li>
+        <li class="dropdown"><a href="{{ route('kintai_mgt.index') }}" class="trigger-drop">勤怠管理</a></li>
+        <li class="dropdown"><a href="{{ route('employee_mgt.index') }}" class="trigger-drop">従業員管理</a></li>
+        <li class="dropdown"><a href="#" class="trigger-drop">拠点管理</a>
             <ul class="drop">
-                <li><a href="">受注インポート</a></li>
-            </ul>
-        </li>
-        <li class="dropdown"><a href="#" class="trigger-drop">受注</a>
-            <ul class="drop">
-                <li><a href="">受注インポート</a></li>
-            </ul>
-        </li>
-        <li class="dropdown"><a href="#" class="trigger-drop">受注</a>
-            <ul class="drop">
-                <li><a href="">受注インポート</a></li>
+                <li><a href="{{ route('punch_manual.index') }}">手動打刻</a></li>
+                <li><a href="{{ route('customer_mgt.index') }}">荷主管理</a></li>
+                <li><a href="">荷主グループ管理</a></li>
+                <li><a href="">勤怠提出</a></li>
             </ul>
         </li>
     </ul>
