@@ -10,6 +10,7 @@ export default {
         './resources/js/*.js',
         './resources/js/**/*.js',
         './app/Lib/*.php',
+        './app/Enums/*.php',
     ],
 
     theme: {

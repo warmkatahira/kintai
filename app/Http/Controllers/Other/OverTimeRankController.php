@@ -26,7 +26,7 @@ class OverTimeRankController extends Controller
         // サービスクラスを定義
         $OverTimeRankService = new OverTimeRankService;
         // 検索条件をセット
-        $OverTimeRankService->getSearchCondition($request->search_month);
+        $OverTimeRankService->setSearchCondition($request->search_month);
         // 正社員の残業時間情報を取得
         $employees = $OverTimeRankService->getOverTimeData();
         return view('other.over_time_rank.index')->with([

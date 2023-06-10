@@ -33,7 +33,7 @@ class EmployeeMgtService
         return;
     }
 
-    public function getSearchCondition($request)
+    public function setSearchCondition($request)
     {
         // セッションに検索条件をセット
         session(['search_base_id' => $request->search_base_id]);

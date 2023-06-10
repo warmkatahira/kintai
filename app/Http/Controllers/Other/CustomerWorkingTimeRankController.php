@@ -34,7 +34,7 @@ class CustomerWorkingTimeRankController extends Controller
         $CustomerWorkingTimeRankService = new CustomerWorkingTimeRankService;
         $CommonService = new CommonService;
         // 検索条件をセット
-        $CustomerWorkingTimeRankService->getSearchCondition($request->search_month, $request->search_base, $request->search_orderby);
+        $CustomerWorkingTimeRankService->setSearchCondition($request->search_month, $request->search_base, $request->search_orderby);
         // 荷主稼働情報を取得
         $customers = $CustomerWorkingTimeRankService->getCustomerWorkingTimeDataForIndex();
         // 並び順条件を適用

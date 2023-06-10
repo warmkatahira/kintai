@@ -38,7 +38,7 @@ class CustomerGroupMgtController extends Controller
         // セッションを削除
         $CustomerGroupMgtService->deleteSearchSession();
         // 検索条件をセット
-        $CustomerGroupMgtService->getSearchCondition($request);
+        $CustomerGroupMgtService->setSearchCondition($request);
         // 拠点情報を取得
         $bases = Base::getAll()->get();
         // 荷主グループを取得

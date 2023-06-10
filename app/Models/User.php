@@ -46,6 +46,11 @@ class User extends Authenticatable
     {
         return $this->belongsTo(Base::class, 'base_id', 'base_id');
     }
+    // rolesテーブルとのリレーション
+    public function role()
+    {
+        return $this->belongsTo(Role::class, 'role_id', 'role_id');
+    }
     /**
      * The attributes that should be hidden for serialization.
      *

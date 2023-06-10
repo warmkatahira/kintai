@@ -15,12 +15,21 @@ class Holiday extends Model
     // 操作するカラムを許可
     protected $fillable = [
         'holiday',
-        'note',
+        'holiday_note',
         'is_national_holiday',
     ];
     // 全て取得
     public static function getAll()
     {
         return self::orderBy('holiday', 'asc');
+    }
+    // CSVのヘッダーを定義
+    public static function csvHeader()
+    {
+        return [
+            '休日',
+            '備考',
+            '国民の祝日',
+        ];
     }
 }

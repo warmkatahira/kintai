@@ -44,7 +44,7 @@ class EmployeeMgtController extends Controller
         // セッションを削除
         $EmployeeMgtService->deleteSearchSession();
         // 検索条件をセット
-        $EmployeeMgtService->getSearchCondition($request);
+        $EmployeeMgtService->setSearchCondition($request);
         // 拠点情報を取得
         $bases = Base::getAll()->get();
         // 従業員区分を取得

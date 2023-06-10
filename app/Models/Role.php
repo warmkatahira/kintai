@@ -36,4 +36,9 @@ class Role extends Model
     {
         return self::where('role_id', $role_id);
     }
+    // usersテーブルとのリレーション
+    public function users()
+    {
+        return $this->hasMany(User::class, 'role_id', 'role_id');
+    }
 }

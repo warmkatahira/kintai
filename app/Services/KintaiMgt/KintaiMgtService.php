@@ -40,7 +40,7 @@ class KintaiMgtService
         return;
     }
 
-    public function getSearchCondition($request)
+    public function setSearchCondition($request)
     {
         // セッションに検索条件をセット
         session(['search_work_day_from' => $request->search_work_day_from]);

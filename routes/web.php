@@ -31,6 +31,15 @@ use App\Http\Controllers\CustomerMgt\CustomerUpdateController;
 use App\Http\Controllers\CustomerGroupMgt\CustomerGroupMgtController;
 use App\Http\Controllers\CustomerGroupMgt\CustomerGroupCreateController;
 use App\Http\Controllers\CustomerGroupMgt\CustomerGroupUpdateController;
+// +-+-+-+-+-+-+-+- ユーザー管理 +-+-+-+-+-+-+-+-
+use App\Http\Controllers\UserMgt\UserMgtController;
+use App\Http\Controllers\UserMgt\UserUpdateController;
+// +-+-+-+-+-+-+-+- 権限管理 +-+-+-+-+-+-+-+-
+use App\Http\Controllers\RoleMgt\RoleMgtController;
+use App\Http\Controllers\RoleMgt\RoleCreateController;
+use App\Http\Controllers\RoleMgt\RoleUpdateController;
+// +-+-+-+-+-+-+-+- 休日管理 +-+-+-+-+-+-+-+-
+use App\Http\Controllers\HolidayMgt\HolidayMgtController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -131,12 +140,12 @@ Route::middleware(['auth'])->group(function () {
             Route::get('search', 'search')->name('search');
             Route::get('detail', 'detail')->name('detail');
         });
-        // -+-+-+-+-+-+-+-+-+-+-+-+ 従業員追加 -+-+-+-+-+-+-+-+-+-+-+-+
+        // -+-+-+-+-+-+-+-+-+-+-+-+ 荷主追加 -+-+-+-+-+-+-+-+-+-+-+-+
         Route::controller(CustomerCreateController::class)->prefix('customer_create')->name('customer_create.')->group(function(){
             Route::get('', 'index')->name('index');
             Route::post('create', 'create')->name('create');
         });
-        // -+-+-+-+-+-+-+-+-+-+-+-+ 従業員更新 -+-+-+-+-+-+-+-+-+-+-+-+
+        // -+-+-+-+-+-+-+-+-+-+-+-+ 荷主更新 -+-+-+-+-+-+-+-+-+-+-+-+
         Route::controller(CustomerUpdateController::class)->prefix('customer_update')->name('customer_update.')->group(function(){
             Route::get('', 'index')->name('index');
             Route::post('update', 'update')->name('update');
@@ -158,6 +167,40 @@ Route::middleware(['auth'])->group(function () {
             Route::get('', 'index')->name('index');
             Route::post('update', 'update')->name('update');
         });
+    // ★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆ ユーザー管理 ★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆
+        // -+-+-+-+-+-+-+-+-+-+-+-+ ユーザー管理 -+-+-+-+-+-+-+-+-+-+-+-+
+        Route::controller(UserMgtController::class)->prefix('user_mgt')->name('user_mgt.')->group(function(){
+            Route::get('', 'index')->name('index');
+            Route::get('search', 'search')->name('search');
+        });
+        // -+-+-+-+-+-+-+-+-+-+-+-+ ユーザー更新 -+-+-+-+-+-+-+-+-+-+-+-+
+        Route::controller(UserUpdateController::class)->prefix('user_update')->name('user_update.')->group(function(){
+            Route::get('', 'index')->name('index');
+            Route::post('update', 'update')->name('update');
+        });
+    // ★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆ 権限管理 ★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆
+        // -+-+-+-+-+-+-+-+-+-+-+-+ 権限管理 -+-+-+-+-+-+-+-+-+-+-+-+
+        Route::controller(RoleMgtController::class)->prefix('role_mgt')->name('role_mgt.')->group(function(){
+            Route::get('', 'index')->name('index');
+        });
+        // -+-+-+-+-+-+-+-+-+-+-+-+ 権限追加 -+-+-+-+-+-+-+-+-+-+-+-+
+        Route::controller(RoleCreateController::class)->prefix('role_create')->name('role_create.')->group(function(){
+            Route::get('', 'index')->name('index');
+            Route::post('create', 'create')->name('create');
+        });
+        // -+-+-+-+-+-+-+-+-+-+-+-+ 権限更新 -+-+-+-+-+-+-+-+-+-+-+-+
+        Route::controller(RoleUpdateController::class)->prefix('role_update')->name('role_update.')->group(function(){
+            Route::get('', 'index')->name('index');
+            Route::post('update', 'update')->name('update');
+        });
+    // ★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆ 休日管理 ★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆
+        // -+-+-+-+-+-+-+-+-+-+-+-+ 休日管理 -+-+-+-+-+-+-+-+-+-+-+-+
+        Route::controller(HolidayMgtController::class)->prefix('holiday_mgt')->name('holiday_mgt.')->group(function(){
+            Route::get('', 'index')->name('index');
+            Route::get('download', 'download')->name('download');
+            Route::post('upload', 'upload')->name('upload');
+        });
+        
 
 
 });

@@ -19,7 +19,7 @@ class OverTimeRankService
         return;
     }
 
-    public function getSearchCondition($search_month)
+    public function setSearchCondition($search_month)
     {
         // 検索条件をセット
         session(['search_month' => $search_month]);

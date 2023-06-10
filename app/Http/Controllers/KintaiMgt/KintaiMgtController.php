@@ -55,7 +55,7 @@ class KintaiMgtController extends Controller
         // 検索条件が格納されているセッションをクリア
         $KintaiMgtService->deleteSearchSession();
         // 検索条件をセッションに格納
-        $KintaiMgtService->getSearchCondition($request);
+        $KintaiMgtService->setSearchCondition($request);
         // 出勤日の条件が正しいか確認
         $error = $KintaiMgtService->checkWorkdayCondition();
         // 出勤日の条件でエラーがあれば処理を中断

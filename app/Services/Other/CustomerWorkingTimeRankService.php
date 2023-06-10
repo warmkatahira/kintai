@@ -23,7 +23,7 @@ class CustomerWorkingTimeRankService
         return;
     }
 
-    public function getSearchCondition($search_month, $search_base, $search_orderby)
+    public function setSearchCondition($search_month, $search_base, $search_orderby)
     {
         // 検索条件をセット
         session(['search_month' => $search_month]);
