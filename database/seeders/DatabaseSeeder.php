@@ -20,6 +20,7 @@ class DatabaseSeeder extends Seeder
             CustomerSeeder::class,
             EmployeeCategorySeeder::class,
             EmployeeSeeder::class,
+            IpLimitSeeder::class,
         ]);
     }
 }
