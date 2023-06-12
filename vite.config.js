@@ -41,6 +41,8 @@ export default defineConfig({
             'resources/js/kintai_close/kintai_close.js',
             'resources/js/download/kintai_report_download.js',
             'resources/css/kintai_output_report.css',
+            'resources/js/access_mgt/ip_limit_create.js',
+            'resources/js/access_mgt/ip_limit_update.js',
 		]),
 	],
 });

@@ -29,6 +29,7 @@
                 <li><a href="{{ route('user_mgt.index') }}">ユーザー管理</a></li>
                 <li><a href="{{ route('role_mgt.index') }}">権限管理</a></li>
                 <li><a href="{{ route('holiday_mgt.index') }}">休日管理</a></li>
+                <li><a href="{{ route('access_mgt.index') }}">アクセス管理</a></li>
             </ul>
         </li>
     </ul>

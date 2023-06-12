@@ -48,6 +48,10 @@ use App\Http\Controllers\KintaiClose\KintaiCloseController;
 use App\Http\Controllers\KintaiCloseCheck\KintaiCloseCheckController;
 // +-+-+-+-+-+-+-+- 勤怠表ダウンロード +-+-+-+-+-+-+-+-
 use App\Http\Controllers\Download\KintaiReportDownloadController;
+// +-+-+-+-+-+-+-+- アクセス管理 +-+-+-+-+-+-+-+-
+use App\Http\Controllers\AccessMgt\AccessMgtController;
+use App\Http\Controllers\AccessMgt\IpLimitCreateController;
+use App\Http\Controllers\AccessMgt\IpLimitUpdateController;
 
 // ★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆ Welcome ★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆
     // -+-+-+-+-+-+-+-+-+-+-+-+ Welcome -+-+-+-+-+-+-+-+-+-+-+-+
@@ -227,6 +231,21 @@ Route::middleware(['auth', 'userStatusCheck'])->group(function () {
         Route::controller(KintaiReportDownloadController::class)->prefix('kintai_report_download')->name('kintai_report_download.')->group(function(){
             Route::get('', 'index')->name('index');
             Route::get('download', 'download')->name('download');
+        });
+    // ★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆ アクセス管理 ★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆
+        // -+-+-+-+-+-+-+-+-+-+-+-+ アクセス管理 -+-+-+-+-+-+-+-+-+-+-+-+
+        Route::controller(AccessMgtController::class)->prefix('access_mgt')->name('access_mgt.')->group(function(){
+            Route::get('', 'index')->name('index');
+        });
+        // -+-+-+-+-+-+-+-+-+-+-+-+ IP追加 -+-+-+-+-+-+-+-+-+-+-+-+
+        Route::controller(IPLimitCreateController::class)->prefix('ip_limit_create')->name('ip_limit_create.')->group(function(){
+            Route::get('', 'index')->name('index');
+            Route::post('create', 'create')->name('create');
+        });
+        // -+-+-+-+-+-+-+-+-+-+-+-+ IP更新 -+-+-+-+-+-+-+-+-+-+-+-+
+        Route::controller(IPLimitUpdateController::class)->prefix('ip_limit_update')->name('ip_limit_update.')->group(function(){
+            Route::get('', 'index')->name('index');
+            Route::post('update', 'update')->name('update');
         });
         
 
