@@ -5,7 +5,7 @@ namespace App\Http\Requests;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
-class UserUpdateRequest extends FormRequest
+class UserCreateRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -26,12 +26,12 @@ class UserUpdateRequest extends FormRequest
     {
         return [
             'base_id' => 'required|exists:bases,base_id',
-            'user_id' => 'required|max:20|unique:users,user_id,'.$this->id.',id',
+            'user_id' => 'required|max:20|unique:users,user_id',
             'last_name' => 'required|max:10',
             'first_name' => 'required|max:10',
-            'email' => 'nullable|email|max:255|unique:users,email,'.$this->id.',id',
-            'role_id' => 'required|exists:roles,role_id',
-            'status' => 'required|boolean',
+            'email' => 'nullable|email|max:255|unique:users,email',
+            'password' => 'required|min:8|max:20|confirmed',
+            'password_confirmation' => 'required',
         ];
     }
 
@@ -42,8 +42,9 @@ class UserUpdateRequest extends FormRequest
             'max' => ":attributeは:max文字以内で入力して下さい。",
             'exists' => ':attributeが存在しません。',
             'unique' => ':attributeは既に使用されています。',
-            'boolean' => ':attributeが正しくありません。',
+            'min' => ':attributeは:min文字以上で入力して下さい。',
             'email' => ':attributeが正しくありません。',
+            'confirmed' => ":attributeが異なります。",
         ];
     }
 
@@ -55,8 +56,8 @@ class UserUpdateRequest extends FormRequest
             'last_name' => 'ユーザー名(姓)',
             'first_name' => 'ユーザー名(名)',
             'email' => 'メールアドレス',
-            'role_id' => '権限',
-            'status' => 'ステータス',
+            'password' => 'パスワード',
+            'password_confirmation' => 'パスワード（確認用）',
         ];
     }
 }

@@ -1,39 +1,23 @@
 <x-guest-layout>
+    <!-- バリデーションエラー -->
+    <x-validation-error-msg />
     <form method="POST" action="{{ route('password.store') }}">
         @csrf
 
         <!-- Password Reset Token -->
         <input type="hidden" name="token" value="{{ $request->route('token') }}">
 
-        <!-- Email Address -->
-        <div>
-            <x-input-label for="email" :value="__('Email')" />
-            <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email', $request->email)" required autofocus autocomplete="username" />
-            <x-input-error :messages="$errors->get('email')" class="mt-2" />
-        </div>
-
-        <!-- Password -->
-        <div class="mt-4">
-            <x-input-label for="password" :value="__('Password')" />
-            <x-text-input id="password" class="block mt-1 w-full" type="password" name="password" required autocomplete="new-password" />
-            <x-input-error :messages="$errors->get('password')" class="mt-2" />
-        </div>
-
-        <!-- Confirm Password -->
-        <div class="mt-4">
-            <x-input-label for="password_confirmation" :value="__('Confirm Password')" />
-
-            <x-text-input id="password_confirmation" class="block mt-1 w-full"
-                                type="password"
-                                name="password_confirmation" required autocomplete="new-password" />
-
-            <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
-        </div>
+        <!-- メールアドレス -->
+        <x-auth.input id="email" label="メールアドレス" type="email" :db="$request->email" />
+        <!-- パスワード -->
+        <x-auth.input id="password" label="パスワード" type="password" :db="null" />
+        <p class="ml-2 text-xs text-gray-600">8～20文字以内で設定して下さい</p>
+        <!-- パスワード（確認用） -->
+        <x-auth.input id="password_confirmation" label="パスワード（確認用）" type="password" :db="null" />
+        <p class="ml-2 text-xs text-gray-600">パスワードで入力したものと同じパスワードを入力して下さい</p>
 
         <div class="flex items-center justify-end mt-4">
-            <x-primary-button>
-                {{ __('Reset Password') }}
-            </x-primary-button>
+            <button type="submit" class="bg-black text-white text-center rounded-lg py-2 px-5">リセット</button>
         </div>
     </form>
 </x-guest-layout>

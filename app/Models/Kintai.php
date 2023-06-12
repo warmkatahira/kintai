@@ -70,4 +70,17 @@ class Kintai extends Model
                     ->whereNull('base_checked_at')
                     ->count();
     }
+    // 昨日以前で退勤処理されていない勤怠の数を取得
+    public static function getBeforeYesterdayNoFinishKintai()
+    {
+        // 昨日の日付を取得
+        $yesterday = CarbonImmutable::yesterday();
+        // 自拠点で退勤時間がNullで昨日以前の勤怠数を取得
+        return self::whereHas('employee.base', function ($query) {
+                    $query->where('base_id', Auth::user()->base_id);
+                })
+                ->whereNull('finish_time')
+                ->whereDate('work_day', '<=', $yesterday)
+                ->count();
+    }
 }

@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
+// +-+-+-+-+-+-+-+- Welcome +-+-+-+-+-+-+-+-
+use App\Http\Controllers\Welcome\WelcomeController;
 // +-+-+-+-+-+-+-+- TOP +-+-+-+-+-+-+-+-
 use App\Http\Controllers\Top\TopController;
 // +-+-+-+-+-+-+-+- 打刻 +-+-+-+-+-+-+-+-
@@ -47,12 +49,14 @@ use App\Http\Controllers\KintaiCloseCheck\KintaiCloseCheckController;
 // +-+-+-+-+-+-+-+- 勤怠表ダウンロード +-+-+-+-+-+-+-+-
 use App\Http\Controllers\Download\KintaiReportDownloadController;
 
-Route::get('/', function () {
-    return view('welcome');
-});
+// ★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆ Welcome ★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆
+    // -+-+-+-+-+-+-+-+-+-+-+-+ Welcome -+-+-+-+-+-+-+-+-+-+-+-+
+    Route::controller(WelcomeController::class)->prefix('')->name('welcome.')->group(function(){
+        Route::get('', 'index')->name('index');
+    });
 
 // ログインとステータスチェック
-Route::middleware(['auth'])->group(function () {
+Route::middleware(['auth', 'userStatusCheck'])->group(function () {
     // ★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆ Top ★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆
         // -+-+-+-+-+-+-+-+-+-+-+-+ TOP -+-+-+-+-+-+-+-+-+-+-+-+
         Route::controller(TopController::class)->prefix('top')->name('top.')->group(function(){

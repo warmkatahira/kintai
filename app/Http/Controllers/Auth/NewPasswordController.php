@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rules;
 use Illuminate\View\View;
+use App\Http\Requests\PasswordResetRequest;
 
 class NewPasswordController extends Controller
 {
@@ -27,7 +28,7 @@ class NewPasswordController extends Controller
      *
      * @throws \Illuminate\Validation\ValidationException
      */
-    public function store(Request $request): RedirectResponse
+    public function store(PasswordResetRequest $request): RedirectResponse
     {
         $request->validate([
             'token' => ['required'],

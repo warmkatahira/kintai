@@ -12,6 +12,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
 use Illuminate\View\View;
+use App\Models\Base;
+use App\Http\Requests\UserCreateRequest;
 
 class RegisteredUserController extends Controller
 {
@@ -20,7 +22,11 @@ class RegisteredUserController extends Controller
      */
     public function create(): View
     {
-        return view('auth.register');
+        // 全ての拠点を取得
+        $bases = Base::getAll()->get();
+        return view('auth.register')->with([
+            'bases' => $bases,
+        ]);
     }
 
     /**
@@ -28,24 +34,26 @@ class RegisteredUserController extends Controller
      *
      * @throws \Illuminate\Validation\ValidationException
      */
-    public function store(Request $request): RedirectResponse
+    public function store(UserCreateRequest $request): RedirectResponse
     {
-        $request->validate([
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:'.User::class],
-            'password' => ['required', 'confirmed', Rules\Password::defaults()],
-        ]);
 
         $user = User::create([
-            'name' => $request->name,
+            'base_id' => $request->base_id,
             'email' => $request->email,
             'password' => Hash::make($request->password),
+            'user_id' => $request->user_id,
+            'last_name' => $request->last_name,
+            'first_name' => $request->first_name,
         ]);
 
         event(new Registered($user));
 
-        Auth::login($user);
-
-        return redirect(RouteServiceProvider::HOME);
+        // 自動ログインさせない
+        //Auth::login($user);
+        return redirect()->back()->with([
+            'alert_type' => 'success',
+            'alert_message' => 'ユーザー登録が完了しました。承認されるまでお待ち下さい。',
+        ]);
+        //return redirect(RouteServiceProvider::HOME);
     }
 }

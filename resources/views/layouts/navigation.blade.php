@@ -17,7 +17,6 @@
         <li class="dropdown"><a class="trigger-drop">ダウンロード</a>
             <ul class="drop">
                 <li><a href="{{ route('kintai_report_download.index') }}">勤怠表</a></li>
-                <li><a href="">CSV</a></li>
             </ul>
         </li>
         <li class="dropdown"><a class="trigger-drop">経理管理</a>
