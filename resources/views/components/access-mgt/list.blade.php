@@ -5,7 +5,7 @@
             <thead>
                 <tr class="text-left text-white bg-gray-600 sticky top-0">
                     <th class="font-thin py-3 px-2 text-center">更新</th>
-                    <th class="font-thin py-3 px-2 text-center">IP</th>
+                    <th class="font-thin py-3 px-2 text-center">IP情報</th>
                     <th class="font-thin py-3 px-2 text-center">備考</th>
                     <th class="font-thin py-3 px-2 text-center">有効</th>
                 </tr>
