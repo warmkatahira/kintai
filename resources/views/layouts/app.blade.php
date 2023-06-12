@@ -30,6 +30,8 @@
         <div>
             <!-- ナビゲーションメニュー -->
             @include('layouts.navigation')
+            <!-- アラート表示 -->
+            <x-alert/>
             <!-- ページコンテンツ -->
             <main class="mx-3">
                 {{ $slot }}

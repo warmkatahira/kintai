@@ -10,7 +10,7 @@ use App\Models\EmployeeCategory;
 use Carbon\CarbonImmutable;
 use App\Services\EmployeeMgt\EmployeeMgtService;
 use App\Services\Employee\EmployeeRegisterService;
-use App\Services\DataExport\KintaiReportExportService;
+use App\Services\Download\KintaiReportDownloadService;
 use App\Services\Punch\PunchFinishInputService;
 use App\Services\CommonService;
 
@@ -64,7 +64,7 @@ class EmployeeMgtController extends Controller
         session(['back_url_2' => url()->full()]);
         // インスタンス化
         $EmployeeMgtService = new EmployeeMgtService;
-        $KintaiReportExportService = new KintaiReportExportService;
+        $KintaiReportDownloadService = new KintaiReportDownloadService;
         $CommonService = new CommonService;
         $PunchFinishInputService = new PunchFinishInputService;
         // 現在の日時を取得
@@ -78,9 +78,9 @@ class EmployeeMgtController extends Controller
         // 荷主稼働時間トップ3の情報を取得
         $customer_working_time = $EmployeeMgtService->getCustomerWorkingTime($nowDate, $request->employee_id);
         // 当月の日数情報を取得
-        $month_date = $KintaiReportExportService->getMonthDate($start_end_of_month['start'], $start_end_of_month['end']);
+        $month_date = $KintaiReportDownloadService->getMonthDate($start_end_of_month['start'], $start_end_of_month['end']);
         // 勤怠表に使用する情報を取得
-        $kintais = $KintaiReportExportService->getExportKintai($month_date, Employee::getSpecify($request->employee_id), $start_end_of_month['start'], $start_end_of_month['end']);
+        $kintais = $KintaiReportDownloadService->getDownloadKintai($month_date, Employee::getSpecify($request->employee_id), $start_end_of_month['start'], $start_end_of_month['end']);
         // 追加休憩取得時間が有効か判定
         $add_rest_available = $PunchFinishInputService->checkAddRestAvailable();
         return view('employee_mgt.detail')->with([

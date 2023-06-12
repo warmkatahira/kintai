@@ -11,7 +11,18 @@
                 <li><a href="{{ route('punch_manual.index') }}">手動打刻</a></li>
                 <li><a href="{{ route('customer_mgt.index') }}">荷主管理</a></li>
                 <li><a href="{{ route('customer_group_mgt.index') }}">荷主グループ管理</a></li>
-                <li><a href="">勤怠提出</a></li>
+                <li><a href="{{ route('kintai_close.index') }}">勤怠提出</a></li>
+            </ul>
+        </li>
+        <li class="dropdown"><a class="trigger-drop">ダウンロード</a>
+            <ul class="drop">
+                <li><a href="{{ route('kintai_report_download.index') }}">勤怠表</a></li>
+                <li><a href="">CSV</a></li>
+            </ul>
+        </li>
+        <li class="dropdown"><a class="trigger-drop">経理管理</a>
+            <ul class="drop">
+                <li><a href="{{ route('kintai_close_check.index') }}">勤怠提出確認</a></li>
             </ul>
         </li>
         <li class="dropdown"><a class="trigger-drop">システム管理</a>
@@ -36,5 +47,3 @@
         </li>
     </ul>
 </nav>
-<!-- アラート表示 -->
-<x-alert/>

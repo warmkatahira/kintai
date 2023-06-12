@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\Employee;
 use App\Services\CommonService;
 use App\Services\Punch\ThisMonthKintaiService;
-use App\Services\DataExport\KintaiReportExportService;
+use App\Services\Download\KintaiReportDownloadService;
 use App\Services\Punch\PunchFinishInputService;
 
 class ThisMonthKintaiController extends Controller
@@ -35,7 +35,7 @@ class ThisMonthKintaiController extends Controller
         // サービスクラスを定義
         $CommonService = new CommonService;
         $ThisMonthKintaiService = new ThisMonthKintaiService;
-        $KintaiReportExportService = new KintaiReportExportService;
+        $KintaiReportDownloadService = new KintaiReportDownloadService;
         $PunchFinishInputService = new PunchFinishInputService;
         // 現在の日時を取得
         $nowDate = CarbonImmutable::now();
@@ -44,9 +44,9 @@ class ThisMonthKintaiController extends Controller
         // 従業員の情報を取得
         $employee = Employee::getSpecify($request->employee_id)->first();
         // 当月の情報を取得
-        $month_date = $KintaiReportExportService->getMonthDate($start_end_of_month['start'], $start_end_of_month['end']);
+        $month_date = $KintaiReportDownloadService->getMonthDate($start_end_of_month['start'], $start_end_of_month['end']);
         // 勤怠表に使用する情報を取得
-        $kintais = $KintaiReportExportService->getExportKintai($month_date, Employee::getSpecify($request->employee_id), $start_end_of_month['start'], $start_end_of_month['end']);
+        $kintais = $KintaiReportDownloadService->getDownloadKintai($month_date, Employee::getSpecify($request->employee_id), $start_end_of_month['start'], $start_end_of_month['end']);
         // 追加休憩取得時間が有効か判定
         $add_rest_available = $PunchFinishInputService->checkAddRestAvailable();
         return view('punch.this_month_kintai.detail')->with([

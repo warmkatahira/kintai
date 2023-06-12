@@ -40,6 +40,12 @@ use App\Http\Controllers\RoleMgt\RoleCreateController;
 use App\Http\Controllers\RoleMgt\RoleUpdateController;
 // +-+-+-+-+-+-+-+- 休日管理 +-+-+-+-+-+-+-+-
 use App\Http\Controllers\HolidayMgt\HolidayMgtController;
+// +-+-+-+-+-+-+-+- 勤怠提出 +-+-+-+-+-+-+-+-
+use App\Http\Controllers\KintaiClose\KintaiCloseController;
+// +-+-+-+-+-+-+-+- 勤怠提出確認 +-+-+-+-+-+-+-+-
+use App\Http\Controllers\KintaiCloseCheck\KintaiCloseCheckController;
+// +-+-+-+-+-+-+-+- 勤怠表ダウンロード +-+-+-+-+-+-+-+-
+use App\Http\Controllers\Download\KintaiReportDownloadController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -60,23 +66,23 @@ Route::middleware(['auth'])->group(function () {
         // -+-+-+-+-+-+-+-+-+-+-+-+ 出勤打刻 -+-+-+-+-+-+-+-+-+-+-+-+
         Route::controller(PunchBeginController::class)->prefix('punch_begin')->name('punch_begin.')->group(function(){
             Route::get('', 'index')->name('index');
-            Route::post('enter', 'enter')->name('enter');
+            Route::post('enter', 'enter')->name('enter')->middleware('kintaiCloseCheck');
         });
         // -+-+-+-+-+-+-+-+-+-+-+-+ 退勤打刻 -+-+-+-+-+-+-+-+-+-+-+-+
         Route::controller(PunchFinishController::class)->prefix('punch_finish')->name('punch_finish.')->group(function(){
             Route::get('', 'index')->name('index');
-            Route::get('input', 'input')->name('input');
+            Route::get('input', 'input')->name('input')->middleware('kintaiCloseCheck');
             Route::post('enter', 'enter')->name('enter');
         });
         // -+-+-+-+-+-+-+-+-+-+-+-+ 外出打刻 -+-+-+-+-+-+-+-+-+-+-+-+
         Route::controller(PunchOutController::class)->prefix('punch_out')->name('punch_out.')->group(function(){
             Route::get('', 'index')->name('index');
-            Route::post('enter', 'enter')->name('enter');
+            Route::post('enter', 'enter')->name('enter')->middleware('kintaiCloseCheck');
         });
         // -+-+-+-+-+-+-+-+-+-+-+-+ 戻り打刻 -+-+-+-+-+-+-+-+-+-+-+-+
         Route::controller(PunchReturnController::class)->prefix('punch_return')->name('punch_return.')->group(function(){
             Route::get('', 'index')->name('index');
-            Route::post('enter', 'enter')->name('enter');
+            Route::post('enter', 'enter')->name('enter')->middleware('kintaiCloseCheck');
         });
         // -+-+-+-+-+-+-+-+-+-+-+-+ 今日の勤怠 -+-+-+-+-+-+-+-+-+-+-+-+
         Route::controller(TodayKintaiController::class)->prefix('today_kintai')->name('today_kintai.')->group(function(){
@@ -106,7 +112,7 @@ Route::middleware(['auth'])->group(function () {
         // -+-+-+-+-+-+-+-+-+-+-+-+ 修正打刻 -+-+-+-+-+-+-+-+-+-+-+-+
         Route::controller(PunchUpdateController::class)->prefix('punch_update')->name('punch_update.')->group(function(){
             Route::get('', 'index')->name('index');
-            Route::get('input', 'input')->name('input');
+            Route::get('input', 'input')->name('input')->middleware('kintaiCloseCheck');
             Route::post('enter', 'enter')->name('enter');
         });
     // ★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆ 従業員管理 ★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆
@@ -126,11 +132,11 @@ Route::middleware(['auth'])->group(function () {
             Route::get('', 'index')->name('index');
             Route::post('update', 'update')->name('update');
         });
-    // ★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆ 拠点管理 ★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆
+    // ★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆ 手動打刻 ★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆
         // -+-+-+-+-+-+-+-+-+-+-+-+ 手動打刻 -+-+-+-+-+-+-+-+-+-+-+-+
         Route::controller(PunchManualController::class)->prefix('punch_manual')->name('punch_manual.')->group(function(){
             Route::get('', 'index')->name('index');
-            Route::get('input', 'input')->name('input');
+            Route::get('input', 'input')->name('input')->middleware('kintaiCloseCheck');
             Route::post('enter', 'enter')->name('enter');
         });
     // ★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆ 荷主管理 ★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆
@@ -199,6 +205,24 @@ Route::middleware(['auth'])->group(function () {
             Route::get('', 'index')->name('index');
             Route::get('download', 'download')->name('download');
             Route::post('upload', 'upload')->name('upload');
+        });
+    // ★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆ 勤怠提出 ★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆
+        // -+-+-+-+-+-+-+-+-+-+-+-+ 勤怠提出 -+-+-+-+-+-+-+-+-+-+-+-+
+        Route::controller(KintaiCloseController::class)->prefix('kintai_close')->name('kintai_close.')->group(function(){
+            Route::get('', 'index')->name('index');
+            Route::post('close', 'close')->name('close');
+        });
+    // ★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆ 勤怠提出確認 ★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆
+        // -+-+-+-+-+-+-+-+-+-+-+-+ 勤怠提出確認 -+-+-+-+-+-+-+-+-+-+-+-+
+        Route::controller(KintaiCloseCheckController::class)->prefix('kintai_close_check')->name('kintai_close_check.')->group(function(){
+            Route::get('', 'index')->name('index');
+            Route::get('search', 'search')->name('search');
+        });
+    // ★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆ ダウンロード ★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆
+        // -+-+-+-+-+-+-+-+-+-+-+-+ 勤怠表 -+-+-+-+-+-+-+-+-+-+-+-+
+        Route::controller(KintaiReportDownloadController::class)->prefix('kintai_report_download')->name('kintai_report_download.')->group(function(){
+            Route::get('', 'index')->name('index');
+            Route::get('download', 'download')->name('download');
         });
         
 

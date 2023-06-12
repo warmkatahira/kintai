@@ -38,6 +38,9 @@ export default defineConfig({
             'resources/js/role_mgt/role_create.js',
             'resources/js/role_mgt/role_update.js',
             'resources/js/holiday_mgt/holiday_mgt.js',
+            'resources/js/kintai_close/kintai_close.js',
+            'resources/js/download/kintai_report_download.js',
+            'resources/css/kintai_output_report.css',
 		]),
 	],
 });

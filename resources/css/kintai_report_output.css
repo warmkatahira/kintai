@@ -1,0 +1,85 @@
+@page {
+    size : A4 portrait;
+}
+
+.top_page_title {
+    font-size: 30px;
+}
+
+.info_parent {
+    font-size: 0;
+    margin-bottom: 5px;
+}
+
+.info_label {
+    font-size: 10px;
+    font-weight: bold;
+    background-color: #000000;
+    color:#ffffff;
+    border:1px solid #000000;
+    text-align: center;
+    padding-left: 0.75rem; /* 12px */
+    padding-right: 0.75rem; /* 12px */
+    display : inline-block;
+    width: 120px;
+}
+
+.info_text {
+    font-size: 10px;
+    font-weight: bold;
+    border:1px solid #000000;
+    padding-left: 0.75rem; /* 12px */
+    padding-right: 0.75rem; /* 12px */
+    display : inline-block;
+    width: 150px;
+}
+
+.title {
+    font-size: 30px;
+    page-break-before:always; /* 改ページ */
+}
+
+table.kintai_table{
+    border-collapse:collapse;
+    font-size: 12px;
+    margin-top: 10px;
+}
+   
+table.kintai_table th{
+    border:1px solid #000000;
+    background:rgb(137, 212, 255);
+    text-align: center;
+    padding-left: 0.75rem; /* 12px */
+    padding-right: 0.75rem; /* 12px */
+}
+
+table.kintai_table td{
+    border:1px solid #000000;
+    background:#ffffff;
+    text-align: center;
+    padding-left: 0.75rem; /* 12px */
+    padding-right: 0.75rem; /* 12px */
+}
+
+.calc_field_parent_div {
+    margin-top: 6px;
+}
+
+.calc_field_child_div {
+    border-bottom: 1px solid#000000;
+    margin-bottom: 5px;
+}
+
+.calc_field_1{
+    font-size: 15px;
+    margin-right: 80px;
+    width: 100px;
+    display: inline-block;
+}
+
+.calc_field_2{
+    font-size: 15px;
+    margin-right: 260px;
+    width: 100px;
+    display: inline-block;
+}

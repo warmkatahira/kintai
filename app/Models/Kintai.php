@@ -4,6 +4,9 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Carbon\CarbonImmutable;
+use App\Services\CommonService;
+use Illuminate\Support\Facades\Auth;
 
 class Kintai extends Model
 {
@@ -50,5 +53,21 @@ class Kintai extends Model
     public function employee()
     {
         return $this->belongsTo(Employee::class, 'employee_id', 'employee_id');
+    }
+    // 拠点確認がNullの自拠点勤怠数を取得
+    public function countNoBaseCheckKintai($date)
+    {
+        // インスタンス化
+        $CommonService = new CommonService;
+        // 月初・月末の日付を取得
+        $start_end_of_month = $CommonService->getStartEndOfMonth(CarbonImmutable::parse($date));
+        // 拠点確認がNullの自拠点勤怠数を取得
+        return self::whereDate('work_day', '>=', $start_end_of_month['start'])
+                    ->whereDate('work_day', '<=', $start_end_of_month['end'])
+                    ->whereHas('employee.base', function ($query) {
+                        $query->where('base_id', Auth::user()->base_id);
+                    })
+                    ->whereNull('base_checked_at')
+                    ->count();
     }
 }
