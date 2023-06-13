@@ -5,7 +5,6 @@ namespace App\Http\Controllers\CustomerGroupMgt;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Services\CustomerGroupMgt\CustomerGroupMgtService;
-use App\Services\CommonService;
 use App\Models\Base;
 use App\Models\Customer;
 use App\Models\CustomerGroup;

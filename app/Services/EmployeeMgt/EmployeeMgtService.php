@@ -79,25 +79,25 @@ class EmployeeMgtService
         return $employees;
     }
 
-    public function getThisMonthData($nowDate, $employee_id){
+    public function getThisMonthData($start_day, $end_day, $employee_id){
         // 当月の合計時間・稼働日数を取得
         return Kintai::where('employee_id', $employee_id)
-                        ->whereDate('work_day', '>=', $nowDate->startOfMonth()->toDateString())
-                        ->whereDate('work_day', '<=', $nowDate->endOfMonth()->toDateString())
+                        ->whereDate('work_day', '>=', $start_day)
+                        ->whereDate('work_day', '<=', $end_day)
                         ->select(DB::raw("sum(working_time) as total_working_time, sum(over_time) as total_over_time, count(work_day) as working_days, DATE_FORMAT(work_day, '%Y-%m') as date"))
                         ->groupBy('employee_id', 'date')
                         ->first();
     }
 
-    public function getCustomerWorkingTime($nowDate, $employee_id)
+    public function getCustomerWorkingTime($start_day, $end_day, $employee_id)
     {
         // 荷主マスタと拠点マスタをユニオン
         $subquery = Customer::select('customer_id', 'customer_name')
                 ->union(Base::select('base_id', 'base_name'));
         // 対象従業員の当月の勤怠を取得
         $kintais = Kintai::where('employee_id', $employee_id)
-                    ->whereDate('work_day', '>=', $nowDate->startOfMonth()->toDateString())
-                    ->whereDate('work_day', '<=', $nowDate->endOfMonth()->toDateString());
+                    ->whereDate('work_day', '>=', $start_day)
+                    ->whereDate('work_day', '<=', $end_day);
         // 取得した勤怠を勤怠詳細テーブルと結合して、荷主毎の稼働時間を集計
         $customer_working_time = KintaiDetail::
             joinSub($kintais, 'KINTAIS', function ($join) {

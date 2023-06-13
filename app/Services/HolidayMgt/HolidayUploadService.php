@@ -64,7 +64,7 @@ class HolidayUploadService
                 // 追加先テーブルのカラム名に合わせて配列を整理
                 $param = [
                     'holiday' => $line['休日'],
-                    'holiday_note' => strlen($line['備考'] > 0) ? $line['備考'] : null,
+                    'holiday_note' => strlen($line['備考']) > 0 ? $line['備考'] : null,
                     'is_national_holiday' => $line['国民の祝日'],
                 ];
                 // インポートデータのバリデーション処理
@@ -116,6 +116,7 @@ class HolidayUploadService
     // 休日マスタ更新処理
     public function updateHoliday($upload_data)
     {
+        dd($upload_data);
         // テーブルをロック
         Holiday::select()->lockForUpdate()->get();
         // 追加先のテーブルをクリア

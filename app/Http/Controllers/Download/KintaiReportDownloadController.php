@@ -47,7 +47,7 @@ class KintaiReportDownloadController extends Controller
         // 対象月の祝日を取得
         $holidays = $KintaiReportDownloadService->getHolidays($start_end_of_month['start'], $start_end_of_month['end']);
         // 国民の祝日に大洋製薬の稼働がある日を取得
-        $taiyo_working_times = $KintaiReportDownloadService->getTaiyoWorkingTimeAtHoliday($request->base, $month_date, $employees, $start_end_of_month['start'], $start_end_of_month['end']);
+        $taiyo_working_times = $KintaiReportDownloadService->getTaiyoWorkingTimeAtHoliday($request->base_id, $month_date, $employees, $start_end_of_month['start'], $start_end_of_month['end']);
         // ファイル名を取得
         $filename = $KintaiReportDownloadService->getDownloadFileName($request->date, $base['base']['base_name']);
         // PDF出力ビューに情報を渡す

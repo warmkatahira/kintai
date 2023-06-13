@@ -68,13 +68,13 @@ class CustomerMgtController extends Controller
         // 現在の日時を取得
         $nowDate = CarbonImmutable::now();
         // 今月の月初・月末の日付を取得
-        $start_end_of_month = $CommonService->getStartEndOfMonth(CarbonImmutable::now());
+        $start_end_of_month = $CommonService->getStartEndOfMonth($nowDate);
         // 荷主を取得
         $customer = Customer::getSpecify($request->customer_id)->first();
         // 当月の荷主の総稼働時間を取得
-        $kintai = $CustomerMgtService->getKintais($nowDate, $request->customer_id)->first();
+        $kintai = $CustomerMgtService->getKintais($start_end_of_month['start'], $start_end_of_month['end'], $request->customer_id)->first();
         // 荷主稼働時間の多い従業員トップ5を取得
-        $customer_working_time = $CustomerMgtService->getCustomerWorkingTime($nowDate, $request->customer_id);
+        $customer_working_time = $CustomerMgtService->getCustomerWorkingTime($start_end_of_month['start'], $start_end_of_month['end'], $request->customer_id);
         return view('customer_mgt.detail')->with([
             'customer' => $customer,
             'kintai' => $kintai,

@@ -48,6 +48,7 @@ class KintaiReportDownloadService
         foreach($employees as $employee){
             // 勤怠情報を格納する配列をセット
             $kintais[$employee->employee_id] = [];
+            $kintais[$employee->employee_id]['employee_no'] = $employee->employee_no;
             $kintais[$employee->employee_id]['employee_name'] = $employee->employee_last_name.$employee->employee_first_name;
             $kintais[$employee->employee_id]['base_id'] = $employee->base_id;
             $kintais[$employee->employee_id]['base_name'] = $employee->base_name;
@@ -145,8 +146,8 @@ class KintaiReportDownloadService
                         $to_day = $to_day->toDateString();
                         // 週40時間超過情報を取得
                         $over40[$employee->employee_id][$date] = Kintai::where('employee_id', $employee->employee_id)
-                                                                    ->whereDate('work_day', '>=', $start_day)
-                                                                    ->whereDate('work_day', '<=', $end_day)
+                                                                    ->whereDate('work_day', '>=', $from_day)
+                                                                    ->whereDate('work_day', '<=', $to_day)
                                                                     ->select(DB::raw("sum(working_time) as total_working_time, sum(over_time) as total_over_time, (sum(working_time) - sum(over_time) - 2400) as over40, DATE_FORMAT(work_day, '%v') as date"))
                                                                     ->groupBy('employee_id', 'date')
                                                                     ->first();
@@ -206,8 +207,8 @@ class KintaiReportDownloadService
                                     ->join('kintai_details', 'kintai_details.kintai_id', 'kintais.kintai_id')
                                     ->whereDate('work_day', '>=', $start_day)
                                     ->whereDate('work_day', '<=', $end_day)
-                                    ->where('kintai_details.customer_id', '10') // 大洋製薬のcustomer_idを設定
-                                    ->select('kintais.work_day', 'kintais.employee_no')
+                                    ->where('kintai_details.customer_id', '1') // 大洋製薬のcustomer_idを設定
+                                    ->select('kintais.work_day', 'kintais.employee_id')
                                     ->get();
                     // 配列に格納
                     foreach($kintais as $kintai){

@@ -76,13 +76,13 @@ class EmployeeMgtController extends Controller
         // 現在の日時を取得
         $nowDate = CarbonImmutable::now();
         // 今月の月初・月末の日付を取得
-        $start_end_of_month = $CommonService->getStartEndOfMonth(CarbonImmutable::now());
+        $start_end_of_month = $CommonService->getStartEndOfMonth($nowDate);
         // 従業員の情報を取得
         $employee = Employee::getSpecify($request->employee_id)->first();
         // 当月稼働情報を取得
-        $this_month_data = $EmployeeMgtService->getThisMonthData($nowDate, $request->employee_id);
+        $this_month_data = $EmployeeMgtService->getThisMonthData($start_end_of_month['start'], $start_end_of_month['end'], $request->employee_id);
         // 荷主稼働時間トップ3の情報を取得
-        $customer_working_time = $EmployeeMgtService->getCustomerWorkingTime($nowDate, $request->employee_id);
+        $customer_working_time = $EmployeeMgtService->getCustomerWorkingTime($start_end_of_month['start'], $start_end_of_month['end'], $request->employee_id);
         // 当月の日数情報を取得
         $month_date = $KintaiReportDownloadService->getMonthDate($start_end_of_month['start'], $start_end_of_month['end']);
         // 勤怠表に使用する情報を取得

@@ -61,11 +61,11 @@ class CustomerMgtService
         return $customers;
     }
 
-    public function getKintais($nowDate, $customer_id)
+    public function getKintais($start_day, $end_day, $customer_id)
     {
         // 当月の勤怠を抽出
-        $kintais = Kintai::whereDate('work_day', '>=', $nowDate->startOfMonth()->toDateString())
-                            ->whereDate('work_day', '<=', $nowDate->endOfMonth()->toDateString());
+        $kintais = Kintai::whereDate('work_day', '>=', $start_day)
+                            ->whereDate('work_day', '<=', $end_day);
         // 当月の勤怠に勤怠詳細を結合
         $kintais = KintaiDetail::
             joinSub($kintais, 'KINTAIS', function ($join) {
@@ -81,11 +81,11 @@ class CustomerMgtService
     }
 
     // 荷主稼働時間の多い従業員トップ5を取得
-    public function getCustomerWorkingTime($nowDate, $customer_id)
+    public function getCustomerWorkingTime($start_day, $end_day, $customer_id)
     {
         // 当月の勤怠を抽出
-        $kintais = Kintai::whereDate('work_day', '>=', $nowDate->startOfMonth()->toDateString())
-                            ->whereDate('work_day', '<=', $nowDate->endOfMonth()->toDateString());
+        $kintais = Kintai::whereDate('work_day', '>=', $start_day)
+                            ->whereDate('work_day', '<=', $end_day);
         // 当月の勤怠と選択した荷主の勤怠詳細を結合
         $customer_working_time = KintaiDetail::where('customer_id', $customer_id)
             ->joinSub($kintais, 'KINTAIS', function ($join) {

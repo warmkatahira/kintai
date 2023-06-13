@@ -24,20 +24,16 @@
                 margin-right: 0px;
                 margin-left: 10px;
             }
-
             @page {
                 size : A4 portrait;
             }
-
             .top_page_title {
                 font-size: 30px;
             }
-
             .info_parent {
                 font-size: 0;
                 margin-bottom: 5px;
             }
-
             .info_label {
                 font-size: 10px;
                 font-weight: bold;
@@ -50,7 +46,6 @@
                 display : inline-block;
                 width: 120px;
             }
-
             .info_text {
                 font-size: 10px;
                 font-weight: bold;
@@ -60,18 +55,15 @@
                 display : inline-block;
                 width: 150px;
             }
-
             .title {
                 font-size: 30px;
                 page-break-before:always; /* 改ページ */
             }
-
             table.kintai_table{
                 border-collapse:collapse;
                 font-size: 12px;
                 margin-top: 10px;
             }
-            
             table.kintai_table th{
                 border:1px solid #000000;
                 background:rgb(137, 212, 255);
@@ -79,7 +71,6 @@
                 padding-left: 0.75rem; /* 12px */
                 padding-right: 0.75rem; /* 12px */
             }
-
             table.kintai_table td{
                 border:1px solid #000000;
                 background:#ffffff;
@@ -87,23 +78,19 @@
                 padding-left: 0.75rem; /* 12px */
                 padding-right: 0.75rem; /* 12px */
             }
-
             .calc_field_parent_div {
                 margin-top: 6px;
             }
-
             .calc_field_child_div {
                 border-bottom: 1px solid#000000;
                 margin-bottom: 5px;
             }
-
             .calc_field_1{
                 font-size: 15px;
                 margin-right: 80px;
                 width: 100px;
                 display: inline-block;
             }
-
             .calc_field_2{
                 font-size: 15px;
                 margin-right: 260px;
@@ -128,7 +115,7 @@
             </div>
         @endforeach
         <!-- 各従業員勤怠表 -->
-        @foreach($kintais as $employee_no => $kintai)
+        @foreach($kintais as $employee_id => $kintai)
             <p class="title">勤怠表</p>
             <div class="info_parent">
                 <span class="info_label">拠点</span>
@@ -136,7 +123,7 @@
             </div>
             <div class="info_parent">
                 <span class="info_label">従業員番号</span>
-                <span class="info_text">{{ $employee_no }}</span>
+                <span class="info_text">{{ $kintai['employee_no'] }}</span>
             </div>
             <div class="info_parent">
                 <span class="info_label">従業員区分</span>
@@ -195,10 +182,10 @@
                             <td style="{{ \Carbon\CarbonImmutable::parse($work_day)->dayOfWeekIso >= 6 || isset($holidays[$work_day]) ? 'background-color: #CCFFFF' : '' }}">{{ is_null($value) ? '' : number_format($value->over_time / 60, 2) }}</td>
                             <td style="{{ \Carbon\CarbonImmutable::parse($work_day)->dayOfWeekIso >= 6 || isset($holidays[$work_day]) ? 'background-color: #CCFFFF' : '' }}">{{ is_null($value) ? '' : ($value->is_early_worked == 1 ? '○' : '') }}</td>
                             <td style="{{ \Carbon\CarbonImmutable::parse($work_day)->dayOfWeekIso >= 6 || isset($holidays[$work_day]) ? 'background-color: #CCFFFF' : '' }}">{{ is_null($value) ? '' : $value->comment }}</td>
-                            <td style="{{ \Carbon\CarbonImmutable::parse($work_day)->dayOfWeekIso >= 6 || isset($holidays[$work_day]) ? 'background-color: #CCFFFF' : '' }}">{{ \Carbon\CarbonImmutable::parse($work_day)->isSunday() && isset($over40[$employee_no]) ? (isset($over40[$employee_no][$work_day]) ? ($over40[$employee_no][$work_day]->over40 > 0 ? number_format($over40[$employee_no][$work_day]->over40 / 60, 2) : '0.00') : '0.00') : '' }}</td>
+                            <td style="{{ \Carbon\CarbonImmutable::parse($work_day)->dayOfWeekIso >= 6 || isset($holidays[$work_day]) ? 'background-color: #CCFFFF' : '' }}">{{ \Carbon\CarbonImmutable::parse($work_day)->isSunday() && isset($over40[$employee_id]) ? (isset($over40[$employee_id][$work_day]) ? ($over40[$employee_id][$work_day]->over40 > 0 ? number_format($over40[$employee_id][$work_day]->over40 / 60, 2) : '0.00') : '0.00') : '' }}</td>
                             <!-- 第1営業所のみ表示 -->
                             @if($kintai['base_id'] == '01_1st')
-                                <td style="{{ \Carbon\CarbonImmutable::parse($work_day)->dayOfWeekIso >= 6 || isset($holidays[$work_day]) ? 'background-color: #CCFFFF' : '' }}">{{ isset($taiyo_working_times[$employee_no][$work_day]) ? '○' : '' }}</td>
+                                <td style="{{ \Carbon\CarbonImmutable::parse($work_day)->dayOfWeekIso >= 6 || isset($holidays[$work_day]) ? 'background-color: #CCFFFF' : '' }}">{{ isset($taiyo_working_times[$employee_id][$work_day]) ? '○' : '' }}</td>
                             @endif
                         </tr>
                     @endforeach

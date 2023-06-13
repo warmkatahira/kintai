@@ -13,7 +13,7 @@
                 @foreach($holidays as $holiday)
                     <tr class="text-left hover:bg-theme-sub cursor-default">
                         <td class="py-1 px-2 border text-center">{{ \Carbon\CarbonImmutable::parse($holiday->holiday)->isoFormat('YYYY年MM月DD日(ddd)') }}</td>
-                        <td class="py-1 px-2 border text-center">{{ $holiday->note }}</td>
+                        <td class="py-1 px-2 border text-center">{{ $holiday->holiday_note }}</td>
                         <td class="py-1 px-2 border text-center">@if($holiday->is_national_holiday == 1) ○ @endif</td>
                     </tr>
                 @endforeach
