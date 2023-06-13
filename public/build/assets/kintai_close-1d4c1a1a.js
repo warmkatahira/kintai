@@ -1,0 +1,1 @@
+$(".kintai_close_enter").on("click",function(){let t=$(this).data("date").substring(0,4),i=$(this).data("date").substring(5);window.confirm(t+"年"+i+"月の勤怠を提出しますか？")==!0&&($("#close_date").val($(this).val()),$("#kintai_close_form").submit())});
