@@ -29,7 +29,8 @@
                 @foreach($kintais as $kintai)
                     <tr class="text-left hover:bg-theme-sub cursor-default">
                         <td class="py-1 px-2 border text-center">
-                            @if(is_null($kintai->locked_at) && !is_null($kintai->finish_time))
+                            <!-- 拠点確認が有効かつロックがかかっていない退勤済みの自拠点勤怠のみ、チェックボックスを表示 -->
+                            @if(Gate::check('isBaseCheckAvailable') && is_null($kintai->locked_at) && !is_null($kintai->finish_time) && Auth::user()->base_id == $kintai->base_id)
                                 <input type="checkbox" name="chk[]" value="{{ $kintai->kintai_id }}" form="base_check_form">
                             @endif
                         </td>

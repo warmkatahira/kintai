@@ -14,18 +14,24 @@ return new class extends Migration
         Schema::create('roles', function (Blueprint $table) {
             $table->increments('role_id');
             $table->string('role_name', 10);
-            $table->boolean('is_kintai_list_func_available')->default(0);
-            $table->boolean('is_employee_list_func_available')->default(0);
-            $table->boolean('is_other_func_available')->default(0);
-            $table->boolean('is_data_export_func_available')->default(0);
-            $table->boolean('is_management_func_available')->default(0);
-            $table->boolean('is_system_mgt_func_available')->default(0);
-            $table->boolean('is_accounting_func_available')->default(0);
-            $table->boolean('is_kintai_check_available')->default(0);
-            $table->boolean('is_kintai_delete_available')->default(0);
-            $table->boolean('is_kintai_modify_available')->default(0);
-            $table->boolean('is_all_kintai_operation_available')->default(0);
+            $table->boolean('is_kintai_mgt_func_available')->default(0);
+            $table->boolean('is_base_check_available')->default(0);
+            $table->boolean('is_kintai_operation_available')->default(0);
+            $table->boolean('is_employee_mgt_available')->default(0);
             $table->boolean('is_employee_operation_available')->default(0);
+            $table->boolean('is_base_mgt_available')->default(0);
+            $table->boolean('is_manual_punch_available')->default(0);
+            $table->boolean('is_customer_mgt_func_available')->default(0);
+            $table->boolean('is_kintai_close_available')->default(0);
+            $table->boolean('is_download_func_available')->default(0);
+            $table->boolean('is_accounting_func_available')->default(0);
+            $table->boolean('is_system_mgt_func_available')->default(0);
+            $table->boolean('is_user_mgt_available')->default(0);
+            $table->boolean('is_role_mgt_available')->default(0);
+            $table->boolean('is_holiday_mgt_available')->default(0);
+            $table->boolean('is_access_mgt_available')->default(0);
+            $table->boolean('is_lock_kintai_operation_available')->default(0);
+            $table->boolean('is_all_kintai_operation_available')->default(0);
             $table->timestamps();
         });
     }

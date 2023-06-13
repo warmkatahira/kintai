@@ -7,6 +7,9 @@
 
         <title>KINTAI</title>
 
+        <!-- favicon -->
+        <link rel="shortcut icon" href="{{ asset('image/favicon.svg') }}">
+
         <!-- jQuery -->
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
         <!-- Styles -->

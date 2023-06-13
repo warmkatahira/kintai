@@ -8,26 +8,26 @@
         <!-- 操作ボタン -->
         <div class="flex whitespace-nowrap">
             <a href="{{ session('back_url_1') }}" class="w-40 text-xl py-4 rounded-lg text-center bg-black text-white">戻る</a>
-            <a href="{{ route('punch_update.index', ['kintai_id' => $kintai->kintai_id]) }}" class="w-40 text-xl py-4 rounded-lg text-center bg-blue-200 ml-auto">修正</a>
-            <form method="POST" action="{{ route('kintai_delete.delete') }}" id="kintai_delete_form" class="m-0 ml-10">
-                @csrf
-                <input type="hidden" name="kintai_id" value="{{ $kintai->kintai_id }}">
-                <button type="button" id="kintai_delete" class="w-40 text-xl py-4 rounded-lg text-center bg-red-500 text-white">削除</button>
-            </form>
+            <!-- 拠点やロック有無などを全て考慮して操作できるか -->
+            @can('isKintaiOperationAllAvailable', [$kintai->employee->base_id, $kintai->locked_at])
+                <a href="{{ route('punch_update.index', ['kintai_id' => $kintai->kintai_id]) }}" class="w-40 text-xl py-4 rounded-lg text-center bg-blue-200 ml-auto">修正</a>
+                <form method="POST" action="{{ route('kintai_delete.delete') }}" id="kintai_delete_form" class="m-0 ml-10">
+                    @csrf
+                    <input type="hidden" name="kintai_id" value="{{ $kintai->kintai_id }}">
+                    <button type="button" id="kintai_delete" class="w-40 text-xl py-4 rounded-lg text-center bg-red-500 text-white">削除</button>
+                </form>
+            @endcan
         </div>
-        <!-- 
-            以下の条件を満たす場合のみチェックボックスを表示
-            ・ロックがかかっていない
-            ・勤怠削除（修正）が有効である
-            ・全勤怠操作が有効か自拠点の勤怠である
-        -->
         <div class="flex flex-col">
             <p class="border-l-8 border-theme-sub text-xl pl-3 my-3">コメント</p>
             <form method="POST" action="{{ route('kintai_update.comment_update') }}" id="comment_update_form" class="m-0 flex flex-row">
                 @csrf
                 <input type="text" name="comment" class="text-sm w-96" value="{{ old('comment', $kintai->comment) }}" autocomplete="off">
                 <input type="hidden" name="kintai_id" value="{{ $kintai->kintai_id }}">
-                <button type="button" id="comment_update" class="bg-blue-600 text-white text-sm text-center px-5">更新</button>
+                <!-- 拠点やロック有無などを全て考慮して操作できるか -->
+                @can('isKintaiOperationAllAvailable', [$kintai->employee->base_id, $kintai->locked_at])
+                    <button type="button" id="comment_update" class="bg-blue-600 text-white text-sm text-center px-5">更新</button>
+                @endcan
             </form>
         </div>
         <div class="flex flex-col">
@@ -65,7 +65,7 @@
             </div>
         </div>
         <div class="flex flex-col">
-            <p class="border-l-8 border-theme-sub text-xl pl-3 my-3">稼働時間情報</p>
+            <p class="border-l-8 border-theme-sub text-xl pl-3 my-3">勤怠詳細</p>
             <div class="grid grid-cols-12 gap-4">
                 @foreach($kintai_details as $kintai_detail)
                     <div class="col-span-3 bg-theme-sub py-5 rounded-lg text-center">

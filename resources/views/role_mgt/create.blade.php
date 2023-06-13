@@ -14,18 +14,24 @@
             <form method="POST" action="{{ route('role_create.create') }}" class="m-0" id="role_create_form">
                 @csrf
                 <x-create-input label="権限名" type="text" id="role_name" :db="null" required="1" tippy="0" />
-                <x-role-mgt.create-select label="勤怠一覧機能" id="is_kintai_list_func_available" :forValue="$roles" :db="null" required="1" tippy="0" />
-                <x-role-mgt.create-select label="従業員一覧機能" id="is_employee_list_func_available" :forValue="$roles" :db="null" required="1" tippy="0" />
-                <x-role-mgt.create-select label="その他機能" id="is_other_func_available" :forValue="$roles" :db="null" required="1" tippy="0" />
-                <x-role-mgt.create-select label="データ出力機能" id="is_data_export_func_available" :forValue="$roles" :db="null" required="1" tippy="0" />
-                <x-role-mgt.create-select label="管理者機能" id="is_management_func_available" :forValue="$roles" :db="null" required="1" tippy="0" />
-                <x-role-mgt.create-select label="システム管理機能" id="is_system_mgt_func_available" :forValue="$roles" :db="null" required="1" tippy="0" />
-                <x-role-mgt.create-select label="経理機能" id="is_accounting_func_available" :forValue="$roles" :db="null" required="1" tippy="0" />
-                <x-role-mgt.create-select label="勤怠確認" id="is_kintai_check_available" :forValue="$roles" :db="null" required="1" tippy="0" />
-                <x-role-mgt.create-select label="勤怠削除" id="is_kintai_delete_available" :forValue="$roles" :db="null" required="1" tippy="0" />
-                <x-role-mgt.create-select label="勤怠修正" id="is_kintai_modify_available" :forValue="$roles" :db="null" required="1" tippy="0" />
-                <x-role-mgt.create-select label="全勤怠操作" id="is_all_kintai_operation_available" :forValue="$roles" :db="null" required="1" tippy="0" />
+                <x-role-mgt.create-select label="勤怠管理機能" id="is_kintai_mgt_func_available" :forValue="$roles" :db="null" required="1" tippy="0" />
+                <x-role-mgt.create-select label="拠点確認" id="is_base_check_available" :forValue="$roles" :db="null" required="1" tippy="0" />
+                <x-role-mgt.create-select label="勤怠操作" id="is_kintai_operation_available" :forValue="$roles" :db="null" required="1" tippy="0" />
+                <x-role-mgt.create-select label="従業員管理機能" id="is_employee_mgt_available" :forValue="$roles" :db="null" required="1" tippy="0" />
                 <x-role-mgt.create-select label="従業員操作" id="is_employee_operation_available" :forValue="$roles" :db="null" required="1" tippy="0" />
+                <x-role-mgt.create-select label="拠点管理機能" id="is_base_mgt_available" :forValue="$roles" :db="null" required="1" tippy="0" />
+                <x-role-mgt.create-select label="手動打刻" id="is_manual_punch_available" :forValue="$roles" :db="null" required="1" tippy="0" />
+                <x-role-mgt.create-select label="荷主管理機能" id="is_customer_mgt_func_available" :forValue="$roles" :db="null" required="1" tippy="0" />
+                <x-role-mgt.create-select label="勤怠提出" id="is_kintai_close_available" :forValue="$roles" :db="null" required="1" tippy="0" />
+                <x-role-mgt.create-select label="ダウンロード機能" id="is_download_func_available" :forValue="$roles" :db="null" required="1" tippy="0" />
+                <x-role-mgt.create-select label="経理管理機能" id="is_accounting_func_available" :forValue="$roles" :db="null" required="1" tippy="0" />
+                <x-role-mgt.create-select label="システム管理機能" id="is_system_mgt_func_available" :forValue="$roles" :db="null" required="1" tippy="0" />
+                <x-role-mgt.create-select label="ユーザー管理" id="is_user_mgt_available" :forValue="$roles" :db="null" required="1" tippy="0" />
+                <x-role-mgt.create-select label="権限管理" id="is_role_mgt_available" :forValue="$roles" :db="null" required="1" tippy="0" />
+                <x-role-mgt.create-select label="休日管理" id="is_holiday_mgt_available" :forValue="$roles" :db="null" required="1" tippy="0" />
+                <x-role-mgt.create-select label="アクセス管理" id="is_access_mgt_available" :forValue="$roles" :db="null" required="1" tippy="0" />
+                <x-role-mgt.create-select label="ロック後の勤怠操作" id="is_lock_kintai_operation_available" :forValue="$roles" :db="null" required="1" tippy="0" />
+                <x-role-mgt.create-select label="全勤怠操作" id="is_all_kintai_operation_available" :forValue="$roles" :db="null" required="1" tippy="0" />
                 <button type="button" id="role_create_enter" class="border border-blue-500 text-blue-500 bg-blue-100 py-1 px-10 mt-5">追加</button>
             </form>
         </div>

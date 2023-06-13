@@ -76,5 +76,14 @@ class EmployeeSeeder extends Seeder
             'monthly_workable_time' => 0,
             'over_time_start' => 0,
         ]);
+        Employee::create([
+            'employee_no' => '2222',
+            'base_id' => '01_1st',
+            'employee_last_name' => 'パート',
+            'employee_first_name' => 'DDD',
+            'employee_category_id' => 2,
+            'monthly_workable_time' => 0,
+            'over_time_start' => 0,
+        ]);
     }
 }

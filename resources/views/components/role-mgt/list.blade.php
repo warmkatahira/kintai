@@ -7,18 +7,24 @@
                     <th class="font-thin py-3 px-2 text-center">更新</th>
                     <th class="font-thin py-3 px-2 text-center">権限名</th>
                     <th class="font-thin py-3 px-2 text-center">ユーザー数</th>
-                    <th class="font-thin py-3 px-2 text-center">勤怠一覧機能</th>
-                    <th class="font-thin py-3 px-2 text-center">従業員一覧機能</th>
-                    <th class="font-thin py-3 px-2 text-center">その他機能</th>
-                    <th class="font-thin py-3 px-2 text-center">データ出力機能</th>
-                    <th class="font-thin py-3 px-2 text-center">管理者機能</th>
-                    <th class="font-thin py-3 px-2 text-center">システム管理機能</th>
-                    <th class="font-thin py-3 px-2 text-center">経理機能</th>
-                    <th class="font-thin py-3 px-2 text-center">勤怠確認</th>
-                    <th class="font-thin py-3 px-2 text-center">勤怠削除</th>
-                    <th class="font-thin py-3 px-2 text-center">勤怠修正</th>
-                    <th class="font-thin py-3 px-2 text-center">全勤怠操作</th>
+                    <th class="font-thin py-3 px-2 text-center">勤怠管理機能</th>
+                    <th class="font-thin py-3 px-2 text-center">拠点確認</th>
+                    <th class="font-thin py-3 px-2 text-center">勤怠操作</th>
+                    <th class="font-thin py-3 px-2 text-center">従業員管理機能</th>
                     <th class="font-thin py-3 px-2 text-center">従業員操作</th>
+                    <th class="font-thin py-3 px-2 text-center">拠点管理機能</th>
+                    <th class="font-thin py-3 px-2 text-center">手動打刻</th>
+                    <th class="font-thin py-3 px-2 text-center">荷主管理機能</th>
+                    <th class="font-thin py-3 px-2 text-center">勤怠提出</th>
+                    <th class="font-thin py-3 px-2 text-center">ダウンロード機能</th>
+                    <th class="font-thin py-3 px-2 text-center">経理管理機能</th>
+                    <th class="font-thin py-3 px-2 text-center">システム管理機能</th>
+                    <th class="font-thin py-3 px-2 text-center">ユーザー管理</th>
+                    <th class="font-thin py-3 px-2 text-center">権限管理</th>
+                    <th class="font-thin py-3 px-2 text-center">休日管理</th>
+                    <th class="font-thin py-3 px-2 text-center">アクセス管理</th>
+                    <th class="font-thin py-3 px-2 text-center">ロック後の勤怠操作</th>
+                    <th class="font-thin py-3 px-2 text-center">全勤怠操作</th>
                 </tr>
             </thead>
             <tbody class="bg-white">
@@ -29,18 +35,24 @@
                         </td>
                         <td class="py-1 px-2 border text-center">{{ $role->role_name }}</td>
                         <td class="py-1 px-2 border text-center">{{ $role->users->count() }}</td>
-                        <td class="py-1 px-2 border text-center {{ App\Enums\RoleEnum::get_class($role->is_kintai_list_func_available) }}">{{ App\Enums\RoleEnum::get_jp($role->is_kintai_list_func_available) }}</td>
-                        <td class="py-1 px-2 border text-center {{ App\Enums\RoleEnum::get_class($role->is_employee_list_func_available) }}">{{ App\Enums\RoleEnum::get_jp($role->is_employee_list_func_available) }}</td>
-                        <td class="py-1 px-2 border text-center {{ App\Enums\RoleEnum::get_class($role->is_other_func_available) }}">{{ App\Enums\RoleEnum::get_jp($role->is_other_func_available) }}</td>
-                        <td class="py-1 px-2 border text-center {{ App\Enums\RoleEnum::get_class($role->is_data_export_func_available) }}">{{ App\Enums\RoleEnum::get_jp($role->is_data_export_func_available) }}</td>
-                        <td class="py-1 px-2 border text-center {{ App\Enums\RoleEnum::get_class($role->is_management_func_available) }}">{{ App\Enums\RoleEnum::get_jp($role->is_management_func_available) }}</td>
-                        <td class="py-1 px-2 border text-center {{ App\Enums\RoleEnum::get_class($role->is_system_mgt_func_available) }}">{{ App\Enums\RoleEnum::get_jp($role->is_system_mgt_func_available) }}</td>
-                        <td class="py-1 px-2 border text-center {{ App\Enums\RoleEnum::get_class($role->is_accounting_func_available) }}">{{ App\Enums\RoleEnum::get_jp($role->is_accounting_func_available) }}</td>
-                        <td class="py-1 px-2 border text-center {{ App\Enums\RoleEnum::get_class($role->is_kintai_check_available) }}">{{ App\Enums\RoleEnum::get_jp($role->is_kintai_check_available) }}</td>
-                        <td class="py-1 px-2 border text-center {{ App\Enums\RoleEnum::get_class($role->is_kintai_delete_available) }}">{{ App\Enums\RoleEnum::get_jp($role->is_kintai_delete_available) }}</td>
-                        <td class="py-1 px-2 border text-center {{ App\Enums\RoleEnum::get_class($role->is_kintai_modify_available) }}">{{ App\Enums\RoleEnum::get_jp($role->is_kintai_modify_available) }}</td>
-                        <td class="py-1 px-2 border text-center {{ App\Enums\RoleEnum::get_class($role->is_all_kintai_operation_available) }}">{{ App\Enums\RoleEnum::get_jp($role->is_all_kintai_operation_available) }}</td>
+                        <td class="py-1 px-2 border text-center {{ App\Enums\RoleEnum::get_class($role->is_kintai_mgt_func_available) }}">{{ App\Enums\RoleEnum::get_jp($role->is_kintai_mgt_func_available) }}</td>
+                        <td class="py-1 px-2 border text-center {{ App\Enums\RoleEnum::get_class($role->is_base_check_available) }}">{{ App\Enums\RoleEnum::get_jp($role->is_base_check_available) }}</td>
+                        <td class="py-1 px-2 border text-center {{ App\Enums\RoleEnum::get_class($role->is_kintai_operation_available) }}">{{ App\Enums\RoleEnum::get_jp($role->is_kintai_operation_available) }}</td>
+                        <td class="py-1 px-2 border text-center {{ App\Enums\RoleEnum::get_class($role->is_employee_mgt_available) }}">{{ App\Enums\RoleEnum::get_jp($role->is_employee_mgt_available) }}</td>
                         <td class="py-1 px-2 border text-center {{ App\Enums\RoleEnum::get_class($role->is_employee_operation_available) }}">{{ App\Enums\RoleEnum::get_jp($role->is_employee_operation_available) }}</td>
+                        <td class="py-1 px-2 border text-center {{ App\Enums\RoleEnum::get_class($role->is_base_mgt_available) }}">{{ App\Enums\RoleEnum::get_jp($role->is_base_mgt_available) }}</td>
+                        <td class="py-1 px-2 border text-center {{ App\Enums\RoleEnum::get_class($role->is_manual_punch_available) }}">{{ App\Enums\RoleEnum::get_jp($role->is_manual_punch_available) }}</td>
+                        <td class="py-1 px-2 border text-center {{ App\Enums\RoleEnum::get_class($role->is_customer_mgt_func_available) }}">{{ App\Enums\RoleEnum::get_jp($role->is_customer_mgt_func_available) }}</td>
+                        <td class="py-1 px-2 border text-center {{ App\Enums\RoleEnum::get_class($role->is_kintai_close_available) }}">{{ App\Enums\RoleEnum::get_jp($role->is_kintai_close_available) }}</td>
+                        <td class="py-1 px-2 border text-center {{ App\Enums\RoleEnum::get_class($role->is_download_func_available) }}">{{ App\Enums\RoleEnum::get_jp($role->is_download_func_available) }}</td>
+                        <td class="py-1 px-2 border text-center {{ App\Enums\RoleEnum::get_class($role->is_accounting_func_available) }}">{{ App\Enums\RoleEnum::get_jp($role->is_accounting_func_available) }}</td>
+                        <td class="py-1 px-2 border text-center {{ App\Enums\RoleEnum::get_class($role->is_system_mgt_func_available) }}">{{ App\Enums\RoleEnum::get_jp($role->is_system_mgt_func_available) }}</td>
+                        <td class="py-1 px-2 border text-center {{ App\Enums\RoleEnum::get_class($role->is_user_mgt_available) }}">{{ App\Enums\RoleEnum::get_jp($role->is_user_mgt_available) }}</td>
+                        <td class="py-1 px-2 border text-center {{ App\Enums\RoleEnum::get_class($role->is_role_mgt_available) }}">{{ App\Enums\RoleEnum::get_jp($role->is_role_mgt_available) }}</td>
+                        <td class="py-1 px-2 border text-center {{ App\Enums\RoleEnum::get_class($role->is_holiday_mgt_available) }}">{{ App\Enums\RoleEnum::get_jp($role->is_holiday_mgt_available) }}</td>
+                        <td class="py-1 px-2 border text-center {{ App\Enums\RoleEnum::get_class($role->is_access_mgt_available) }}">{{ App\Enums\RoleEnum::get_jp($role->is_access_mgt_available) }}</td>
+                        <td class="py-1 px-2 border text-center {{ App\Enums\RoleEnum::get_class($role->is_lock_kintai_operation_available) }}">{{ App\Enums\RoleEnum::get_jp($role->is_lock_kintai_operation_available) }}</td>
+                        <td class="py-1 px-2 border text-center {{ App\Enums\RoleEnum::get_class($role->is_all_kintai_operation_available) }}">{{ App\Enums\RoleEnum::get_jp($role->is_all_kintai_operation_available) }}</td>
                     </tr>
                 @endforeach
             </tbody>

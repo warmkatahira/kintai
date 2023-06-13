@@ -4,7 +4,9 @@
         <!-- 操作ボタン -->
         <div class="flex whitespace-nowrap mb-2">
             <a href="{{ session('back_url_1') }}" class="w-40 text-xl py-4 rounded-lg text-center bg-black text-white">戻る</a>
-            <a href="{{ route('employee_update.index', ['employee_id' => $employee->employee_id]) }}" class="w-40 text-xl py-4 rounded-lg text-center bg-blue-200 ml-auto">更新</a>
+            @can('isEmployeeMgtAvailable')
+                <a href="{{ route('employee_update.index', ['employee_id' => $employee->employee_id]) }}" class="w-40 text-xl py-4 rounded-lg text-center bg-blue-200 ml-auto">更新</a>
+            @endcan
         </div>
         <!-- 従業員情報 -->
         <div class="flex flex-col">

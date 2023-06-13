@@ -6,6 +6,9 @@
 
         <title>KINTAI</title>
 
+        <!-- favicon -->
+        <link rel="shortcut icon" href="{{ asset('image/favicon.svg') }}">
+
         <!-- jQuery -->
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
         <!-- Styles -->
@@ -26,8 +29,6 @@
         <script src="https://unpkg.com/tippy.js@6"></script>
     </head>
     <body>
-        <!-- アラート表示 -->
-        <x-alert/>
         <div class="flex mt-3">
             @auth
                 <a href="{{ route('top.index') }}" class="ml-auto mr-10">ホーム</a>

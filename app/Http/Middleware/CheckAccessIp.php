@@ -16,6 +16,10 @@ class CheckAccessIp
      */
     public function handle(Request $request, Closure $next): Response
     {
+        // 開発環境では適用しないようにしている
+        if(env('APP_ENV') == 'local'){
+            return $next($request);
+        }
         // IPを取得
         $ip = $request->ip();
         // IPを条件にしてレコードを取得（有効フラグが1であるかも確認）
