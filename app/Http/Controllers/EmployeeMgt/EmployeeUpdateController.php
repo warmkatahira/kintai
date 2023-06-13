@@ -12,6 +12,12 @@ use App\Models\Base;
 
 class EmployeeUpdateController extends Controller
 {
+    public function __construct()
+    {
+        // ミドルウェアを適用するメソッドを指定
+        $this->middleware('FindByEmployee')->only(['index', 'update']);
+    }
+
     public function index(Request $request)
     {
         // 拠点情報を取得

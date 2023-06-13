@@ -12,6 +12,12 @@ use Illuminate\Support\Facades\Auth;
 
 class CustomerGroupUpdateController extends Controller
 {
+    public function __construct()
+    {
+        // ミドルウェアを適用するメソッドを指定
+        $this->middleware('FindByCustomerGroup')->only(['index', 'update']);
+    }
+
     public function index(Request $request)
     {
         // 拠点情報を取得

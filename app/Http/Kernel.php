@@ -64,7 +64,34 @@ class Kernel extends HttpKernel
         'signed' => \App\Http\Middleware\ValidateSignature::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
+        // ステータスチェック
         'userStatusCheck' => \App\Http\Middleware\UserStatusCheck::class,
+        // 勤怠提出チェック
         'kintaiCloseCheck' => \App\Http\Middleware\KintaiCloseCheck::class,
+        // 操作ログ記録
+        'OperationLogRecord' => \App\Http\Middleware\OperationLogRecord::class,
+        // 権限チェック
+        'AccessMgtAvailable' => \App\Http\Middleware\Available\AccessMgtAvailable::class,
+        'AccountingMgtFuncAvailable' => \App\Http\Middleware\Available\AccountingMgtFuncAvailable::class,
+        'BaseCheckAvailable' => \App\Http\Middleware\Available\BaseCheckAvailable::class,
+        'BaseMgtFuncAvailable' => \App\Http\Middleware\Available\BaseMgtFuncAvailable::class,
+        'CustomerMgtFuncAvailable' => \App\Http\Middleware\Available\CustomerMgtFuncAvailable::class,
+        'DownloadFuncAvailable' => \App\Http\Middleware\Available\DownloadFuncAvailable::class,
+        'EmployeeMgtFuncAvailable' => \App\Http\Middleware\Available\EmployeeMgtFuncAvailable::class,
+        'EmployeeOperationAvailable' => \App\Http\Middleware\Available\EmployeeOperationAvailable::class,
+        'HolidayMgtAvailable' => \App\Http\Middleware\Available\HolidayMgtAvailable::class,
+        'KintaiCloseAvailable' => \App\Http\Middleware\Available\KintaiCloseAvailable::class,
+        'KintaiMgtFuncAvailable' => \App\Http\Middleware\Available\KintaiMgtFuncAvailable::class,
+        'ManualPunchAvailable' => \App\Http\Middleware\Available\ManualPunchAvailable::class,
+        'RoleMgtAvailable' => \App\Http\Middleware\Available\RoleMgtAvailable::class,
+        'SystemMgtFuncAvailable' => \App\Http\Middleware\Available\SystemMgtFuncAvailable::class,
+        'UserMgtAvailable' => \App\Http\Middleware\Available\UserMgtAvailable::class,
+        'KintaiOperationAllAvailable' => \App\Http\Middleware\Available\KintaiOperationAllAvailable::class,
+        'EmployeeUpdateAvailable' => \App\Http\Middleware\Available\EmployeeUpdateAvailable::class,
+        // レコード存在チェック
+        'FindByKintai' => \App\Http\Middleware\FindBy\FindByKintai::class,
+        'FindByEmployee' => \App\Http\Middleware\FindBy\FindByEmployee::class,
+        'FindByCustomer' => \App\Http\Middleware\FindBy\FindByCustomer::class,
+        'FindByCustomerGroup' => \App\Http\Middleware\FindBy\FindByCustomerGroup::class,
     ];
 }

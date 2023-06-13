@@ -7,10 +7,10 @@
         @can('isKintaiMgtFuncAvailable')
             <li class="dropdown"><a href="{{ route('kintai_mgt.index') }}" class="trigger-drop">勤怠管理</a></li>
         @endcan
-        @can('isEmployeeMgtAvailable')
+        @can('isEmployeeMgtFuncAvailable')
             <li class="dropdown"><a href="{{ route('employee_mgt.index') }}" class="trigger-drop">従業員管理</a></li>
         @endcan
-        @can('isBaseMgtAvailable')
+        @can('isBaseMgtFuncAvailable')
             <li class="dropdown"><a class="trigger-drop">拠点管理</a>
                 <ul class="drop">
                     @can('isManualPunchAvailable')
@@ -33,7 +33,7 @@
                 </ul>
             </li>
         @endcan
-        @can('isAccountingFuncAvailable')
+        @can('isAccountingMgtFuncAvailable')
             <li class="dropdown"><a class="trigger-drop">経理管理</a>
                 <ul class="drop">
                     <li><a href="{{ route('kintai_close_check.index') }}">勤怠提出確認</a></li>

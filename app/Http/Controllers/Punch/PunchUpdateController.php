@@ -16,6 +16,12 @@ use App\Http\Requests\PunchUpdateRequest;
 
 class PunchUpdateController extends Controller
 {
+    public function __construct()
+    {
+        // ミドルウェアを適用するメソッドを指定
+        $this->middleware('FindByKintai')->only(['index']);
+    }
+
     public function index(Request $request)
     {
         // サービスクラスを定義

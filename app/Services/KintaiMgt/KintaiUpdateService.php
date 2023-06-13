@@ -16,13 +16,4 @@ class KintaiUpdateService
         ]);
         return;
     }
-
-    // 拠点確認日時を更新
-    public function updateBaseCheck($chk, $nowDate)
-    {
-        Kintai::whereIn('kintai_id', $chk)->update([
-            'base_checked_at' => $nowDate,
-        ]);
-        return;
-    }
 }

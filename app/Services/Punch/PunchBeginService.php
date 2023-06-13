@@ -16,7 +16,7 @@ class PunchBeginService
     {
         // 現在の時刻が8時45分より前であればon(表示)、それ以外であればoff(非表示)
         // 8時45分以降の早出はありえないので
-        return $nowDate->format('H:i:00') < '11:45:00' ? true : false;
+        return $nowDate->format('H:i:00') < '08:45:00' ? true : false;
     }
 
     // 早出が可能な状態の時、直近4回分の情報を取得（15分刻みで）
@@ -30,6 +30,10 @@ class PunchBeginService
             $nowDate = $nowDate->addMinutes(15 - $nowDate->minute % 15);
             // 処理を4回実施
             for($i = 0; $i < 4; $i++){
+                // 9時00分になったら処理を抜ける
+                if($nowDate->toTimeString('minute') == "09:00"){
+                    break;
+                }
                 // 時刻部分だけの情報を格納（H:mm）
                 $early_work_select_info[] = $nowDate->toTimeString('minute');
                 $nowDate = new CarbonImmutable($nowDate);

@@ -17,14 +17,14 @@ return new class extends Migration
             $table->boolean('is_kintai_mgt_func_available')->default(0);
             $table->boolean('is_base_check_available')->default(0);
             $table->boolean('is_kintai_operation_available')->default(0);
-            $table->boolean('is_employee_mgt_available')->default(0);
+            $table->boolean('is_employee_mgt_func_available')->default(0);
             $table->boolean('is_employee_operation_available')->default(0);
-            $table->boolean('is_base_mgt_available')->default(0);
+            $table->boolean('is_base_mgt_func_available')->default(0);
             $table->boolean('is_manual_punch_available')->default(0);
             $table->boolean('is_customer_mgt_func_available')->default(0);
             $table->boolean('is_kintai_close_available')->default(0);
             $table->boolean('is_download_func_available')->default(0);
-            $table->boolean('is_accounting_func_available')->default(0);
+            $table->boolean('is_accounting_mgt_func_available')->default(0);
             $table->boolean('is_system_mgt_func_available')->default(0);
             $table->boolean('is_user_mgt_available')->default(0);
             $table->boolean('is_role_mgt_available')->default(0);

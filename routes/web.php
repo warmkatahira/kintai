@@ -19,6 +19,7 @@ use App\Http\Controllers\Punch\PunchUpdateController;
 use App\Http\Controllers\KintaiMgt\KintaiMgtController;
 use App\Http\Controllers\KintaiMgt\KintaiDeleteController;
 use App\Http\Controllers\KintaiMgt\KintaiUpdateController;
+use App\Http\Controllers\KintaiMgt\BaseCheckController;
 // +-+-+-+-+-+-+-+- 従業員管理 +-+-+-+-+-+-+-+-
 use App\Http\Controllers\EmployeeMgt\EmployeeMgtController;
 use App\Http\Controllers\EmployeeMgt\EmployeeCreateController;
@@ -60,48 +61,49 @@ use App\Http\Controllers\AccessMgt\IpLimitUpdateController;
     });
 
 // ログインとステータスチェック
-Route::middleware(['auth', 'userStatusCheck'])->group(function () {
-    // ★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆ Top ★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆
-        // -+-+-+-+-+-+-+-+-+-+-+-+ TOP -+-+-+-+-+-+-+-+-+-+-+-+
-        Route::controller(TopController::class)->prefix('top')->name('top.')->group(function(){
-            Route::get('', 'index')->name('index');
-        });
-    // ★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆ 打刻 ★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆
-        // -+-+-+-+-+-+-+-+-+-+-+-+ 打刻トップ -+-+-+-+-+-+-+-+-+-+-+-+
-        Route::controller(PunchController::class)->prefix('punch')->name('punch.')->group(function(){
-            Route::get('', 'index')->name('index');
-        });
-        // -+-+-+-+-+-+-+-+-+-+-+-+ 出勤打刻 -+-+-+-+-+-+-+-+-+-+-+-+
-        Route::controller(PunchBeginController::class)->prefix('punch_begin')->name('punch_begin.')->group(function(){
-            Route::get('', 'index')->name('index');
-            Route::post('enter', 'enter')->name('enter')->middleware('kintaiCloseCheck');
-        });
-        // -+-+-+-+-+-+-+-+-+-+-+-+ 退勤打刻 -+-+-+-+-+-+-+-+-+-+-+-+
-        Route::controller(PunchFinishController::class)->prefix('punch_finish')->name('punch_finish.')->group(function(){
-            Route::get('', 'index')->name('index');
-            Route::get('input', 'input')->name('input')->middleware('kintaiCloseCheck');
-            Route::post('enter', 'enter')->name('enter');
-        });
-        // -+-+-+-+-+-+-+-+-+-+-+-+ 外出打刻 -+-+-+-+-+-+-+-+-+-+-+-+
-        Route::controller(PunchOutController::class)->prefix('punch_out')->name('punch_out.')->group(function(){
-            Route::get('', 'index')->name('index');
-            Route::post('enter', 'enter')->name('enter')->middleware('kintaiCloseCheck');
-        });
-        // -+-+-+-+-+-+-+-+-+-+-+-+ 戻り打刻 -+-+-+-+-+-+-+-+-+-+-+-+
-        Route::controller(PunchReturnController::class)->prefix('punch_return')->name('punch_return.')->group(function(){
-            Route::get('', 'index')->name('index');
-            Route::post('enter', 'enter')->name('enter')->middleware('kintaiCloseCheck');
-        });
-        // -+-+-+-+-+-+-+-+-+-+-+-+ 今日の勤怠 -+-+-+-+-+-+-+-+-+-+-+-+
-        Route::controller(TodayKintaiController::class)->prefix('today_kintai')->name('today_kintai.')->group(function(){
-            Route::get('', 'index')->name('index');
-        });
-        // -+-+-+-+-+-+-+-+-+-+-+-+ 今月の勤怠 -+-+-+-+-+-+-+-+-+-+-+-+
-        Route::controller(ThisMonthKintaiController::class)->prefix('this_month_kintai')->name('this_month_kintai.')->group(function(){
-            Route::get('', 'index')->name('index');
-            Route::get('detail', 'detail')->name('detail');
-        });
-    // ★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆ 勤怠管理 ★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆
+Route::middleware(['auth', 'userStatusCheck', 'OperationLogRecord'])->group(function () {
+// ★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆ Top ★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆
+    // -+-+-+-+-+-+-+-+-+-+-+-+ TOP -+-+-+-+-+-+-+-+-+-+-+-+
+    Route::controller(TopController::class)->prefix('top')->name('top.')->group(function(){
+        Route::get('', 'index')->name('index');
+    });
+// ★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆ 打刻 ★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆
+    // -+-+-+-+-+-+-+-+-+-+-+-+ 打刻トップ -+-+-+-+-+-+-+-+-+-+-+-+
+    Route::controller(PunchController::class)->prefix('punch')->name('punch.')->group(function(){
+        Route::get('', 'index')->name('index');
+    });
+    // -+-+-+-+-+-+-+-+-+-+-+-+ 出勤打刻 -+-+-+-+-+-+-+-+-+-+-+-+
+    Route::controller(PunchBeginController::class)->prefix('punch_begin')->name('punch_begin.')->group(function(){
+        Route::get('', 'index')->name('index');
+        Route::post('enter', 'enter')->name('enter')->middleware('kintaiCloseCheck');
+    });
+    // -+-+-+-+-+-+-+-+-+-+-+-+ 退勤打刻 -+-+-+-+-+-+-+-+-+-+-+-+
+    Route::controller(PunchFinishController::class)->prefix('punch_finish')->name('punch_finish.')->group(function(){
+        Route::get('', 'index')->name('index');
+        Route::get('input', 'input')->name('input')->middleware('kintaiCloseCheck');
+        Route::post('enter', 'enter')->name('enter');
+    });
+    // -+-+-+-+-+-+-+-+-+-+-+-+ 外出打刻 -+-+-+-+-+-+-+-+-+-+-+-+
+    Route::controller(PunchOutController::class)->prefix('punch_out')->name('punch_out.')->group(function(){
+        Route::get('', 'index')->name('index');
+        Route::post('enter', 'enter')->name('enter')->middleware('kintaiCloseCheck');
+    });
+    // -+-+-+-+-+-+-+-+-+-+-+-+ 戻り打刻 -+-+-+-+-+-+-+-+-+-+-+-+
+    Route::controller(PunchReturnController::class)->prefix('punch_return')->name('punch_return.')->group(function(){
+        Route::get('', 'index')->name('index');
+        Route::post('enter', 'enter')->name('enter')->middleware('kintaiCloseCheck');
+    });
+    // -+-+-+-+-+-+-+-+-+-+-+-+ 今日の勤怠 -+-+-+-+-+-+-+-+-+-+-+-+
+    Route::controller(TodayKintaiController::class)->prefix('today_kintai')->name('today_kintai.')->group(function(){
+        Route::get('', 'index')->name('index');
+    });
+    // -+-+-+-+-+-+-+-+-+-+-+-+ 今月の勤怠 -+-+-+-+-+-+-+-+-+-+-+-+
+    Route::controller(ThisMonthKintaiController::class)->prefix('this_month_kintai')->name('this_month_kintai.')->group(function(){
+        Route::get('', 'index')->name('index');
+        Route::get('detail', 'detail')->name('detail');
+    });
+// ★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆ 勤怠管理 ★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆
+    Route::middleware(['KintaiMgtFuncAvailable'])->group(function () {
         // -+-+-+-+-+-+-+-+-+-+-+-+ 勤怠管理 -+-+-+-+-+-+-+-+-+-+-+-+
         Route::controller(KintaiMgtController::class)->prefix('kintai_mgt')->name('kintai_mgt.')->group(function(){
             Route::get('', 'index')->name('index');
@@ -110,146 +112,167 @@ Route::middleware(['auth', 'userStatusCheck'])->group(function () {
         });
         // -+-+-+-+-+-+-+-+-+-+-+-+ 勤怠削除 -+-+-+-+-+-+-+-+-+-+-+-+
         Route::controller(KintaiDeleteController::class)->prefix('kintai_delete')->name('kintai_delete.')->group(function(){
-            Route::post('', 'delete')->name('delete');
+            Route::post('', 'delete')->name('delete')->middleware('KintaiOperationAllAvailable');
         });
         // -+-+-+-+-+-+-+-+-+-+-+-+ 勤怠修正 -+-+-+-+-+-+-+-+-+-+-+-+
         Route::controller(KintaiUpdateController::class)->prefix('kintai_update')->name('kintai_update.')->group(function(){
-            Route::post('comment_update', 'comment_update')->name('comment_update');
-            Route::post('base_check', 'base_check')->name('base_check');
+            Route::post('comment_update', 'comment_update')->name('comment_update')->middleware('KintaiOperationAllAvailable');
         });
         // -+-+-+-+-+-+-+-+-+-+-+-+ 修正打刻 -+-+-+-+-+-+-+-+-+-+-+-+
         Route::controller(PunchUpdateController::class)->prefix('punch_update')->name('punch_update.')->group(function(){
-            Route::get('', 'index')->name('index');
+            Route::get('', 'index')->name('index')->middleware('KintaiOperationAllAvailable');
             Route::get('input', 'input')->name('input')->middleware('kintaiCloseCheck');
             Route::post('enter', 'enter')->name('enter');
         });
-    // ★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆ 従業員管理 ★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆
+        // -+-+-+-+-+-+-+-+-+-+-+-+ 拠点確認 -+-+-+-+-+-+-+-+-+-+-+-+
+        Route::controller(BaseCheckController::class)->prefix('kintai_update')->name('kintai_update.')->group(function(){
+            Route::post('', 'base_check')->name('base_check')->middleware('BaseCheckAvailable');
+        });
+    });
+// ★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆ 従業員管理 ★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆
+    Route::middleware(['EmployeeMgtFuncAvailable'])->group(function () {
         // -+-+-+-+-+-+-+-+-+-+-+-+ 従業員管理 -+-+-+-+-+-+-+-+-+-+-+-+
         Route::controller(EmployeeMgtController::class)->prefix('employee_mgt')->name('employee_mgt.')->group(function(){
             Route::get('', 'index')->name('index');
             Route::get('search', 'search')->name('search');
             Route::get('detail', 'detail')->name('detail');
         });
-        // -+-+-+-+-+-+-+-+-+-+-+-+ 従業員追加 -+-+-+-+-+-+-+-+-+-+-+-+
-        Route::controller(EmployeeCreateController::class)->prefix('employee_create')->name('employee_create.')->group(function(){
-            Route::get('', 'index')->name('index');
-            Route::post('create', 'create')->name('create');
+        Route::middleware(['EmployeeOperationAvailable'])->group(function () {
+            // -+-+-+-+-+-+-+-+-+-+-+-+ 従業員追加 -+-+-+-+-+-+-+-+-+-+-+-+
+            Route::controller(EmployeeCreateController::class)->prefix('employee_create')->name('employee_create.')->group(function(){
+                Route::get('', 'index')->name('index');
+                Route::post('create', 'create')->name('create');
+            });
+            // -+-+-+-+-+-+-+-+-+-+-+-+ 従業員更新 -+-+-+-+-+-+-+-+-+-+-+-+
+            Route::controller(EmployeeUpdateController::class)->prefix('employee_update')->name('employee_update.')->group(function(){
+                Route::get('', 'index')->name('index')->middleware('EmployeeUpdateAvailable');
+                Route::post('update', 'update')->name('update');
+            });
         });
-        // -+-+-+-+-+-+-+-+-+-+-+-+ 従業員更新 -+-+-+-+-+-+-+-+-+-+-+-+
-        Route::controller(EmployeeUpdateController::class)->prefix('employee_update')->name('employee_update.')->group(function(){
-            Route::get('', 'index')->name('index');
-            Route::post('update', 'update')->name('update');
+    });
+// ★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆ 拠点管理 ★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆
+    Route::middleware(['BaseMgtFuncAvailable'])->group(function () {
+        Route::middleware(['ManualPunchAvailable'])->group(function () {
+            // -+-+-+-+-+-+-+-+-+-+-+-+ 手動打刻 -+-+-+-+-+-+-+-+-+-+-+-+
+            Route::controller(PunchManualController::class)->prefix('punch_manual')->name('punch_manual.')->group(function(){
+                Route::get('', 'index')->name('index');
+                Route::get('input', 'input')->name('input')->middleware('kintaiCloseCheck');
+                Route::post('enter', 'enter')->name('enter');
+            });
         });
-    // ★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆ 手動打刻 ★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆
-        // -+-+-+-+-+-+-+-+-+-+-+-+ 手動打刻 -+-+-+-+-+-+-+-+-+-+-+-+
-        Route::controller(PunchManualController::class)->prefix('punch_manual')->name('punch_manual.')->group(function(){
-            Route::get('', 'index')->name('index');
-            Route::get('input', 'input')->name('input')->middleware('kintaiCloseCheck');
-            Route::post('enter', 'enter')->name('enter');
+        Route::middleware(['CustomerMgtFuncAvailable'])->group(function () {
+            // -+-+-+-+-+-+-+-+-+-+-+-+ 荷主管理 -+-+-+-+-+-+-+-+-+-+-+-+
+            Route::controller(CustomerMgtController::class)->prefix('customer_mgt')->name('customer_mgt.')->group(function(){
+                Route::get('', 'index')->name('index');
+                Route::get('search', 'search')->name('search');
+                Route::get('detail', 'detail')->name('detail');
+            });
+            // -+-+-+-+-+-+-+-+-+-+-+-+ 荷主追加 -+-+-+-+-+-+-+-+-+-+-+-+
+            Route::controller(CustomerCreateController::class)->prefix('customer_create')->name('customer_create.')->group(function(){
+                Route::get('', 'index')->name('index');
+                Route::post('create', 'create')->name('create');
+            });
+            // -+-+-+-+-+-+-+-+-+-+-+-+ 荷主更新 -+-+-+-+-+-+-+-+-+-+-+-+
+            Route::controller(CustomerUpdateController::class)->prefix('customer_update')->name('customer_update.')->group(function(){
+                Route::get('', 'index')->name('index');
+                Route::post('update', 'update')->name('update');
+            });
+            // -+-+-+-+-+-+-+-+-+-+-+-+ 荷主グループ管理 -+-+-+-+-+-+-+-+-+-+-+-+
+            Route::controller(CustomerGroupMgtController::class)->prefix('customer_group_mgt')->name('customer_group_mgt.')->group(function(){
+                Route::get('', 'index')->name('index');
+                Route::get('search', 'search')->name('search');
+                Route::get('detail', 'detail')->name('detail');
+            });
+            // -+-+-+-+-+-+-+-+-+-+-+-+ 荷主グループ追加 -+-+-+-+-+-+-+-+-+-+-+-+
+            Route::controller(CustomerGroupCreateController::class)->prefix('customer_group_create')->name('customer_group_create.')->group(function(){
+                Route::get('', 'index')->name('index');
+                Route::post('create', 'create')->name('create');
+            });
+            // -+-+-+-+-+-+-+-+-+-+-+-+ 荷主グループ更新 -+-+-+-+-+-+-+-+-+-+-+-+
+            Route::controller(CustomerGroupUpdateController::class)->prefix('customer_group_update')->name('customer_group_update.')->group(function(){
+                Route::get('', 'index')->name('index');
+                Route::post('update', 'update')->name('update');
+            });
         });
-    // ★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆ 荷主管理 ★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆
-        // -+-+-+-+-+-+-+-+-+-+-+-+ 荷主管理 -+-+-+-+-+-+-+-+-+-+-+-+
-        Route::controller(CustomerMgtController::class)->prefix('customer_mgt')->name('customer_mgt.')->group(function(){
-            Route::get('', 'index')->name('index');
-            Route::get('search', 'search')->name('search');
-            Route::get('detail', 'detail')->name('detail');
+        Route::middleware(['KintaiCloseAvailable'])->group(function () {
+            // -+-+-+-+-+-+-+-+-+-+-+-+ 勤怠提出 -+-+-+-+-+-+-+-+-+-+-+-+
+            Route::controller(KintaiCloseController::class)->prefix('kintai_close')->name('kintai_close.')->group(function(){
+                Route::get('', 'index')->name('index');
+                Route::post('close', 'close')->name('close');
+            });
         });
-        // -+-+-+-+-+-+-+-+-+-+-+-+ 荷主追加 -+-+-+-+-+-+-+-+-+-+-+-+
-        Route::controller(CustomerCreateController::class)->prefix('customer_create')->name('customer_create.')->group(function(){
-            Route::get('', 'index')->name('index');
-            Route::post('create', 'create')->name('create');
-        });
-        // -+-+-+-+-+-+-+-+-+-+-+-+ 荷主更新 -+-+-+-+-+-+-+-+-+-+-+-+
-        Route::controller(CustomerUpdateController::class)->prefix('customer_update')->name('customer_update.')->group(function(){
-            Route::get('', 'index')->name('index');
-            Route::post('update', 'update')->name('update');
-        });
-    // ★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆ 荷主グループ管理 ★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆
-        // -+-+-+-+-+-+-+-+-+-+-+-+ 荷主グループ管理 -+-+-+-+-+-+-+-+-+-+-+-+
-        Route::controller(CustomerGroupMgtController::class)->prefix('customer_group_mgt')->name('customer_group_mgt.')->group(function(){
-            Route::get('', 'index')->name('index');
-            Route::get('search', 'search')->name('search');
-            Route::get('detail', 'detail')->name('detail');
-        });
-        // -+-+-+-+-+-+-+-+-+-+-+-+ 荷主グループ追加 -+-+-+-+-+-+-+-+-+-+-+-+
-        Route::controller(CustomerGroupCreateController::class)->prefix('customer_group_create')->name('customer_group_create.')->group(function(){
-            Route::get('', 'index')->name('index');
-            Route::post('create', 'create')->name('create');
-        });
-        // -+-+-+-+-+-+-+-+-+-+-+-+ 荷主グループ更新 -+-+-+-+-+-+-+-+-+-+-+-+
-        Route::controller(CustomerGroupUpdateController::class)->prefix('customer_group_update')->name('customer_group_update.')->group(function(){
-            Route::get('', 'index')->name('index');
-            Route::post('update', 'update')->name('update');
-        });
-    // ★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆ ユーザー管理 ★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆
-        // -+-+-+-+-+-+-+-+-+-+-+-+ ユーザー管理 -+-+-+-+-+-+-+-+-+-+-+-+
-        Route::controller(UserMgtController::class)->prefix('user_mgt')->name('user_mgt.')->group(function(){
-            Route::get('', 'index')->name('index');
-            Route::get('search', 'search')->name('search');
-        });
-        // -+-+-+-+-+-+-+-+-+-+-+-+ ユーザー更新 -+-+-+-+-+-+-+-+-+-+-+-+
-        Route::controller(UserUpdateController::class)->prefix('user_update')->name('user_update.')->group(function(){
-            Route::get('', 'index')->name('index');
-            Route::post('update', 'update')->name('update');
-        });
-    // ★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆ 権限管理 ★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆
-        // -+-+-+-+-+-+-+-+-+-+-+-+ 権限管理 -+-+-+-+-+-+-+-+-+-+-+-+
-        Route::controller(RoleMgtController::class)->prefix('role_mgt')->name('role_mgt.')->group(function(){
-            Route::get('', 'index')->name('index');
-        });
-        // -+-+-+-+-+-+-+-+-+-+-+-+ 権限追加 -+-+-+-+-+-+-+-+-+-+-+-+
-        Route::controller(RoleCreateController::class)->prefix('role_create')->name('role_create.')->group(function(){
-            Route::get('', 'index')->name('index');
-            Route::post('create', 'create')->name('create');
-        });
-        // -+-+-+-+-+-+-+-+-+-+-+-+ 権限更新 -+-+-+-+-+-+-+-+-+-+-+-+
-        Route::controller(RoleUpdateController::class)->prefix('role_update')->name('role_update.')->group(function(){
-            Route::get('', 'index')->name('index');
-            Route::post('update', 'update')->name('update');
-        });
-    // ★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆ 休日管理 ★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆
-        // -+-+-+-+-+-+-+-+-+-+-+-+ 休日管理 -+-+-+-+-+-+-+-+-+-+-+-+
-        Route::controller(HolidayMgtController::class)->prefix('holiday_mgt')->name('holiday_mgt.')->group(function(){
-            Route::get('', 'index')->name('index');
-            Route::get('download', 'download')->name('download');
-            Route::post('upload', 'upload')->name('upload');
-        });
-    // ★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆ 勤怠提出 ★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆
-        // -+-+-+-+-+-+-+-+-+-+-+-+ 勤怠提出 -+-+-+-+-+-+-+-+-+-+-+-+
-        Route::controller(KintaiCloseController::class)->prefix('kintai_close')->name('kintai_close.')->group(function(){
-            Route::get('', 'index')->name('index');
-            Route::post('close', 'close')->name('close');
-        });
-    // ★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆ 勤怠提出確認 ★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆
-        // -+-+-+-+-+-+-+-+-+-+-+-+ 勤怠提出確認 -+-+-+-+-+-+-+-+-+-+-+-+
-        Route::controller(KintaiCloseCheckController::class)->prefix('kintai_close_check')->name('kintai_close_check.')->group(function(){
-            Route::get('', 'index')->name('index');
-            Route::get('search', 'search')->name('search');
-        });
-    // ★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆ ダウンロード ★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆
+    });
+// ★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆ ダウンロード ★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆
+    Route::middleware(['DownloadFuncAvailable'])->group(function () {
         // -+-+-+-+-+-+-+-+-+-+-+-+ 勤怠表 -+-+-+-+-+-+-+-+-+-+-+-+
         Route::controller(KintaiReportDownloadController::class)->prefix('kintai_report_download')->name('kintai_report_download.')->group(function(){
             Route::get('', 'index')->name('index');
             Route::get('download', 'download')->name('download');
         });
-    // ★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆ アクセス管理 ★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆
-        // -+-+-+-+-+-+-+-+-+-+-+-+ アクセス管理 -+-+-+-+-+-+-+-+-+-+-+-+
-        Route::controller(AccessMgtController::class)->prefix('access_mgt')->name('access_mgt.')->group(function(){
+    });
+// ★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆ 経理管理 ★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆
+    Route::middleware(['AccountingMgtFuncAvailable'])->group(function () {
+        // -+-+-+-+-+-+-+-+-+-+-+-+ 勤怠提出確認 -+-+-+-+-+-+-+-+-+-+-+-+
+        Route::controller(KintaiCloseCheckController::class)->prefix('kintai_close_check')->name('kintai_close_check.')->group(function(){
             Route::get('', 'index')->name('index');
+            Route::get('search', 'search')->name('search');
         });
-        // -+-+-+-+-+-+-+-+-+-+-+-+ IP追加 -+-+-+-+-+-+-+-+-+-+-+-+
-        Route::controller(IPLimitCreateController::class)->prefix('ip_limit_create')->name('ip_limit_create.')->group(function(){
-            Route::get('', 'index')->name('index');
-            Route::post('create', 'create')->name('create');
+    });
+// ★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆ システム管理 ★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆
+    Route::middleware(['SystemMgtFuncAvailable'])->group(function () {
+        Route::middleware(['UserMgtAvailable'])->group(function () {
+            // -+-+-+-+-+-+-+-+-+-+-+-+ ユーザー管理 -+-+-+-+-+-+-+-+-+-+-+-+
+            Route::controller(UserMgtController::class)->prefix('user_mgt')->name('user_mgt.')->group(function(){
+                Route::get('', 'index')->name('index');
+                Route::get('search', 'search')->name('search');
+            });
+            // -+-+-+-+-+-+-+-+-+-+-+-+ ユーザー更新 -+-+-+-+-+-+-+-+-+-+-+-+
+            Route::controller(UserUpdateController::class)->prefix('user_update')->name('user_update.')->group(function(){
+                Route::get('', 'index')->name('index');
+                Route::post('update', 'update')->name('update');
+            });
         });
-        // -+-+-+-+-+-+-+-+-+-+-+-+ IP更新 -+-+-+-+-+-+-+-+-+-+-+-+
-        Route::controller(IPLimitUpdateController::class)->prefix('ip_limit_update')->name('ip_limit_update.')->group(function(){
-            Route::get('', 'index')->name('index');
-            Route::post('update', 'update')->name('update');
+        Route::middleware(['RoleMgtAvailable'])->group(function () {
+            // -+-+-+-+-+-+-+-+-+-+-+-+ 権限管理 -+-+-+-+-+-+-+-+-+-+-+-+
+            Route::controller(RoleMgtController::class)->prefix('role_mgt')->name('role_mgt.')->group(function(){
+                Route::get('', 'index')->name('index');
+            });
+            // -+-+-+-+-+-+-+-+-+-+-+-+ 権限追加 -+-+-+-+-+-+-+-+-+-+-+-+
+            Route::controller(RoleCreateController::class)->prefix('role_create')->name('role_create.')->group(function(){
+                Route::get('', 'index')->name('index');
+                Route::post('create', 'create')->name('create');
+            });
+            // -+-+-+-+-+-+-+-+-+-+-+-+ 権限更新 -+-+-+-+-+-+-+-+-+-+-+-+
+            Route::controller(RoleUpdateController::class)->prefix('role_update')->name('role_update.')->group(function(){
+                Route::get('', 'index')->name('index');
+                Route::post('update', 'update')->name('update');
+            });
         });
-        
-
-
+        Route::middleware(['HolidayMgtAvailable'])->group(function () {
+            // -+-+-+-+-+-+-+-+-+-+-+-+ 休日管理 -+-+-+-+-+-+-+-+-+-+-+-+
+            Route::controller(HolidayMgtController::class)->prefix('holiday_mgt')->name('holiday_mgt.')->group(function(){
+                Route::get('', 'index')->name('index');
+                Route::get('download', 'download')->name('download');
+                Route::post('upload', 'upload')->name('upload');
+            });
+        });
+        Route::middleware(['AccessMgtAvailable'])->group(function () {
+            // -+-+-+-+-+-+-+-+-+-+-+-+ アクセス管理 -+-+-+-+-+-+-+-+-+-+-+-+
+            Route::controller(AccessMgtController::class)->prefix('access_mgt')->name('access_mgt.')->group(function(){
+                Route::get('', 'index')->name('index');
+            });
+            // -+-+-+-+-+-+-+-+-+-+-+-+ IP追加 -+-+-+-+-+-+-+-+-+-+-+-+
+            Route::controller(IPLimitCreateController::class)->prefix('ip_limit_create')->name('ip_limit_create.')->group(function(){
+                Route::get('', 'index')->name('index');
+                Route::post('create', 'create')->name('create');
+            });
+            // -+-+-+-+-+-+-+-+-+-+-+-+ IP更新 -+-+-+-+-+-+-+-+-+-+-+-+
+            Route::controller(IPLimitUpdateController::class)->prefix('ip_limit_update')->name('ip_limit_update.')->group(function(){
+                Route::get('', 'index')->name('index');
+                Route::post('update', 'update')->name('update');
+            });
+        });
+    });
 });
 
 

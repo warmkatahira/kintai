@@ -13,6 +13,12 @@ use Carbon\CarbonImmutable;
 
 class CustomerGroupMgtController extends Controller
 {
+    public function __construct()
+    {
+        // ミドルウェアを適用するメソッドを指定
+        $this->middleware('FindByCustomerGroup')->only(['detail']);
+    }
+
     public function index()
     {
         // インスタンス化

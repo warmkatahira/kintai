@@ -4,9 +4,10 @@
         <!-- 操作ボタン -->
         <div class="flex whitespace-nowrap mb-2">
             <a href="{{ session('back_url_1') }}" class="w-40 text-xl py-4 rounded-lg text-center bg-black text-white">戻る</a>
-            @can('isEmployeeMgtAvailable')
+            <!-- 自拠点かつ従業員操作が有効な場合 -->
+            @if(Auth::user()->base_id == $employee->base_id && Gate::check('isEmployeeOperationAvailable'))
                 <a href="{{ route('employee_update.index', ['employee_id' => $employee->employee_id]) }}" class="w-40 text-xl py-4 rounded-lg text-center bg-blue-200 ml-auto">更新</a>
-            @endcan
+            @endif
         </div>
         <!-- 従業員情報 -->
         <div class="flex flex-col">

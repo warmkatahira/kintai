@@ -16,6 +16,12 @@ use App\Services\CommonService;
 
 class EmployeeMgtController extends Controller
 {
+    public function __construct()
+    {
+        // ミドルウェアを適用するメソッドを指定
+        $this->middleware('FindByEmployee')->only(['detail']);
+    }
+
     public function index()
     {
         // インスタンス化

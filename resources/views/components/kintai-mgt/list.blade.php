@@ -4,7 +4,9 @@
         <table class="text-sm block whitespace-nowrap">
             <thead>
                 <tr class="text-left text-white bg-gray-600 sticky top-0">
-                    <th id="all_check" class="font-thin py-1 px-2 text-center"><i class="las la-check-square la-lg"></i></th>
+                    @can('isBaseCheckAvailable')
+                        <th id="all_check" class="font-thin py-1 px-2 text-center"><i class="las la-check-square la-lg"></i></th>
+                    @endcan
                     <th class="font-thin py-3 px-2 text-center">詳細</th>
                     <th class="font-thin py-3 px-2 text-center">出勤日</th>
                     <th class="font-thin py-3 px-2 text-center">拠点</th>
@@ -28,12 +30,13 @@
             <tbody class="bg-white">
                 @foreach($kintais as $kintai)
                     <tr class="text-left hover:bg-theme-sub cursor-default">
-                        <td class="py-1 px-2 border text-center">
-                            <!-- 拠点確認が有効かつロックがかかっていない退勤済みの自拠点勤怠のみ、チェックボックスを表示 -->
-                            @if(Gate::check('isBaseCheckAvailable') && is_null($kintai->locked_at) && !is_null($kintai->finish_time) && Auth::user()->base_id == $kintai->base_id)
-                                <input type="checkbox" name="chk[]" value="{{ $kintai->kintai_id }}" form="base_check_form">
-                            @endif
-                        </td>
+                        @can('isBaseCheckAvailable')
+                            <td class="py-1 px-2 border text-center">
+                                @can('isBaseCheckAvailableKintai', $kintai)
+                                    <input type="checkbox" name="chk[]" value="{{ $kintai->kintai_id }}" form="base_check_form">
+                                @endcan
+                            </td>
+                        @endcan
                         <td class="py-1 px-2 border text-center">
                             <a href="{{ route('kintai_mgt.detail', ['kintai_id' => $kintai->kintai_id]) }}" class="text-center border border-blue-500 bg-blue-100 text-blue-500 text-xs px-2 py-1">詳細</a>
                         </td>
