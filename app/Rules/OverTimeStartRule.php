@@ -25,8 +25,8 @@ class OverTimeStartRule implements Rule
      */
     public function passes($attribute, $value)
     {
-        // 入力値が0なら確認する必要がないので確認を終了
-        if($this->over_time_start_setting == 0){
+        // 入力値が0かNullなら確認する必要がないので確認を終了
+        if($this->over_time_start_setting == 0 || is_null($this->over_time_start_setting)){
             return true;
         }
         // 入力値が数値であることを確認

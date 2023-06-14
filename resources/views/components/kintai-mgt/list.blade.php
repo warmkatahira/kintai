@@ -54,7 +54,11 @@
                             <td class="py-1 px-2 border text-center">@if(!is_null($kintai->finish_time)){{ number_format($kintai->add_rest_time / 60, 2) }}@endif</td>
                         @endif
                         <td class="py-1 px-2 border text-center">@if(!is_null($kintai->finish_time)){{ number_format($kintai->working_time / 60, 2) }}@endif</td>
-                        <td class="py-1 px-2 border text-center {{ $kintai->over_time == 0 ? '' : 'bg-pink-200' }}">@if(!is_null($kintai->finish_time)){{ number_format($kintai->over_time / 60, 2) }}@endif</td>
+                        @if(Gate::check('isShortTimeInfoAvailable') || $kintai->over_time_start == 0)
+                            <td class="py-1 px-2 border text-center {{ $kintai->over_time == 0 ? '' : 'bg-pink-200' }}">@if(!is_null($kintai->finish_time)){{ number_format($kintai->over_time / 60, 2) }}@endif</td>
+                        @else
+                            <td class="py-1 px-2 border text-center">@if(!is_null($kintai->finish_time)){{ number_format(0 / 60, 2) }}@endif</td>
+                        @endif
                         <td class="py-1 px-2 border text-center">@if(!is_null($kintai->base_checked_at)){{ \Carbon\CarbonImmutable::parse($kintai->base_checked_at)->isoFormat('Y年MM月DD日 HH時mm分ss秒') }}@endif</td>
                         <td class="py-1 px-2 border text-left">{{ $kintai->comment }}</td>
                     </tr>

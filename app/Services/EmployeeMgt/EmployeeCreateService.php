@@ -18,7 +18,7 @@ class EmployeeCreateService
             'employee_last_name' => $request->employee_last_name,
             'employee_first_name' => $request->employee_first_name,
             'monthly_workable_time' => $request->monthly_workable_time,
-            'over_time_start' => $request->over_time_start,
+            'over_time_start' => is_null($request->over_time_start) ? 0 : $request->over_time_start,
         ]);
         return;
     }

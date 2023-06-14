@@ -33,7 +33,7 @@ class EmployeeCreateRequest extends FormRequest
             'employee_last_name' => 'required|max:10',
             'employee_first_name' => 'required|max:10',
             'monthly_workable_time' => ['required', new MonthlyWorkableTimeRule($this->monthly_workable_time)],
-            'over_time_start' => ['required', new OverTimeStartRule($this->over_time_start)],
+            'over_time_start' => ['nullable', new OverTimeStartRule($this->over_time_start)],
         ];
     }
 

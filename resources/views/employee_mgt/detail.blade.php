@@ -22,7 +22,9 @@
             </div>
             <div class="flex flex-row">
                 <x-detail-div label="月間稼働可能時間" :value="number_format($employee->monthly_workable_time, 2)" />
-                <x-detail-div label="残業開始時間" :value="number_format($employee->over_time_start, 2)" />
+                @can('isShortTimeInfoAvailable')
+                    <x-detail-div label="残業開始時間" :value="number_format($employee->over_time_start, 2)" />
+                @endcan
             </div>
         </div>
         <!-- 当月稼働情報 -->
@@ -31,7 +33,11 @@
             <div class="flex flex-row">
                 <x-detail-div label="稼働日数" :value="$working_days.' 日'" />
                 <x-detail-div label="総稼働時間" :value="number_format($total_working_time / 60, 2)" />
-                <x-detail-div label="総残業時間" :value="number_format($total_over_time / 60, 2)" />
+                @if(Gate::check('isShortTimeInfoAvailable') || $employee->over_time_start == 0)
+                    <x-detail-div label="総残業時間" :value="number_format($total_over_time / 60, 2)" />
+                @else
+                    <x-detail-div label="総残業時間" :value="number_format(0 / 60, 2)" />
+                @endif
             </div>
         </div>
         <!-- 当月稼働時間トップ3 -->

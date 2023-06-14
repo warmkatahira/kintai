@@ -56,7 +56,11 @@
             </div>
             <div class="flex flex-row">
                 <x-detail-div label="稼働時間" :value="is_null($kintai->working_time) ? '' : number_format($kintai->working_time / 60, 2)" />
-                <x-detail-div label="残業時間" :value="is_null($kintai->over_time) ? '' : number_format($kintai->over_time /60, 2)" />
+                @if(Gate::check('isShortTimeInfoAvailable') || $kintai->employee->over_time_start == 0)
+                    <x-detail-div label="残業時間" :value="is_null($kintai->over_time) ? '' : number_format($kintai->over_time /60, 2)" />
+                @else
+                    <x-detail-div label="残業時間" :value="number_format(0 /60, 2)" />
+                @endif
             </div>
             <div class="flex flex-row">
                 <x-detail-div label="早出" :value="$kintai->is_early_worked == 1 ? '○' : ''" />

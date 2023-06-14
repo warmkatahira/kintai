@@ -11,6 +11,7 @@ use App\Models\Employee;
 use App\Models\EmployeeCategory;
 use App\Models\Holiday;
 use Carbon\CarbonImmutable;
+use Illuminate\Support\Facades\Gate;
 
 class KintaiReportDownloadService
 {
@@ -36,9 +37,9 @@ class KintaiReportDownloadService
     {
         // 出力対象の従業員を取得
         return Employee::where('employees.base_id', $base_id)
-                        ->join('bases', 'employees.base_id', 'bases.base_id')
-                        ->select('employees.employee_id', 'employees.employee_no', 'employees.employee_last_name', 'employees.employee_first_name', 'bases.base_id', 'bases.base_name', 'employees.employee_category_id')
-                        ->orderBy('employees.employee_no', 'asc');
+                        ->join('bases', 'bases.base_id', 'employees.base_id')
+                        ->select('employee_id', 'employee_no', 'employee_last_name', 'employee_first_name', 'bases.base_id', 'base_name', 'employee_category_id', 'over_time_start')
+                        ->orderBy('employee_no', 'asc');
     }
 
     public function getDownloadKintai($month_date, $employees, $start_day, $end_day)
@@ -55,8 +56,12 @@ class KintaiReportDownloadService
             $kintais[$employee->employee_id]['employee_category_name'] = $employee->employee_category->employee_category_name;
             // 月の日数分だけループ処理
             foreach($month_date as $date){
-                // 勤怠情報と従業員情報を結合して取得
-                $kintai = Kintai::where('employee_id', $employee->employee_id)->where('work_day', $date)->first();
+                // 該当日の勤怠を取得
+                $kintai = Kintai::where('work_day', $date)->where('employee_id', $employee->employee_id)->first();
+                // 時短勤務者であり、勤怠があって、時短情報が無効の場合、残業時間を0にする
+                if($employee->over_time_start != 0 && !is_null($kintai) && !Gate::allows('isShortTimeInfoAvailable')){
+                    $kintai->over_time = 0;
+                }
                 // 配列に格納
                 $kintais[$employee->employee_id]['kintai'][$date] = $kintai;
             }
@@ -72,6 +77,10 @@ class KintaiReportDownloadService
                                                                         ->whereDate('work_day', '>=', $start_day)
                                                                         ->whereDate('work_day', '<=', $end_day)
                                                                         ->sum('over_time');
+            // 時短勤務者であり、時短情報が無効の場合、総残業時間を0にする
+            if($employee->over_time_start != 0 && !Gate::allows('isShortTimeInfoAvailable')){
+                $kintais[$employee->employee_id]['total_over_time'] = 0;
+            }
             // 応援稼働時間を取得 
             $kintais[$employee->employee_id]['support_working_time'] = $this->getSupportWorkingTime($employee->employee_id, $start_day, $end_day);
             // 国民の祝日の総稼働時間を取得

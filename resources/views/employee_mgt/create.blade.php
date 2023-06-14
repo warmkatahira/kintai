@@ -19,7 +19,9 @@
                 <x-create-input label="従業員名(姓)" type="text" id="employee_last_name" :db="null" required="1" tippy="0" />
                 <x-create-input label="従業員名(名)" type="text" id="employee_first_name" :db="null" required="1" tippy="0" />
                 <x-create-input label="月間稼働可能時間" type="text" id="monthly_workable_time" :db="null" required="1" tippy="tippy_monthly_workable_time" />
-                <x-create-input label="残業開始時間" type="text" id="over_time_start" :db="null" required="1" tippy="tippy_over_time_start" />
+                @can('isShortTimeInfoAvailable')
+                    <x-create-input label="残業開始時間" type="text" id="over_time_start" :db="null" required="1" tippy="tippy_over_time_start" />
+                @endcan
                 <button type="button" id="employee_create_enter" class="border border-blue-500 text-blue-500 bg-blue-100 py-1 px-10 mt-5">追加</button>
             </form>
         </div>

@@ -10,7 +10,9 @@
                     <th class="font-thin py-3 px-2 text-center">従業員番号</th>
                     <th class="font-thin py-3 px-2 text-center">従業員名</th>
                     <th class="font-thin py-3 px-2 text-center">月間稼働可能時間</th>
-                    <th class="font-thin py-3 px-2 text-center">残業開始時間</th>
+                    @can('isShortTimeInfoAvailable')
+                        <th class="font-thin py-3 px-2 text-center">残業開始時間</th>
+                    @endcan
                     <th class="font-thin py-3 px-2 text-center">当月総稼働時間</th>
                     <th class="font-thin py-3 px-2 text-center">当月総残業時間</th>
                 </tr>
@@ -26,9 +28,15 @@
                         <td class="py-1 px-2 border text-center">{{ $employee->employee_no }}</td>
                         <td class="py-1 px-2 border text-left">{{ $employee->employee_last_name.' '.$employee->employee_first_name }}</td>
                         <td class="py-1 px-2 border text-right">{{ number_format($employee->monthly_workable_time, 2) }}</td>
-                        <td class="py-1 px-2 border text-right">{{ number_format($employee->over_time_start, 2) }}</td>
+                        @can('isShortTimeInfoAvailable')
+                            <td class="py-1 px-2 border text-right">{{ number_format($employee->over_time_start, 2) }}</td>
+                        @endcan
                         <td class="py-1 px-2 border text-right">{{ number_format($employee->total_working_time / 60, 2) }}</td>
-                        <td class="py-1 px-2 border text-right">{{ number_format($employee->total_over_time / 60, 2) }}</td>
+                        @if(Gate::check('isShortTimeInfoAvailable') || $employee->over_time_start == 0)
+                            <td class="py-1 px-2 border text-right">{{ number_format($employee->total_over_time / 60, 2) }}</td>
+                        @else
+                            <td class="py-1 px-2 border text-right">{{ number_format(0 / 60, 2) }}</td>
+                        @endif
                     </tr>
                 @endforeach
             </tbody>

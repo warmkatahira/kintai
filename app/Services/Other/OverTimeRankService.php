@@ -8,6 +8,7 @@ use Carbon\CarbonImmutable;
 use App\Models\Employee;
 use App\Models\Kintai;
 use App\Enums\EmployeeCategoryEnum;
+use Illuminate\Support\Facades\Gate;
 
 class OverTimeRankService
 {
@@ -29,6 +30,7 @@ class OverTimeRankService
         $nowDate = CarbonImmutable::now();
         // 初期条件をセット
         session(['search_date' => $nowDate->format('Y-m')]);
+        session(['search_base_id' => Auth::user()->base_id]);
         return;
     }
 
@@ -42,7 +44,7 @@ class OverTimeRankService
         return;
     }
 
-    // 正社員の残業時間情報を取得
+    // 残業時間情報を取得
     public function getOverTimeRankSearch($start_day, $end_day)
     {
         // 現在のURLを取得
@@ -57,7 +59,11 @@ class OverTimeRankService
             rightJoinSub($kintais, 'KINTAIS', function ($join) {
                 $join->on('employees.employee_id', '=', 'KINTAIS.employee_id');
             })
-            ->select('employees.employee_id', 'employees.employee_last_name', 'employees.employee_first_name', 'KINTAIS.total_over_time', 'employees.base_id', 'employees.employee_no', 'KINTAIS.date', 'employees.employee_category_id');
+            ->select('employees.employee_id', 'employee_last_name', 'employee_first_name', 'total_over_time', 'base_id', 'employee_no', 'date', 'employee_category_id', 'over_time_start');
+        // 時短情報が無効な場合、時短勤務者以外を対象とする
+        if (!Gate::allows('isShortTimeInfoAvailable')) {
+            $employees->where('over_time_start', 0);
+        }
         // 拠点条件がある場合
         if (session('search_base_id')  != null) {
             $employees->where('base_id', session('search_base_id'));

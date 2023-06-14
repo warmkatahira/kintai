@@ -31,6 +31,7 @@ class RoleCreateService
             'is_access_mgt_available' => $request->is_system_mgt_func_available == 0 ? 0 : $request->is_access_mgt_available,
             'is_lock_kintai_operation_available' => $request->is_lock_kintai_operation_available,
             'is_all_kintai_operation_available' => $request->is_all_kintai_operation_available,
+            'is_short_time_info_available' => $request->is_short_time_info_available,
         ]);
         return;
     }

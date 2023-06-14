@@ -33,6 +33,7 @@
                 <x-role-mgt.create-select label="アクセス管理" id="is_access_mgt_available" :forValue="$roles" :db="null" required="1" tippy="0" />
                 <x-role-mgt.create-select label="ロック後の勤怠操作" id="is_lock_kintai_operation_available" :forValue="$roles" :db="null" required="1" tippy="0" />
                 <x-role-mgt.create-select label="全勤怠操作" id="is_all_kintai_operation_available" :forValue="$roles" :db="null" required="1" tippy="0" />
+                <x-role-mgt.create-select label="時短情報" id="is_short_time_info_available" :forValue="$roles" :db="null" required="1" tippy="0" />
                 <button type="button" id="role_create_enter" class="border border-blue-500 text-blue-500 bg-blue-100 py-1 px-10 mt-5">追加</button>
             </form>
         </div>

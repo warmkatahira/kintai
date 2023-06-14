@@ -34,6 +34,7 @@ class RoleSeeder extends Seeder
             'is_access_mgt_available' => 1,
             'is_lock_kintai_operation_available' => 1,
             'is_all_kintai_operation_available' => 1,
+            'is_short_time_info_available' => 1,
         ]);
         Role::create([
             'role_name' => '打刻用',

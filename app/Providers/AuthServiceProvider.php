@@ -97,6 +97,10 @@ class AuthServiceProvider extends ServiceProvider
         Gate::define('isAllKintaiOperationAvailable', function($user){
             return ($user->role->is_all_kintai_operation_available == 1);
         });
+        // 時短情報有効のみ許可
+        Gate::define('isShortTimeInfoAvailable', function($user){
+            return ($user->role->is_short_time_info_available == 1);
+        });
         // 拠点やロック有無などを全て考慮して操作できる勤怠であるか
         Gate::define('isKintaiOperationAllAvailable', function($user, $base_id, $locked_at) {
             return (
