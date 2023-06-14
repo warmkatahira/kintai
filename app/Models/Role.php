@@ -23,6 +23,7 @@ class Role extends Model
         'is_customer_mgt_func_available',
         'is_kintai_close_available',
         'is_download_func_available',
+        'is_other_func_available',
         'is_accounting_func_available',
         'is_system_mgt_func_available',
         'is_user_mgt_available',

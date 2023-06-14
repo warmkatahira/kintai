@@ -22,8 +22,11 @@ class CustomerMgtController extends Controller
     {
         // インスタンス化
         $CustomerMgtService = new CustomerMgtService;
+        $CommonService = new CommonService;
         // 現在の日時を取得
         $nowDate = CarbonImmutable::now();
+        // 今月の月初・月末の日付を取得
+        $start_end_of_month = $CommonService->getStartEndOfMonth($nowDate);
         // セッションを削除
         $CustomerMgtService->deleteSearchSession();
         // 初期条件をセット
@@ -31,7 +34,7 @@ class CustomerMgtController extends Controller
         // 拠点情報を取得
         $bases = Base::getAll()->get();
         // 荷主を取得
-        $customers = $CustomerMgtService->getCustomerSearch($nowDate);
+        $customers = $CustomerMgtService->getCustomerSearch($start_end_of_month['start'], $start_end_of_month['end']);
         return view('customer_mgt.index')->with([
             'bases' => $bases,
             'customers' => $customers,
@@ -42,8 +45,11 @@ class CustomerMgtController extends Controller
     {
         // インスタンス化
         $CustomerMgtService = new CustomerMgtService;
+        $CommonService = new CommonService;
         // 現在の日時を取得
         $nowDate = CarbonImmutable::now();
+        // 今月の月初・月末の日付を取得
+        $start_end_of_month = $CommonService->getStartEndOfMonth($nowDate);
         // セッションを削除
         $CustomerMgtService->deleteSearchSession();
         // 検索条件をセット
@@ -51,7 +57,7 @@ class CustomerMgtController extends Controller
         // 拠点情報を取得
         $bases = Base::getAll()->get();
         // 荷主を取得
-        $customers = $CustomerMgtService->getCustomerSearch($nowDate);
+        $customers = $CustomerMgtService->getCustomerSearch($start_end_of_month['start'], $start_end_of_month['end']);
         return view('customer_mgt.index')->with([
             'bases' => $bases,
             'customers' => $customers,

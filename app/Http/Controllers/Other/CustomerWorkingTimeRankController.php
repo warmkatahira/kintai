@@ -6,58 +6,49 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Services\CommonService;
 use App\Services\Other\CustomerWorkingTimeRankService;
+use App\Models\Base;
 
 class CustomerWorkingTimeRankController extends Controller
 {
     public function index()
     {
-        // サービスクラスを定義
+        // インスタンス化
         $CustomerWorkingTimeRankService = new CustomerWorkingTimeRankService;
         $CommonService = new CommonService;
+        // セッションを削除
+        $CustomerWorkingTimeRankService->deleteSearchSession();
         // 初期条件をセット
         $CustomerWorkingTimeRankService->setDefaultCondition();
-        // 荷主稼働情報を取得
-        $customers = $CustomerWorkingTimeRankService->getCustomerWorkingTimeDataForIndex();
-        // 並び順条件を適用
-        $customers = $CustomerWorkingTimeRankService->setOrderbyCondition($customers);
         // 拠点情報を取得
         $bases = Base::getAll()->get();
+        // 月初・月末の日付を取得
+        $start_end_of_month = $CommonService->getStartEndOfMonth(session('search_date'));
+        // 荷主稼働情報を取得
+        $customers = $CustomerWorkingTimeRankService->getCustomerWorkingTimeRankSearch($start_end_of_month['start'], $start_end_of_month['end']);
         return view('other.customer_working_time_rank.index')->with([
-            'customers' => $customers,
             'bases' => $bases,
+            'customers' => $customers,
         ]);
     }
 
     public function search(Request $request)
     {
-        // サービスクラスを定義
+        // インスタンス化
         $CustomerWorkingTimeRankService = new CustomerWorkingTimeRankService;
         $CommonService = new CommonService;
+        // セッションを削除
+        $CustomerWorkingTimeRankService->deleteSearchSession();
         // 検索条件をセット
-        $CustomerWorkingTimeRankService->setSearchCondition($request->search_month, $request->search_base, $request->search_orderby);
-        // 荷主稼働情報を取得
-        $customers = $CustomerWorkingTimeRankService->getCustomerWorkingTimeDataForIndex();
-        // 並び順条件を適用
-        $customers = $CustomerWorkingTimeRankService->setOrderbyCondition($customers);
+        $CustomerWorkingTimeRankService->setSearchCondition($request);
         // 拠点情報を取得
         $bases = Base::getAll()->get();
+        // 月初・月末の日付を取得
+        $start_end_of_month = $CommonService->getStartEndOfMonth(session('search_date'));
+        // 荷主稼働情報を取得
+        $customers = $CustomerWorkingTimeRankService->getCustomerWorkingTimeRankSearch($start_end_of_month['start'], $start_end_of_month['end']);
         return view('other.customer_working_time_rank.index')->with([
-            'customers' => $customers,
             'bases' => $bases,
-        ]);
-    }
-
-    public function detail(Request $request)
-    {
-        // サービスクラスを定義
-        $CustomerWorkingTimeRankService = new CustomerWorkingTimeRankService;
-        // 指定した荷主の稼働情報を取得
-        $customer = $CustomerWorkingTimeRankService->getCustomerWorkingTimeDataForDetail($request->customer_id);
-        // 稼働している従業員情報を取得
-        $employees = $CustomerWorkingTimeRankService->getWorkingEmployees($request->customer_id);
-        return view('other.customer_working_time_rank.detail')->with([
-            'customer' => $customer,
-            'employees' => $employees,
+            'customers' => $customers,
         ]);
     }
 }

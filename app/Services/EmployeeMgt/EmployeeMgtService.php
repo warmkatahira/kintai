@@ -62,16 +62,16 @@ class EmployeeMgtService
             })
             ->select('employees.*', 'TIME.total_over_time', 'TIME.total_working_time');
         // 拠点条件がある場合
-        if (session('search_base_id') != 0) {
+        if (session('search_base_id') != null) {
             $employees->where('base_id', session('search_base_id'));
         }
         // 従業員名条件がある場合
-        if (!empty(session('search_employee_name'))) {
+        if (session('search_employee_name') != null) {
             $employees->where('employee_last_name', 'LIKE', '%'.session('search_employee_name').'%')
                     ->orWhere('employee_first_name', 'LIKE', '%'.session('search_employee_name').'%');
         }
         // 区分条件がある場合
-        if (!empty(session('search_employee_category_id'))) {
+        if (session('search_employee_category_id') != null) {
             $employees->where('employee_category_id', session('search_employee_category_id'));
         }
         // 従業員番号で並び替え

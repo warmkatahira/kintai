@@ -25,6 +25,7 @@ class RoleSeeder extends Seeder
             'is_customer_mgt_func_available' => 1,
             'is_kintai_close_available' => 1,
             'is_download_func_available' => 1,
+            'is_other_func_available' => 1,
             'is_accounting_mgt_func_available' => 1,
             'is_system_mgt_func_available' => 1,
             'is_user_mgt_available' => 1,

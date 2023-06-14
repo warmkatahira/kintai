@@ -53,6 +53,10 @@ use App\Http\Controllers\Download\KintaiReportDownloadController;
 use App\Http\Controllers\AccessMgt\AccessMgtController;
 use App\Http\Controllers\AccessMgt\IpLimitCreateController;
 use App\Http\Controllers\AccessMgt\IpLimitUpdateController;
+// +-+-+-+-+-+-+-+- 残業ランキング +-+-+-+-+-+-+-+-
+use App\Http\Controllers\Other\OverTimeRankController;
+// +-+-+-+-+-+-+-+- 荷主稼働ランキング +-+-+-+-+-+-+-+-
+use App\Http\Controllers\Other\CustomerWorkingTimeRankController;
 
 // ★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆ Welcome ★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆
     // -+-+-+-+-+-+-+-+-+-+-+-+ Welcome -+-+-+-+-+-+-+-+-+-+-+-+
@@ -62,12 +66,12 @@ use App\Http\Controllers\AccessMgt\IpLimitUpdateController;
 
 // ログインとステータスチェック
 Route::middleware(['auth', 'userStatusCheck', 'OperationLogRecord'])->group(function () {
-// ★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆ Top ★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆
+    // ★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆ Top ★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆
     // -+-+-+-+-+-+-+-+-+-+-+-+ TOP -+-+-+-+-+-+-+-+-+-+-+-+
     Route::controller(TopController::class)->prefix('top')->name('top.')->group(function(){
         Route::get('', 'index')->name('index');
     });
-// ★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆ 打刻 ★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆
+    // ★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆ 打刻 ★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆
     // -+-+-+-+-+-+-+-+-+-+-+-+ 打刻トップ -+-+-+-+-+-+-+-+-+-+-+-+
     Route::controller(PunchController::class)->prefix('punch')->name('punch.')->group(function(){
         Route::get('', 'index')->name('index');
@@ -102,7 +106,7 @@ Route::middleware(['auth', 'userStatusCheck', 'OperationLogRecord'])->group(func
         Route::get('', 'index')->name('index');
         Route::get('detail', 'detail')->name('detail');
     });
-// ★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆ 勤怠管理 ★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆
+    // ★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆ 勤怠管理 ★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆
     Route::middleware(['KintaiMgtFuncAvailable'])->group(function () {
         // -+-+-+-+-+-+-+-+-+-+-+-+ 勤怠管理 -+-+-+-+-+-+-+-+-+-+-+-+
         Route::controller(KintaiMgtController::class)->prefix('kintai_mgt')->name('kintai_mgt.')->group(function(){
@@ -129,7 +133,7 @@ Route::middleware(['auth', 'userStatusCheck', 'OperationLogRecord'])->group(func
             Route::post('', 'base_check')->name('base_check')->middleware('BaseCheckAvailable');
         });
     });
-// ★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆ 従業員管理 ★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆
+    // ★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆ 従業員管理 ★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆
     Route::middleware(['EmployeeMgtFuncAvailable'])->group(function () {
         // -+-+-+-+-+-+-+-+-+-+-+-+ 従業員管理 -+-+-+-+-+-+-+-+-+-+-+-+
         Route::controller(EmployeeMgtController::class)->prefix('employee_mgt')->name('employee_mgt.')->group(function(){
@@ -150,7 +154,7 @@ Route::middleware(['auth', 'userStatusCheck', 'OperationLogRecord'])->group(func
             });
         });
     });
-// ★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆ 拠点管理 ★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆
+    // ★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆ 拠点管理 ★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆
     Route::middleware(['BaseMgtFuncAvailable'])->group(function () {
         Route::middleware(['ManualPunchAvailable'])->group(function () {
             // -+-+-+-+-+-+-+-+-+-+-+-+ 手動打刻 -+-+-+-+-+-+-+-+-+-+-+-+
@@ -202,7 +206,7 @@ Route::middleware(['auth', 'userStatusCheck', 'OperationLogRecord'])->group(func
             });
         });
     });
-// ★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆ ダウンロード ★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆
+    // ★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆ ダウンロード ★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆
     Route::middleware(['DownloadFuncAvailable'])->group(function () {
         // -+-+-+-+-+-+-+-+-+-+-+-+ 勤怠表 -+-+-+-+-+-+-+-+-+-+-+-+
         Route::controller(KintaiReportDownloadController::class)->prefix('kintai_report_download')->name('kintai_report_download.')->group(function(){
@@ -210,7 +214,20 @@ Route::middleware(['auth', 'userStatusCheck', 'OperationLogRecord'])->group(func
             Route::get('download', 'download')->name('download');
         });
     });
-// ★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆ 経理管理 ★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆
+    // ★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆ その他 ★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆
+    Route::middleware(['OtherFuncAvailable'])->group(function () {
+        // -+-+-+-+-+-+-+-+-+-+-+-+ 残業ランキング -+-+-+-+-+-+-+-+-+-+-+-+
+        Route::controller(OverTimeRankController::class)->prefix('over_time_rank')->name('over_time_rank.')->group(function(){
+            Route::get('', 'index')->name('index');
+            Route::get('search', 'search')->name('search');
+        });
+        // -+-+-+-+-+-+-+-+-+-+-+-+ 荷主稼働ランキング -+-+-+-+-+-+-+-+-+-+-+-+
+        Route::controller(CustomerWorkingTimeRankController::class)->prefix('customer_working_time_rank')->name('customer_working_time_rank.')->group(function(){
+            Route::get('', 'index')->name('index');
+            Route::get('search', 'search')->name('search');
+        });
+    });
+    // ★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆ 経理管理 ★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆
     Route::middleware(['AccountingMgtFuncAvailable'])->group(function () {
         // -+-+-+-+-+-+-+-+-+-+-+-+ 勤怠提出確認 -+-+-+-+-+-+-+-+-+-+-+-+
         Route::controller(KintaiCloseCheckController::class)->prefix('kintai_close_check')->name('kintai_close_check.')->group(function(){
@@ -218,7 +235,7 @@ Route::middleware(['auth', 'userStatusCheck', 'OperationLogRecord'])->group(func
             Route::get('search', 'search')->name('search');
         });
     });
-// ★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆ システム管理 ★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆
+    // ★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆ システム管理 ★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆
     Route::middleware(['SystemMgtFuncAvailable'])->group(function () {
         Route::middleware(['UserMgtAvailable'])->group(function () {
             // -+-+-+-+-+-+-+-+-+-+-+-+ ユーザー管理 -+-+-+-+-+-+-+-+-+-+-+-+

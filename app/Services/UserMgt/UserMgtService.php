@@ -40,7 +40,7 @@ class UserMgtService
         // ユーザーのクエリをセット
         $users = User::query();
         // 拠点条件がある場合
-        if (session('search_base_id') != 0) {
+        if (session('search_base_id')  != null) {
             $users->where('base_id', session('search_base_id'));
         }
         // 荷主名条件がある場合

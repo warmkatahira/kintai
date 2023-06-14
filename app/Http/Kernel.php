@@ -77,6 +77,7 @@ class Kernel extends HttpKernel
         'BaseMgtFuncAvailable' => \App\Http\Middleware\Available\BaseMgtFuncAvailable::class,
         'CustomerMgtFuncAvailable' => \App\Http\Middleware\Available\CustomerMgtFuncAvailable::class,
         'DownloadFuncAvailable' => \App\Http\Middleware\Available\DownloadFuncAvailable::class,
+        'OtherFuncAvailable' => \App\Http\Middleware\Available\OtherFuncAvailable::class,
         'EmployeeMgtFuncAvailable' => \App\Http\Middleware\Available\EmployeeMgtFuncAvailable::class,
         'EmployeeOperationAvailable' => \App\Http\Middleware\Available\EmployeeOperationAvailable::class,
         'HolidayMgtAvailable' => \App\Http\Middleware\Available\HolidayMgtAvailable::class,

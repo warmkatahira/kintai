@@ -61,6 +61,10 @@ class AuthServiceProvider extends ServiceProvider
         Gate::define('isDownloadFuncAvailable', function($user){
             return ($user->role->is_download_func_available == 1);
         });
+        // その他機能有効のみ許可
+        Gate::define('isOtherFuncAvailable', function($user){
+            return ($user->role->is_other_func_available == 1);
+        });
         // 経理管理機能有効のみ許可
         Gate::define('isAccountingMgtFuncAvailable', function($user){
             return ($user->role->is_accounting_mgt_func_available == 1);

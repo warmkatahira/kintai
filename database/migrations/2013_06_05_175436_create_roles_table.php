@@ -24,6 +24,7 @@ return new class extends Migration
             $table->boolean('is_customer_mgt_func_available')->default(0);
             $table->boolean('is_kintai_close_available')->default(0);
             $table->boolean('is_download_func_available')->default(0);
+            $table->boolean('is_other_func_available')->default(0);
             $table->boolean('is_accounting_mgt_func_available')->default(0);
             $table->boolean('is_system_mgt_func_available')->default(0);
             $table->boolean('is_user_mgt_available')->default(0);

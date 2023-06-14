@@ -17,6 +17,7 @@
                     <th class="font-thin py-3 px-2 text-center">荷主管理機能</th>
                     <th class="font-thin py-3 px-2 text-center">勤怠提出</th>
                     <th class="font-thin py-3 px-2 text-center">ダウンロード機能</th>
+                    <th class="font-thin py-3 px-2 text-center">その他機能</th>
                     <th class="font-thin py-3 px-2 text-center">経理管理機能</th>
                     <th class="font-thin py-3 px-2 text-center">システム管理機能</th>
                     <th class="font-thin py-3 px-2 text-center">ユーザー管理</th>
@@ -45,6 +46,7 @@
                         <td class="py-1 px-2 border text-center {{ App\Enums\RoleEnum::get_class($role->is_customer_mgt_func_available) }}">{{ App\Enums\RoleEnum::get_jp($role->is_customer_mgt_func_available) }}</td>
                         <td class="py-1 px-2 border text-center {{ App\Enums\RoleEnum::get_class($role->is_kintai_close_available) }}">{{ App\Enums\RoleEnum::get_jp($role->is_kintai_close_available) }}</td>
                         <td class="py-1 px-2 border text-center {{ App\Enums\RoleEnum::get_class($role->is_download_func_available) }}">{{ App\Enums\RoleEnum::get_jp($role->is_download_func_available) }}</td>
+                        <td class="py-1 px-2 border text-center {{ App\Enums\RoleEnum::get_class($role->is_other_func_available) }}">{{ App\Enums\RoleEnum::get_jp($role->is_other_func_available) }}</td>
                         <td class="py-1 px-2 border text-center {{ App\Enums\RoleEnum::get_class($role->is_accounting_mgt_func_available) }}">{{ App\Enums\RoleEnum::get_jp($role->is_accounting_mgt_func_available) }}</td>
                         <td class="py-1 px-2 border text-center {{ App\Enums\RoleEnum::get_class($role->is_system_mgt_func_available) }}">{{ App\Enums\RoleEnum::get_jp($role->is_system_mgt_func_available) }}</td>
                         <td class="py-1 px-2 border text-center {{ App\Enums\RoleEnum::get_class($role->is_user_mgt_available) }}">{{ App\Enums\RoleEnum::get_jp($role->is_user_mgt_available) }}</td>

@@ -33,6 +33,14 @@
                 </ul>
             </li>
         @endcan
+        @can('isOtherFuncAvailable')
+            <li class="dropdown"><a class="trigger-drop">その他</a>
+                <ul class="drop">
+                    <li><a href="{{ route('over_time_rank.index') }}">残業ランキング</a></li>
+                    <li><a href="{{ route('customer_working_time_rank.index') }}">荷主稼働ランキング</a></li>
+                </ul>
+            </li>
+        @endcan
         @can('isAccountingMgtFuncAvailable')
             <li class="dropdown"><a class="trigger-drop">経理管理</a>
                 <ul class="drop">

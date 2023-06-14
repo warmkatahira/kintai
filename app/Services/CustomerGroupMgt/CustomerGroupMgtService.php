@@ -41,7 +41,7 @@ class CustomerGroupMgtService
         // クエリをセット
         $customer_groups = CustomerGroup::query();
         // 拠点条件がある場合
-        if (session('search_base_id') != 0) {
+        if (session('search_base_id') != null) {
             $customer_groups->where('base_id', session('search_base_id'));
         }
         // 荷主グループ名条件がある場合

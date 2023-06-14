@@ -54,6 +54,11 @@ class Kintai extends Model
     {
         return $this->belongsTo(Employee::class, 'employee_id', 'employee_id');
     }
+    // kintai_detailsテーブルとのリレーション
+    public function kintai_details()
+    {
+        return $this->hasMany(KintaiDetail::class, 'kintai_id', 'kintai_id');
+    }
     // 拠点確認がNullの自拠点勤怠数を取得
     public function countNoBaseCheckKintai($date)
     {

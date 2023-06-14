@@ -22,6 +22,7 @@ class RoleCreateService
             'is_customer_mgt_func_available' => $request->is_base_mgt_func_available == 0 ? 0 : $request->is_customer_mgt_func_available,
             'is_kintai_close_available' => $request->is_base_mgt_func_available == 0 ? 0 : $request->is_kintai_close_available,
             'is_download_func_available' => $request->is_download_func_available,
+            'is_other_func_available' => $request->is_other_func_available,
             'is_accounting_mgt_func_available' => $request->is_accounting_mgt_func_available,
             'is_system_mgt_func_available' => $request->is_system_mgt_func_available,
             'is_user_mgt_available' => $request->is_system_mgt_func_available == 0 ? 0 : $request->is_user_mgt_available,

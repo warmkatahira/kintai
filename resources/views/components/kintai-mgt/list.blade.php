@@ -43,7 +43,7 @@
                         <td class="py-1 px-2 border text-center">{{ \Carbon\CarbonImmutable::parse($kintai->work_day)->isoFormat('YYYY年MM月DD日(ddd)') }}</td>
                         <td class="py-1 px-2 border text-center">{{ $kintai->base->base_name }}</td>
                         <td class="py-1 px-2 border text-center">{{ $kintai->employee_category_name }}</td>
-                        <td class="py-1 px-2 border text-center">{{ $kintai->employee_last_name.' '.$kintai->employee_first_name }}</td>
+                        <td class="py-1 px-2 border text-left">{{ $kintai->employee_last_name.' '.$kintai->employee_first_name }}</td>
                         <td class="py-1 px-2 border text-center">{{ substr($kintai->begin_time_adj, 0, 5) }}</td>
                         <td class="py-1 px-2 border text-center">{{ substr($kintai->finish_time_adj, 0, 5) }}</td>
                         <td class="py-1 px-2 border text-center">{{ substr($kintai->out_time_adj, 0, 5) }}</td>

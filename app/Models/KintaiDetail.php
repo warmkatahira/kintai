@@ -22,4 +22,9 @@ class KintaiDetail extends Model
     {
         return self::where('kintai_id', $kintai_id);
     }
+    // customersテーブルとのリレーション
+    public function customer()
+    {
+        return $this->belongsTo(Customer::class, 'customer_id', 'customer_id');
+    }
 }

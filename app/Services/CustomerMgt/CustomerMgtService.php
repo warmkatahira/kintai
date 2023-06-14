@@ -36,12 +36,12 @@ class CustomerMgtService
         return;
     }
 
-    public function getCustomerSearch($nowDate)
+    public function getCustomerSearch($start_day, $end_day)
     {
         // 現在のURLを取得
         session(['back_url_1' => url()->full()]);
         // 当月の勤怠を取得
-        $kintais = $this->getKintais($nowDate, null);
+        $kintais = $this->getKintais($start_day, $end_day, null);
         // 勤怠と荷主を結合
         $customers = Customer::
             leftJoinSub($kintais, 'KINTAIS', function ($join) {
@@ -49,16 +49,15 @@ class CustomerMgtService
             })
             ->select('customers.*', 'KINTAIS.total_customer_working_time');
         // 拠点条件がある場合
-        if (session('search_base_id') != 0) {
+        if (session('search_base_id') != null) {
             $customers->where('base_id', session('search_base_id'));
         }
         // 荷主名条件がある場合
-        if (!empty(session('search_customer_name'))) {
+        if (session('search_customer_name') != null) {
             $customers->where('customer_name', 'LIKE', '%'.session('search_customer_name').'%');
         }
         // 拠点IDと荷主IDで並び替え
-        $customers = $customers->orderBy('base_id', 'asc')->orderBy('customer_id', 'asc')->paginate(50);
-        return $customers;
+        return $customers->orderBy('base_id', 'asc')->orderBy('customer_id', 'asc')->paginate(50);
     }
 
     public function getKintais($start_day, $end_day, $customer_id)
