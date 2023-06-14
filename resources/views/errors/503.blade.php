@@ -6,6 +6,9 @@
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
         <title>KINTAI</title>
+
+        <!-- favicon -->
+        <link rel="shortcut icon" href="{{ asset('image/favicon.svg') }}">
         
         <!-- jQuery -->
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
@@ -20,7 +23,7 @@
         <div class="mt-10">
             <div class="mt-5">
                 <p class="text-2xl text-center">メンテナンス中です</p>
-                <p class="text-center mt-3">現在システムメンテナンスを行っているため、KINTAIを利用できません。</p>
+                <p class="text-center mt-3">現在システムメンテナンスを行っているため、システムを利用できません。</p>
                 <p class="text-center mt-3">メンテナンス終了まで、しばらくお待ちください。</p>
             </div>
         </div>
