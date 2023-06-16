@@ -30,6 +30,7 @@
             <li class="dropdown"><a class="trigger-drop">ダウンロード</a>
                 <ul class="drop">
                     <li><a href="{{ route('kintai_report_download.index') }}">勤怠表</a></li>
+                    <li><a href="{{ route('data_download.index') }}">データ</a></li>
                 </ul>
             </li>
         @endcan

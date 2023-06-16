@@ -116,7 +116,6 @@ class HolidayUploadService
     // 休日マスタ更新処理
     public function updateHoliday($upload_data)
     {
-        dd($upload_data);
         // テーブルをロック
         Holiday::select()->lockForUpdate()->get();
         // 追加先のテーブルをクリア

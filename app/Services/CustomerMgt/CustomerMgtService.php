@@ -42,6 +42,7 @@ class CustomerMgtService
         session(['back_url_1' => url()->full()]);
         // 当月の勤怠を取得
         $kintais = $this->getKintais($start_day, $end_day, null);
+        //dd($kintais->get());
         // 勤怠と荷主を結合
         $customers = Customer::
             leftJoinSub($kintais, 'KINTAIS', function ($join) {

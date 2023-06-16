@@ -1,62 +1,69 @@
 <?php
 
-use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 // +-+-+-+-+-+-+-+- Welcome +-+-+-+-+-+-+-+-
-use App\Http\Controllers\Welcome\WelcomeController;
+    use App\Http\Controllers\Welcome\WelcomeController;
 // +-+-+-+-+-+-+-+- TOP +-+-+-+-+-+-+-+-
-use App\Http\Controllers\Top\TopController;
+    use App\Http\Controllers\Top\TopController;
 // +-+-+-+-+-+-+-+- 打刻 +-+-+-+-+-+-+-+-
-use App\Http\Controllers\Punch\PunchController;
-use App\Http\Controllers\Punch\PunchBeginController;
-use App\Http\Controllers\Punch\PunchFinishController;
-use App\Http\Controllers\Punch\PunchOutController;
-use App\Http\Controllers\Punch\PunchReturnController;
-use App\Http\Controllers\Punch\TodayKintaiController;
-use App\Http\Controllers\Punch\ThisMonthKintaiController;
-use App\Http\Controllers\Punch\PunchUpdateController;
+    use App\Http\Controllers\Punch\PunchController;
+    use App\Http\Controllers\Punch\PunchBeginController;
+    use App\Http\Controllers\Punch\PunchFinishController;
+    use App\Http\Controllers\Punch\PunchOutController;
+    use App\Http\Controllers\Punch\PunchReturnController;
+    use App\Http\Controllers\Punch\TodayKintaiController;
+    use App\Http\Controllers\Punch\ThisMonthKintaiController;
+    use App\Http\Controllers\Punch\PunchUpdateController;
 // +-+-+-+-+-+-+-+- 勤怠管理 +-+-+-+-+-+-+-+-
-use App\Http\Controllers\KintaiMgt\KintaiMgtController;
-use App\Http\Controllers\KintaiMgt\KintaiDeleteController;
-use App\Http\Controllers\KintaiMgt\KintaiUpdateController;
-use App\Http\Controllers\KintaiMgt\BaseCheckController;
+    use App\Http\Controllers\KintaiMgt\KintaiMgtController;
+    use App\Http\Controllers\KintaiMgt\KintaiDeleteController;
+    use App\Http\Controllers\KintaiMgt\KintaiUpdateController;
+    use App\Http\Controllers\KintaiMgt\BaseCheckController;
 // +-+-+-+-+-+-+-+- 従業員管理 +-+-+-+-+-+-+-+-
-use App\Http\Controllers\EmployeeMgt\EmployeeMgtController;
-use App\Http\Controllers\EmployeeMgt\EmployeeCreateController;
-use App\Http\Controllers\EmployeeMgt\EmployeeUpdateController;
+    use App\Http\Controllers\EmployeeMgt\EmployeeMgtController;
+    use App\Http\Controllers\EmployeeMgt\EmployeeCreateController;
+    use App\Http\Controllers\EmployeeMgt\EmployeeUpdateController;
 // +-+-+-+-+-+-+-+- 拠点管理 +-+-+-+-+-+-+-+-
-use App\Http\Controllers\Punch\PunchManualController;
-// +-+-+-+-+-+-+-+- 荷主管理 +-+-+-+-+-+-+-+-
-use App\Http\Controllers\CustomerMgt\CustomerMgtController;
-use App\Http\Controllers\CustomerMgt\CustomerCreateController;
-use App\Http\Controllers\CustomerMgt\CustomerUpdateController;
-// +-+-+-+-+-+-+-+- 荷主グループ管理 +-+-+-+-+-+-+-+-
-use App\Http\Controllers\CustomerGroupMgt\CustomerGroupMgtController;
-use App\Http\Controllers\CustomerGroupMgt\CustomerGroupCreateController;
-use App\Http\Controllers\CustomerGroupMgt\CustomerGroupUpdateController;
-// +-+-+-+-+-+-+-+- ユーザー管理 +-+-+-+-+-+-+-+-
-use App\Http\Controllers\UserMgt\UserMgtController;
-use App\Http\Controllers\UserMgt\UserUpdateController;
-// +-+-+-+-+-+-+-+- 権限管理 +-+-+-+-+-+-+-+-
-use App\Http\Controllers\RoleMgt\RoleMgtController;
-use App\Http\Controllers\RoleMgt\RoleCreateController;
-use App\Http\Controllers\RoleMgt\RoleUpdateController;
-// +-+-+-+-+-+-+-+- 休日管理 +-+-+-+-+-+-+-+-
-use App\Http\Controllers\HolidayMgt\HolidayMgtController;
-// +-+-+-+-+-+-+-+- 勤怠提出 +-+-+-+-+-+-+-+-
-use App\Http\Controllers\KintaiClose\KintaiCloseController;
-// +-+-+-+-+-+-+-+- 勤怠提出確認 +-+-+-+-+-+-+-+-
-use App\Http\Controllers\KintaiCloseCheck\KintaiCloseCheckController;
-// +-+-+-+-+-+-+-+- 勤怠表ダウンロード +-+-+-+-+-+-+-+-
-use App\Http\Controllers\Download\KintaiReportDownloadController;
-// +-+-+-+-+-+-+-+- アクセス管理 +-+-+-+-+-+-+-+-
-use App\Http\Controllers\AccessMgt\AccessMgtController;
-use App\Http\Controllers\AccessMgt\IpLimitCreateController;
-use App\Http\Controllers\AccessMgt\IpLimitUpdateController;
-// +-+-+-+-+-+-+-+- 残業ランキング +-+-+-+-+-+-+-+-
-use App\Http\Controllers\Other\OverTimeRankController;
-// +-+-+-+-+-+-+-+- 荷主稼働ランキング +-+-+-+-+-+-+-+-
-use App\Http\Controllers\Other\CustomerWorkingTimeRankController;
+    // +-+-+-+-+-+-+-+- 手動打刻 +-+-+-+-+-+-+-+-
+    use App\Http\Controllers\BaseMgt\PunchManual\PunchManualController;
+    // +-+-+-+-+-+-+-+- 荷主管理 +-+-+-+-+-+-+-+-
+    use App\Http\Controllers\BaseMgt\CustomerMgt\CustomerMgtController;
+    use App\Http\Controllers\BaseMgt\CustomerMgt\CustomerCreateController;
+    use App\Http\Controllers\BaseMgt\CustomerMgt\CustomerUpdateController;
+    // +-+-+-+-+-+-+-+- 荷主グループ管理 +-+-+-+-+-+-+-+-
+    use App\Http\Controllers\BaseMgt\CustomerGroupMgt\CustomerGroupMgtController;
+    use App\Http\Controllers\BaseMgt\CustomerGroupMgt\CustomerGroupCreateController;
+    use App\Http\Controllers\BaseMgt\CustomerGroupMgt\CustomerGroupUpdateController;
+    // +-+-+-+-+-+-+-+- 勤怠提出 +-+-+-+-+-+-+-+-
+    use App\Http\Controllers\BaseMgt\KintaiClose\KintaiCloseController;
+// +-+-+-+-+-+-+-+- ダウンロード +-+-+-+-+-+-+-+-
+    // +-+-+-+-+-+-+-+- 勤怠表 +-+-+-+-+-+-+-+-
+    use App\Http\Controllers\Download\KintaiReportDownloadController;
+    // +-+-+-+-+-+-+-+- データ +-+-+-+-+-+-+-+-
+    use App\Http\Controllers\Download\DataDownloadController;
+// +-+-+-+-+-+-+-+- その他 +-+-+-+-+-+-+-+-
+    // +-+-+-+-+-+-+-+- 残業ランキング +-+-+-+-+-+-+-+-
+    use App\Http\Controllers\Other\OverTimeRankController;
+    // +-+-+-+-+-+-+-+- 荷主稼働ランキング +-+-+-+-+-+-+-+-
+    use App\Http\Controllers\Other\CustomerWorkingTimeRankController;
+// +-+-+-+-+-+-+-+- 経理管理 +-+-+-+-+-+-+-+-
+    // +-+-+-+-+-+-+-+- 勤怠提出確認 +-+-+-+-+-+-+-+-
+    use App\Http\Controllers\AccountingMgt\KintaiCloseCheckController;
+// +-+-+-+-+-+-+-+- システム管理 +-+-+-+-+-+-+-+-
+    // +-+-+-+-+-+-+-+- ユーザー管理 +-+-+-+-+-+-+-+-
+    use App\Http\Controllers\SystemMgt\UserMgt\UserMgtController;
+    use App\Http\Controllers\SystemMgt\UserMgt\UserUpdateController;
+    // +-+-+-+-+-+-+-+- 権限管理 +-+-+-+-+-+-+-+-
+    use App\Http\Controllers\SystemMgt\RoleMgt\RoleMgtController;
+    use App\Http\Controllers\SystemMgt\RoleMgt\RoleCreateController;
+    use App\Http\Controllers\SystemMgt\RoleMgt\RoleUpdateController;
+    // +-+-+-+-+-+-+-+- 休日管理 +-+-+-+-+-+-+-+-
+    use App\Http\Controllers\SystemMgt\HolidayMgt\HolidayMgtController;
+    // +-+-+-+-+-+-+-+- アクセス管理 +-+-+-+-+-+-+-+-
+    use App\Http\Controllers\SystemMgt\AccessMgt\AccessMgtController;
+    use App\Http\Controllers\SystemMgt\AccessMgt\IpLimitCreateController;
+    use App\Http\Controllers\SystemMgt\AccessMgt\IpLimitUpdateController;
+
 
 // ★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆ Welcome ★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆
     // -+-+-+-+-+-+-+-+-+-+-+-+ Welcome -+-+-+-+-+-+-+-+-+-+-+-+
@@ -210,6 +217,11 @@ Route::middleware(['auth', 'userStatusCheck', 'OperationLogRecord'])->group(func
     Route::middleware(['DownloadFuncAvailable'])->group(function () {
         // -+-+-+-+-+-+-+-+-+-+-+-+ 勤怠表 -+-+-+-+-+-+-+-+-+-+-+-+
         Route::controller(KintaiReportDownloadController::class)->prefix('kintai_report_download')->name('kintai_report_download.')->group(function(){
+            Route::get('', 'index')->name('index');
+            Route::get('download', 'download')->name('download');
+        });
+        // -+-+-+-+-+-+-+-+-+-+-+-+ データ -+-+-+-+-+-+-+-+-+-+-+-+
+        Route::controller(DataDownloadController::class)->prefix('data_download')->name('data_download.')->group(function(){
             Route::get('', 'index')->name('index');
             Route::get('download', 'download')->name('download');
         });

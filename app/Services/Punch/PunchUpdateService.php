@@ -146,7 +146,7 @@ class PunchUpdateService
                 'kintai_id' => session('kintai_id'),
                 'customer_id' => $key,
                 'customer_working_time' => $value * 60, // 0.25単位から分単位に変換
-                'is_supported' => Base::getSpecify($key)->count(), // IDにbasesに含まれていたら応援なので、1をセット（カウントで自動で1か0が入る）
+                'is_supported' => Base::getSpecify($key)->exists(), // basesテーブルにあるか確認して1か0をセット
             ]);
         }
         return;

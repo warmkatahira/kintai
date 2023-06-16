@@ -8,13 +8,13 @@ use Illuminate\Database\Eloquent\Model;
 class Customer extends Model
 {
     use HasFactory;
-    protected $casts = [
-        'customer_id' => 'string',
-    ];
     // 主キーカラムを変更
     protected $primaryKey = 'customer_id';
+    // オートインクリメント無効化
+    public $incrementing = false;
     // 操作するカラムを許可
     protected $fillable = [
+        'customer_id',
         'customer_name',
         'customer_group_id',
         'base_id',
