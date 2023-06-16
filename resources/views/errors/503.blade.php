@@ -17,7 +17,7 @@
         <!-- Scripts -->
         @vite(['resources/js/app.js'])
         <!-- Google Fonts -->
-        <link href="https://fonts.googleapis.com/css2?family=Alkatra&family=Arvo&family=Kosugi+Maru&family=Lemonada&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Alkatra&family=Arvo&family=Calistoga&family=Kosugi+Maru&family=Lemonada&display=swap" rel="stylesheet">
     </head>
     <body>
         <div class="mt-10">

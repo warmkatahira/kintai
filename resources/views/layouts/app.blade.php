@@ -19,7 +19,7 @@
         <!-- LINE AWESOME -->
         <link rel="stylesheet" href="https://maxst.icons8.com/vue-static/landings/line-awesome/line-awesome/1.3.0/css/line-awesome.min.css">
         <!-- Google Fonts -->
-        <link href="https://fonts.googleapis.com/css2?family=Alkatra&family=Arvo&family=Kosugi+Maru&family=Lemonada&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Alkatra&family=Arvo&family=Calistoga&family=Kosugi+Maru&family=Lemonada&display=swap" rel="stylesheet">
         <!-- Lordicon -->
         <script src="https://cdn.lordicon.com/pzdvqjsp.js"></script>
         <!-- toastr.js -->

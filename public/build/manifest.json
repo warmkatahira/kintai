@@ -168,7 +168,7 @@
     "src": "resources/js/user_mgt/user_update.js"
   },
   "resources/sass/navigation.scss": {
-    "file": "assets/navigation-ef16fce1.css",
+    "file": "assets/navigation-4c11498d.css",
     "isEntry": true,
     "src": "resources/sass/navigation.scss"
   },
@@ -178,7 +178,7 @@
     "src": "resources/sass/scroll.scss"
   },
   "resources/sass/theme.scss": {
-    "file": "assets/theme-60a6e870.css",
+    "file": "assets/theme-2939445b.css",
     "isEntry": true,
     "src": "resources/sass/theme.scss"
   }
