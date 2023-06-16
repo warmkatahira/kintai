@@ -35,15 +35,15 @@
                                 <td class="p-1 px-2 border">{{ \Carbon\CarbonImmutable::parse($work_day)->isoFormat('YYYY年MM月DD日(ddd)') }}</td>
                                 <td class="p-1 px-2 border">{{ is_null($value) ? '' : substr($value->begin_time_adj, 0, 5) }}</td>
                                 <td class="p-1 px-2 border">{{ is_null($value) ? '' : substr($value->finish_time_adj, 0, 5) }}</td>
-                                <td class="p-1 px-2 border">{{ is_null($value) ? '' : number_format($value->rest_time / 60, 2) }}</td>
-                                <td class="p-1 px-2 border">{{ is_null($value) ? '' : number_format($value->no_rest_time / 60, 2) }}</td>
+                                <td class="p-1 px-2 border">{{ !isset($value->finish_time_adj) ? '' : number_format($value->rest_time / 60, 2) }}</td>
+                                <td class="p-1 px-2 border">{{ !isset($value->finish_time_adj) ? '' : number_format($value->no_rest_time / 60, 2) }}</td>
                                 @if($add_rest_available)
                                     <td class="p-1 px-2 border">{{ is_null($value) ? '' : number_format($value->add_rest_time / 60, 2) }}</td>
                                 @endif
                                 <td class="p-1 px-2 border">{{ is_null($value) ? '' : substr($value->out_time_adj, 0, 5) }}</td>
                                 <td class="p-1 px-2 border">{{ is_null($value) ? '' : substr($value->return_time_adj, 0, 5) }}</td>
-                                <td class="p-1 px-2 border">{{ is_null($value) ? '' : number_format($value->working_time / 60, 2) }}</td>
-                                <td class="p-1 px-2 border {{ is_null($value) ? '' : ($value->over_time == 0 ? '' : 'bg-pink-200') }}">{{ is_null($value) ? '' : number_format($value->over_time / 60, 2) }}</td>
+                                <td class="p-1 px-2 border">{{ !isset($value->finish_time_adj) ? '' : number_format($value->working_time / 60, 2) }}</td>
+                                <td class="p-1 px-2 border {{ !isset($value->finish_time_adj) ? '' : ($value->over_time == 0 ? '' : 'bg-pink-200') }}">{{ !isset($value->finish_time_adj) ? '' : number_format($value->over_time / 60, 2) }}</td>
                             </tr>
                         @endforeach
                     </tbody>
