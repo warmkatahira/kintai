@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\Kintai;
 use App\Models\Customer;
 use App\Models\CustomerGroup;
+use App\Models\Employee;
 use App\Services\Punch\PunchFinishInputService;
 use App\Services\Punch\PunchFinishEnterService;
 
@@ -58,6 +59,8 @@ class PunchFinishController extends Controller
         $add_rest_times = $PunchFinishInputService->getAddRestTime($kintai->employee_id);
         // 追加休憩取得時間が有効か判定
         $add_rest_available = $PunchFinishInputService->checkAddRestAvailable();
+        // 従業員情報を取得
+        $employee = Employee::getSpecify($kintai->employee_id)->first();
         return view('punch.finish.input')->with([
             'kintai' => $kintai,
             'finish_time' => $finish_time,
@@ -70,6 +73,7 @@ class PunchFinishController extends Controller
             'support_bases' => $support_bases,
             'add_rest_times' => $add_rest_times,
             'add_rest_available' => $add_rest_available,
+            'employee' => $employee,
         ]);
     }
 

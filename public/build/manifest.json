@@ -1,6 +1,6 @@
 {
   "resources/css/app.css": {
-    "file": "assets/app-90a1ab65.css",
+    "file": "assets/app-f9542184.css",
     "isEntry": true,
     "src": "resources/css/app.css"
   },
@@ -39,6 +39,16 @@
     "isEntry": true,
     "src": "resources/js/app.js"
   },
+  "resources/js/base_mgt/base_create.js": {
+    "file": "assets/base_create-5dd0be21.js",
+    "isEntry": true,
+    "src": "resources/js/base_mgt/base_create.js"
+  },
+  "resources/js/base_mgt/base_update.js": {
+    "file": "assets/base_update-8014bf1c.js",
+    "isEntry": true,
+    "src": "resources/js/base_mgt/base_update.js"
+  },
   "resources/js/checkbox.js": {
     "file": "assets/checkbox-32f1fbb1.js",
     "isEntry": true,
@@ -69,10 +79,10 @@
     "isEntry": true,
     "src": "resources/js/customer_mgt/customer_update.js"
   },
-  "resources/js/download/kintai_report_download.js": {
-    "file": "assets/kintai_report_download-dfa6ebdf.js",
+  "resources/js/download/download.js": {
+    "file": "assets/download-40a168f4.js",
     "isEntry": true,
-    "src": "resources/js/download/kintai_report_download.js"
+    "src": "resources/js/download/download.js"
   },
   "resources/js/employee_mgt/employee_create.js": {
     "file": "assets/employee_create-661f2f5e.js",

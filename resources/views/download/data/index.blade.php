@@ -8,7 +8,7 @@
             <p class="w-40 bg-black text-white text-center py-2 text-sm">拠点</p>
             <select name="base_id" class="text-sm w-60">
                 @foreach($bases as $base)
-                    <option value="{{ $base->base_id }}">{{ $base->base_name }}</option>
+                    <option value="{{ $base->base_id }}" @if($base->base_id == Auth::user()->base_id) selected @endif>{{ $base->base_name }}</option>
                 @endforeach
             </select>
         </div>

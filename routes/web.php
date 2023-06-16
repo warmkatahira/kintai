@@ -63,6 +63,10 @@ use Illuminate\Support\Facades\Route;
     use App\Http\Controllers\SystemMgt\AccessMgt\AccessMgtController;
     use App\Http\Controllers\SystemMgt\AccessMgt\IpLimitCreateController;
     use App\Http\Controllers\SystemMgt\AccessMgt\IpLimitUpdateController;
+    // +-+-+-+-+-+-+-+- 拠点管理 +-+-+-+-+-+-+-+-
+    use App\Http\Controllers\SystemMgt\BaseMgt\BaseMgtController;
+    use App\Http\Controllers\SystemMgt\BaseMgt\BaseCreateController;
+    use App\Http\Controllers\SystemMgt\BaseMgt\BaseUpdateController;
 
 
 // ★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆ Welcome ★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆
@@ -297,6 +301,22 @@ Route::middleware(['auth', 'userStatusCheck', 'OperationLogRecord'])->group(func
             });
             // -+-+-+-+-+-+-+-+-+-+-+-+ IP更新 -+-+-+-+-+-+-+-+-+-+-+-+
             Route::controller(IPLimitUpdateController::class)->prefix('ip_limit_update')->name('ip_limit_update.')->group(function(){
+                Route::get('', 'index')->name('index');
+                Route::post('update', 'update')->name('update');
+            });
+        });
+        Route::middleware(['AccessMgtAvailable'])->group(function () {
+            // -+-+-+-+-+-+-+-+-+-+-+-+ 拠点管理 -+-+-+-+-+-+-+-+-+-+-+-+
+            Route::controller(BaseMgtController::class)->prefix('base_mgt')->name('base_mgt.')->group(function(){
+                Route::get('', 'index')->name('index');
+            });
+            // -+-+-+-+-+-+-+-+-+-+-+-+ IP追加 -+-+-+-+-+-+-+-+-+-+-+-+
+            Route::controller(BaseCreateController::class)->prefix('base_create')->name('base_create.')->group(function(){
+                Route::get('', 'index')->name('index');
+                Route::post('create', 'create')->name('create');
+            });
+            // -+-+-+-+-+-+-+-+-+-+-+-+ IP更新 -+-+-+-+-+-+-+-+-+-+-+-+
+            Route::controller(BaseUpdateController::class)->prefix('base_update')->name('base_update.')->group(function(){
                 Route::get('', 'index')->name('index');
                 Route::post('update', 'update')->name('update');
             });

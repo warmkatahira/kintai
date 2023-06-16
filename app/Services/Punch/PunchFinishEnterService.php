@@ -9,41 +9,47 @@ use App\Models\Base;
 use App\Models\KintaiDetail;
 use App\Models\Holiday;
 use App\Models\Employee;
+use App\Enums\EmployeeCategoryEnum;
 
 class PunchFinishEnterService
 {
     // 残業時間を算出・取得
     public function getOverTime($kintai, $working_time)
     {
-        // この稼働時間を超えたら残業時間が付き始めるという値を取得
-        $over_time_start = $this->getOverTimeStart($kintai->employee->employee_category->employee_category_id, $kintai->employee->over_time_start);
+        // この稼働時間を超えたら残業時間が付き始めるという値と稼働時間から引く時間を取得
+        $setting = $this->getOverTimeStart($kintai->employee->employee_category->employee_category_id, $kintai->employee->over_time_start);
         // 初期値として0を設定
         $over_time = 0;
         // 稼働時間が残業開始時間を超えていたら残業発生
-        if($working_time > $over_time_start){
-            $over_time = $working_time - $over_time_start;
+        if($working_time >= $setting['over_time_start']){
+            $over_time = $working_time - $setting['over_time_calc'];
         }
         return $over_time;
     }
 
-    // この稼働時間を超えたら残業時間が付き始めるという値を取得
+    // この稼働時間を超えたら残業時間が付き始めるという値と稼働時間から引く時間を取得
+    // over_time_start  => この時間を超えたら残業が付き始める値
+    // over_time_calc   => 稼働時間から引いて残業時間を算出する際に使用する値
     public function getOverTimeStart($employee_category_id, $over_time_start)
     {
-        // 残業開始時間設定が0.25以上であれば、設定を優先する
-        if($over_time_start >= 0.25){
+        // 残業開始時間設定が0より大きければ、設定を優先する
+        if($over_time_start > 0){
             $over_time_start = $over_time_start;
+            $over_time_calc = $over_time_start - 0.25;
         }
-        if($over_time_start < 0.25){
+        if($over_time_start == 0){
             // 社員の場合
-            if($employee_category_id == 1){
-                $over_time_start = 7.5;
+            if($employee_category_id == EmployeeCategoryEnum::FULL_TIME_EMPLOYEE){
+                $over_time_start = 8.0;
+                $over_time_calc = 7.5;
             }
             // パートの場合
-            if($employee_category_id == 2){
+            if($employee_category_id == EmployeeCategoryEnum::PART_TIME_EMPLOYEE){
                 $over_time_start = 8.0;
+                $over_time_calc = 8.0;
             }
         }
-        return $over_time_start;
+        return compact('over_time_start', 'over_time_calc');
     }
 
     // 退勤情報を勤怠テーブルに更新

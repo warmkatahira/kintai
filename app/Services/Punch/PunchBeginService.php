@@ -24,7 +24,7 @@ class PunchBeginService
     {
         // 変数をセット
         $early_work_select_info = [];
-        // onの時のみ取得
+        // trueの時のみ取得
         if($early_work_available){
             // 現在の時刻を15分単位で切り上げ
             $nowDate = $nowDate->addMinutes(15 - $nowDate->minute % 15);

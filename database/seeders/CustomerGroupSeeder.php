@@ -28,5 +28,10 @@ class CustomerGroupSeeder extends Seeder
             'customer_group_name' => 'コンタクト',
             'customer_group_sort_order' => 1,
         ]);
+        CustomerGroup::create([
+            'base_id' => '01_1st',
+            'customer_group_name' => 'A棟',
+            'customer_group_sort_order' => 2,
+        ]);
     }
 }

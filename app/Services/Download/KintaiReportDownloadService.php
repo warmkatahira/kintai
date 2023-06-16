@@ -12,6 +12,7 @@ use App\Models\EmployeeCategory;
 use App\Models\Holiday;
 use Carbon\CarbonImmutable;
 use Illuminate\Support\Facades\Gate;
+use App\Enums\EmployeeCategoryEnum;
 
 class KintaiReportDownloadService
 {
@@ -95,18 +96,17 @@ class KintaiReportDownloadService
         // 従業員を取得
         $employee = Employee::getSpecify($employee_id);
         // 応援稼働時間を取得
-        $support_working_times = Kintai::joinSub($employee, 'EMPLOYEE', function ($join) {
+        $support_working_times = Kintai::whereDate('work_day', '>=', $start_day)
+                ->whereDate('work_day', '<=', $end_day)
+                ->joinSub($employee, 'EMPLOYEE', function ($join) {
                     $join->on('kintais.employee_id', '=', 'EMPLOYEE.employee_id');
                 })
-                ->whereDate('work_day', '>=', $start_day)
-                ->whereDate('work_day', '<=', $end_day)
                 ->join('kintai_details', 'kintai_details.kintai_id', 'kintais.kintai_id')
-                ->where('kintai_details.customer_id', 'like', 'warm_%')
-                ->join('customers', 'customers.customer_id', 'kintai_details.customer_id')
-                ->select(DB::raw("sum(customer_working_time) as total_customer_working_time, EMPLOYEE.employee_id, EMPLOYEE.employee_no, customers.customer_id, DATE_FORMAT(work_day, '%Y-%m') as date, customers.customer_name"))
-                ->groupBy('EMPLOYEE.employee_id', 'EMPLOYEE.employee_no', 'customers.customer_id', 'customers.customer_name', 'date')
+                ->join('bases', 'bases.base_id', 'kintai_details.customer_id')
+                ->select(DB::raw("sum(customer_working_time) as total_customer_working_time, EMPLOYEE.employee_id, EMPLOYEE.employee_no, bases.base_id, DATE_FORMAT(work_day, '%Y-%m') as date, bases.base_name"))
+                ->groupBy('EMPLOYEE.employee_id', 'EMPLOYEE.employee_no', 'bases.base_id', 'bases.base_name', 'date')
                 ->orderBy('EMPLOYEE.employee_no', 'asc')
-                ->orderBy('customers.customer_id', 'asc')
+                ->orderBy('bases.base_id', 'asc')
                 ->get();
         return $support_working_times;
     }
@@ -138,7 +138,7 @@ class KintaiReportDownloadService
         // 従業員数分だけループ処理
         foreach($employees->get() as $employee){
             // 従業員区分がパートのみを対象とする
-            if($employee->employee_category_id == 2){
+            if($employee->employee_category_id == EmployeeCategoryEnum::PART_TIME_EMPLOYEE){
                 // 情報を格納する配列をセット
                 $over40[$employee->employee_id] = [];
                 // 月の日数分だけループ処理
@@ -207,7 +207,7 @@ class KintaiReportDownloadService
             // 従業員数分だけループ処理
             foreach($employees->get() as $employee){
                 // 従業員区分がパートのみを対象とする
-                if($employee->employee_category_id == 2){
+                if($employee->employee_category_id == EmployeeCategoryEnum::PART_TIME_EMPLOYEE){
                     // 国民の祝日に大洋製薬の稼働がある日を取得
                     $kintais = Kintai::where('employee_id', $employee->employee_id)
                                     ->joinSub($national_holidays, 'HOLIDAY', function ($join) {
@@ -216,7 +216,7 @@ class KintaiReportDownloadService
                                     ->join('kintai_details', 'kintai_details.kintai_id', 'kintais.kintai_id')
                                     ->whereDate('work_day', '>=', $start_day)
                                     ->whereDate('work_day', '<=', $end_day)
-                                    ->where('kintai_details.customer_id', '1') // 大洋製薬のcustomer_idを設定
+                                    ->where('kintai_details.customer_id', '230606-003') // 大洋製薬のcustomer_idを設定
                                     ->select('kintais.work_day', 'kintais.employee_id')
                                     ->get();
                     // 配列に格納

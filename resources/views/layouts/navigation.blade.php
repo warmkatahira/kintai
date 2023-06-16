@@ -64,6 +64,9 @@
                     @can('isAccessMgtAvailable')
                         <li><a href="{{ route('access_mgt.index') }}">アクセス管理</a></li>
                     @endcan
+                    @can('isAccessMgtAvailable')
+                        <li><a href="{{ route('base_mgt.index') }}">拠点管理</a></li>
+                    @endcan
                 </ul>
             </li>
         @endcan

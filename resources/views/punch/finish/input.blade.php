@@ -44,8 +44,8 @@
                         @endforeach
                     </div>
                 </div>
-                <!-- 追加休憩取得時間を表示 -->
-                @if($add_rest_available)
+                <!-- 追加休憩取得時間を表示(追加休憩時間が有効かつパートのみ) -->
+                @if($add_rest_available && $employee->employee_category_id == App\Enums\EmployeeCategoryEnum::PART_TIME_EMPLOYEE)
                     <p class="col-start-1 col-span-12 text-4xl py-3 pl-3 text-white bg-blue-500">追加休憩取得時間</p>
                     <div class="col-start-1 col-span-12 border-2 border-blue-500 bg-white">
                         <div class="p-5 grid grid-cols-12 gap-4">

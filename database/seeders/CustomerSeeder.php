@@ -27,9 +27,9 @@ class CustomerSeeder extends Seeder
         ]);
         Customer::create([
             'customer_id' => '230606-003',
-            'customer_name' => 'XXX',
-            'customer_group_id' => 2,
-            'base_id' => '00_Honsha',
+            'customer_name' => '大洋製薬',
+            'customer_group_id' => 4,
+            'base_id' => '01_1st',
         ]);
         Customer::create([
             'customer_id' => '230606-004',

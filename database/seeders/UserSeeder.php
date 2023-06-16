@@ -20,7 +20,7 @@ class UserSeeder extends Seeder
             'email' => 't.katahira@warm.co.jp',
             'password' => bcrypt('katahira134'),
             'role_id' => 1,
-            'base_id' => '00_Honsha',
+            'base_id' => '01_1st',
             'status' => 1,
         ]);
     }

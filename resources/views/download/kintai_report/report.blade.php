@@ -213,7 +213,7 @@
                 </div>
                 <div class="info_parent">
                     <span class="info_label">従業員番号</span>
-                    <span class="info_text">{{ $employee_no }}</span>
+                    <span class="info_text">{{ $kintai['employee_no'] }}</span>
                 </div>
                 <div class="info_parent">
                     <span class="info_label">従業員名</span>
@@ -229,7 +229,7 @@
                     <tbody>
                         @foreach($kintai['support_working_time'] as $support_working_time)
                             <tr>
-                                <td>{{ $support_working_time->customer_name }}</td>
+                                <td>{{ $support_working_time->base_name }}</td>
                                 <td style="text-align: right;">{{ number_format($support_working_time->total_customer_working_time / 60, 2).'時間' }}</td>
                             </tr>
                         @endforeach
