@@ -16,7 +16,13 @@
                         </div>
                         <div class="col-span-12 grid grid-cols-12 border-b-2 border-blue-500">
                             <p class="col-span-4 text-left">残業</p>
-                            <p class="col-span-8 text-right">{{ number_format($month_kintai->total_over_time / 60, 2).' 時間' }}</p>
+                            <p class="col-span-8 text-right">
+                                @if(Gate::check('isShortTimeInfoAvailable') || $month_kintai->over_time_start == 0)
+                                    {{ number_format($month_kintai->total_over_time / 60, 2).' 時間' }}
+                                @else
+                                    {{ number_format(0 / 60, 2).' 時間' }}
+                                @endif
+                            </p>
                         </div>
                     </a>
                 @endforeach

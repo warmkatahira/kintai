@@ -219,15 +219,19 @@ Route::middleware(['auth', 'userStatusCheck', 'OperationLogRecord'])->group(func
     });
     // ★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆ ダウンロード ★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆
     Route::middleware(['DownloadFuncAvailable'])->group(function () {
-        // -+-+-+-+-+-+-+-+-+-+-+-+ 勤怠表 -+-+-+-+-+-+-+-+-+-+-+-+
-        Route::controller(KintaiReportDownloadController::class)->prefix('kintai_report_download')->name('kintai_report_download.')->group(function(){
-            Route::get('', 'index')->name('index');
-            Route::get('download', 'download')->name('download');
+        Route::middleware(['KintaiReportDownloadAvailable'])->group(function () {
+            // -+-+-+-+-+-+-+-+-+-+-+-+ 勤怠表 -+-+-+-+-+-+-+-+-+-+-+-+
+            Route::controller(KintaiReportDownloadController::class)->prefix('kintai_report_download')->name('kintai_report_download.')->group(function(){
+                Route::get('', 'index')->name('index');
+                Route::get('download', 'download')->name('download');
+            });
         });
-        // -+-+-+-+-+-+-+-+-+-+-+-+ データ -+-+-+-+-+-+-+-+-+-+-+-+
-        Route::controller(DataDownloadController::class)->prefix('data_download')->name('data_download.')->group(function(){
-            Route::get('', 'index')->name('index');
-            Route::get('download', 'download')->name('download');
+        Route::middleware(['DataDownloadAvailable'])->group(function () {
+            // -+-+-+-+-+-+-+-+-+-+-+-+ データ -+-+-+-+-+-+-+-+-+-+-+-+
+            Route::controller(DataDownloadController::class)->prefix('data_download')->name('data_download.')->group(function(){
+                Route::get('', 'index')->name('index');
+                Route::get('download', 'download')->name('download');
+            });
         });
     });
     // ★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆ その他 ★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆
@@ -305,7 +309,7 @@ Route::middleware(['auth', 'userStatusCheck', 'OperationLogRecord'])->group(func
                 Route::post('update', 'update')->name('update');
             });
         });
-        Route::middleware(['AccessMgtAvailable'])->group(function () {
+        Route::middleware(['BaseMgtAvailable'])->group(function () {
             // -+-+-+-+-+-+-+-+-+-+-+-+ 拠点管理 -+-+-+-+-+-+-+-+-+-+-+-+
             Route::controller(BaseMgtController::class)->prefix('base_mgt')->name('base_mgt.')->group(function(){
                 Route::get('', 'index')->name('index');

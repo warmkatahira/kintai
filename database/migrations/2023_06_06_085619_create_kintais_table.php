@@ -34,6 +34,7 @@ return new class extends Migration
             $table->boolean('is_early_worked');
             $table->boolean('is_modified')->default(0);
             $table->boolean('is_manual_punched')->default(0);
+            $table->unsignedInteger('base_checked_id')->nullable();
             $table->timestamp('base_checked_at')->nullable();
             $table->timestamp('locked_at')->nullable();
             $table->timestamps();

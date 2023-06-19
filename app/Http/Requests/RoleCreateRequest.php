@@ -36,6 +36,8 @@ class RoleCreateRequest extends FormRequest
             'is_customer_mgt_func_available' => 'required|boolean',
             'is_kintai_close_available' => 'required|boolean',
             'is_download_func_available' => 'required|boolean',
+            'is_kintai_report_download_available' => 'required|boolean',
+            'is_data_download_available' => 'required|boolean',
             'is_other_func_available' => 'required|boolean',
             'is_accounting_mgt_func_available' => 'required|boolean',
             'is_system_mgt_func_available' => 'required|boolean',
@@ -43,8 +45,10 @@ class RoleCreateRequest extends FormRequest
             'is_role_mgt_available' => 'required|boolean',
             'is_holiday_mgt_available' => 'required|boolean',
             'is_access_mgt_available' => 'required|boolean',
+            'is_base_mgt_available' => 'required|boolean',
             'is_lock_kintai_operation_available' => 'required|boolean',
             'is_all_kintai_operation_available' => 'required|boolean',
+            'is_short_time_info_available' => 'required|boolean',
         ];
     }
 
@@ -71,6 +75,8 @@ class RoleCreateRequest extends FormRequest
             'is_customer_mgt_func_available' => '荷主管理機能',
             'is_kintai_close_available' => '勤怠提出',
             'is_download_func_available' => 'ダウンロード機能',
+            'is_kintai_report_download_available' => '勤怠表ダウンロード',
+            'is_data_download_available' => 'データダウンロード',
             'is_other_func_available' => 'その他機能',
             'is_accounting_mgt_func_available' => '経理管理機能',
             'is_system_mgt_func_available' => 'システム管理機能',
@@ -78,8 +84,10 @@ class RoleCreateRequest extends FormRequest
             'is_role_mgt_available' => '権限管理',
             'is_holiday_mgt_available' => '休日管理',
             'is_access_mgt_available' => 'アクセス管理',
+            'is_base_mgt_available' => '拠点管理',
             'is_lock_kintai_operation_available' => 'ロック後の勤怠操作',
             'is_all_kintai_operation_available' => '全勤怠操作',
+            'is_short_time_info_available' => '時短情報',
         ];
     }
 }

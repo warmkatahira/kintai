@@ -61,6 +61,14 @@ class AuthServiceProvider extends ServiceProvider
         Gate::define('isDownloadFuncAvailable', function($user){
             return ($user->role->is_download_func_available == 1);
         });
+        // 勤怠表ダウンロード有効のみ許可
+        Gate::define('isKintaiReportDownloadAvailable', function($user){
+            return ($user->role->is_kintai_report_download_available == 1);
+        });
+        // データダウンロード有効のみ許可
+        Gate::define('isDataDownloadAvailable', function($user){
+            return ($user->role->is_data_download_available == 1);
+        });
         // その他機能有効のみ許可
         Gate::define('isOtherFuncAvailable', function($user){
             return ($user->role->is_other_func_available == 1);
@@ -88,6 +96,10 @@ class AuthServiceProvider extends ServiceProvider
         // アクセス管理有効のみ許可
         Gate::define('isAccessMgtAvailable', function($user){
             return ($user->role->is_access_mgt_available == 1);
+        });
+        // 拠点管理有効のみ許可
+        Gate::define('isBaseMgtAvailable', function($user){
+            return ($user->role->is_base_mgt_available == 1);
         });
         // ロック後の勤怠操作有効のみ許可
         Gate::define('isLockKintaiOperationAvailable', function($user){

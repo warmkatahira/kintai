@@ -36,6 +36,7 @@ class Kintai extends Model
         'is_early_worked',
         'is_modified',
         'is_manual_punched',
+        'base_checked_id',
         'base_checked_at',
         'locked_at',
     ];
@@ -58,6 +59,11 @@ class Kintai extends Model
     public function kintai_details()
     {
         return $this->hasMany(KintaiDetail::class, 'kintai_id', 'kintai_id');
+    }
+    // usersテーブルとのリレーション
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'base_checked_id', 'id');
     }
     // 拠点確認がNullの自拠点勤怠数を取得
     public function countNoBaseCheckKintai($date)

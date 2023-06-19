@@ -29,8 +29,12 @@
         @can('isDownloadFuncAvailable')
             <li class="dropdown"><a class="trigger-drop">ダウンロード</a>
                 <ul class="drop">
-                    <li><a href="{{ route('kintai_report_download.index') }}">勤怠表</a></li>
-                    <li><a href="{{ route('data_download.index') }}">データ</a></li>
+                    @can('isKintaiReportDownloadAvailable')
+                        <li><a href="{{ route('kintai_report_download.index') }}">勤怠表</a></li>
+                    @endcan
+                    @can('isDataDownloadAvailable')
+                        <li><a href="{{ route('data_download.index') }}">データ</a></li>
+                    @endcan
                 </ul>
             </li>
         @endcan
@@ -64,7 +68,7 @@
                     @can('isAccessMgtAvailable')
                         <li><a href="{{ route('access_mgt.index') }}">アクセス管理</a></li>
                     @endcan
-                    @can('isAccessMgtAvailable')
+                    @can('isBaseMgtAvailable')
                         <li><a href="{{ route('base_mgt.index') }}">拠点管理</a></li>
                     @endcan
                 </ul>

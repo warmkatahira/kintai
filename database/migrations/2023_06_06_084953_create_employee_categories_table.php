@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('employee_categories', function (Blueprint $table) {
-            $table->increments('employee_category_id');
+            $table->unsignedInteger('employee_category_id')->primary();
             $table->string('employee_category_name', 10);
             $table->boolean('is_no_rest_available');
             $table->boolean('is_add_rest_available');

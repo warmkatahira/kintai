@@ -27,7 +27,8 @@ class DataDownloadRequest extends FormRequest
     {
         return [
             'base_id' => 'required|exists:bases,base_id',
-            'date' => 'required|date',
+            'from_date' => 'required|date',
+            'to_date' => 'required|date',
             'download_item' => ['required', new DownloadItemRule($this->download_item)],
         ];
     }
@@ -45,7 +46,8 @@ class DataDownloadRequest extends FormRequest
     {
         return [
             'base_id' => '拠点',
-            'date' => 'ダウンロード年月',
+            'from_date' => 'ダウンロード期間',
+            'to_date' => 'ダウンロード期間',
             'download_item' => 'ダウンロード項目',
         ];
     }

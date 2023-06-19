@@ -54,11 +54,12 @@ class OverTimeRankService
                         ->whereDate('work_day', '<=', $end_day)
                         ->select(DB::raw("sum(over_time) as total_over_time, employee_id, DATE_FORMAT(work_day, '%Y-%m') as date"))
                         ->groupBy('employee_id', 'date');
-        // 残業時間と従業員を結合
+        // 残業時間と従業員を結合(残業時間がない人は表示させないようにしている)
         $employees = Employee::
             rightJoinSub($kintais, 'KINTAIS', function ($join) {
                 $join->on('employees.employee_id', '=', 'KINTAIS.employee_id');
             })
+            ->where('total_over_time', '!=', 0)
             ->select('employees.employee_id', 'employee_last_name', 'employee_first_name', 'total_over_time', 'base_id', 'employee_no', 'date', 'employee_category_id', 'over_time_start');
         // 時短情報が無効な場合、時短勤務者以外を対象とする
         if (!Gate::allows('isShortTimeInfoAvailable')) {
@@ -78,6 +79,6 @@ class OverTimeRankService
                     ->orWhere('employee_first_name', 'LIKE', '%'.session('search_employee_name').'%');
         }
         // 残業時間が多い順に並び替え
-        return $employees->orderBy('total_over_time', 'desc')->paginate(50);
+        return $employees->orderBy('total_over_time', 'desc')->paginate(500);
     }
 }

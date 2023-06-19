@@ -78,13 +78,10 @@ class KintaiMgtService
         // 現在のURLを取得
         session(['back_url_1' => url()->full()]);
         // 出勤日条件で勤怠を抽出
-        $subquery = Kintai::whereDate('work_day', '>=', session('search_work_day_from'))
-                        ->whereDate('work_day', '<=', session('search_work_day_to'));
-        // employeesとkintaisを結合
-        $kintais = Employee::join('employee_categories', 'employee_categories.employee_category_id', 'employees.employee_category_id')
-                            ->joinSub($subquery, 'SUB', function ($join) {
-                                $join->on('employees.employee_id', '=', 'SUB.employee_id');
-                            });
+        $kintais = Kintai::whereDate('work_day', '>=', session('search_work_day_from'))
+                        ->whereDate('work_day', '<=', session('search_work_day_to'))
+                        ->join('employees', 'employees.employee_id', 'kintais.employee_id')
+                        ->join('employee_categories', 'employee_categories.employee_category_id', 'employees.employee_category_id');
         // 拠点条件がある場合
         if (!empty(session('search_base_id'))) {
             $kintais->where('base_id', session('search_base_id'));

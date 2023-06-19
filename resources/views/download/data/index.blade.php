@@ -13,8 +13,10 @@
             </select>
         </div>
         <div class="flex flex-row mb-2">
-            <p class="w-40 bg-black text-white text-center py-2 text-sm">ダウンロード年月</p>
-            <input type="month" name="date" class="w-60 text-sm" value="{{ \Carbon\CarbonImmutable::now()->isoFormat('YYYY-MM') }}">
+            <p class="w-40 bg-black text-white text-center py-2 text-sm">ダウンロード期間</p>
+            <input type="date" name="from_date" class="w-40 text-sm" value="{{ \Carbon\CarbonImmutable::now()->isoFormat('YYYY-MM-DD') }}">
+            <p class="w-10 text-center py-2 text-sm">～</p>
+            <input type="date" name="to_date" class="w-40 text-sm" value="{{ \Carbon\CarbonImmutable::now()->isoFormat('YYYY-MM-DD') }}">
         </div>
         <div class="flex flex-row mb-2">
             <p class="w-40 bg-black text-white text-center py-2 text-sm">ダウンロード項目</p>
@@ -22,6 +24,13 @@
                 @foreach($download_lists as $download_list)
                     <option value="{{ $download_list['key'] }}">{{ $download_list['value'] }}</option>
                 @endforeach
+            </select>
+        </div>
+        <div class="flex flex-row mb-2">
+            <p class="w-40 bg-black text-white text-center py-2 text-sm">集計単位</p>
+            <select name="aggregate_unit" class="w-60 text-sm">
+                <option value="日単位">日単位</option>
+                <option value="月単位">月単位</option>
             </select>
         </div>
     </form>

@@ -45,7 +45,7 @@ class EmployeeSeeder extends Seeder
             'base_id' => '00_Honsha',
             'employee_last_name' => 'パート',
             'employee_first_name' => 'A',
-            'employee_category_id' => 2,
+            'employee_category_id' => 10,
             'monthly_workable_time' => 100,
             'over_time_start' => 0,
         ]);
@@ -54,7 +54,7 @@ class EmployeeSeeder extends Seeder
             'base_id' => '00_Honsha',
             'employee_last_name' => 'パート',
             'employee_first_name' => 'B',
-            'employee_category_id' => 2,
+            'employee_category_id' => 10,
             'monthly_workable_time' => 80,
             'over_time_start' => 0,
         ]);
@@ -63,7 +63,7 @@ class EmployeeSeeder extends Seeder
             'base_id' => '00_Honsha',
             'employee_last_name' => 'パート',
             'employee_first_name' => 'C',
-            'employee_category_id' => 2,
+            'employee_category_id' => 10,
             'monthly_workable_time' => 0,
             'over_time_start' => 0,
         ]);
@@ -72,7 +72,7 @@ class EmployeeSeeder extends Seeder
             'base_id' => '00_Honsha',
             'employee_last_name' => 'パート',
             'employee_first_name' => 'D',
-            'employee_category_id' => 2,
+            'employee_category_id' => 10,
             'monthly_workable_time' => 0,
             'over_time_start' => 0,
         ]);
@@ -86,10 +86,19 @@ class EmployeeSeeder extends Seeder
             'over_time_start' => 0,
         ]);
         Employee::create([
-            'employee_no' => '2222',
+            'employee_no' => '0012',
             'base_id' => '01_1st',
-            'employee_last_name' => 'パート',
-            'employee_first_name' => 'X',
+            'employee_last_name' => '社員',
+            'employee_first_name' => 'N',
+            'employee_category_id' => 1,
+            'monthly_workable_time' => 0,
+            'over_time_start' => 0,
+        ]);
+        Employee::create([
+            'employee_no' => '0016',
+            'base_id' => '01_1st',
+            'employee_last_name' => '契約社員',
+            'employee_first_name' => 'P',
             'employee_category_id' => 2,
             'monthly_workable_time' => 0,
             'over_time_start' => 0,
@@ -99,7 +108,7 @@ class EmployeeSeeder extends Seeder
             'base_id' => '01_1st',
             'employee_last_name' => 'パート',
             'employee_first_name' => 'Y',
-            'employee_category_id' => 2,
+            'employee_category_id' => 10,
             'monthly_workable_time' => 0,
             'over_time_start' => 5.00,
         ]);

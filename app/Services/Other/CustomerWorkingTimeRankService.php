@@ -53,12 +53,12 @@ class CustomerWorkingTimeRankService
         // 荷主毎の稼働時間を集計(全て)
         $common_kintais = $this->getCommonCustomerWorkingTime($start_day, $end_day);
         $kintais = $this->getCustomerWorkingTimeByCustomer($common_kintais);
-        // 荷主毎の稼働時間を集計(正社員)
+        // 荷主毎の稼働時間を集計(社員)
         $common_kintais = $this->getCommonCustomerWorkingTime($start_day, $end_day);
-        $kintais_1 = $this->getCustomerWorkingTimeByCustomerAndEmployeeCategory($common_kintais, EmployeeCategoryEnum::FULL_TIME_EMPLOYEE);
+        $kintais_1 = $this->getCustomerWorkingTimeByCustomerAndEmployeeCategory($common_kintais, EmployeeCategoryEnum::CONTRACT_EMPLOYEE, '<=');
         // 荷主毎の稼働時間を集計(パート)
         $common_kintais = $this->getCommonCustomerWorkingTime($start_day, $end_day);
-        $kintais_2 = $this->getCustomerWorkingTimeByCustomerAndEmployeeCategory($common_kintais, EmployeeCategoryEnum::PART_TIME_EMPLOYEE);
+        $kintais_2 = $this->getCustomerWorkingTimeByCustomerAndEmployeeCategory($common_kintais, EmployeeCategoryEnum::PART_TIME_EMPLOYEE, '=');
         // 拠点条件を適用
         $customers = $this->getTargetCustomers();
         // 各稼働時間を結合
@@ -91,12 +91,12 @@ class CustomerWorkingTimeRankService
                     ->groupBy('customer_id', 'date');
     }
 
-    public function getCustomerWorkingTimeByCustomerAndEmployeeCategory($kintais, $employee_category_id)
+    public function getCustomerWorkingTimeByCustomerAndEmployeeCategory($kintais, $employee_category_id, $sign)
     {
         // 指定された従業員区分毎の荷主稼働時間を集計
-        return $kintais->where('employee_category_id', $employee_category_id)
-                    ->select(DB::raw("sum(customer_working_time) as total_customer_working_time, customer_id, DATE_FORMAT(work_day, '%Y-%m') as date, employees.employee_category_id"))
-                    ->groupBy('customer_id', 'date', 'employee_category_id');
+        return $kintais->where('employee_category_id', $sign, $employee_category_id)
+                    ->select(DB::raw("sum(customer_working_time) as total_customer_working_time, customer_id, DATE_FORMAT(work_day, '%Y-%m') as date, GROUP_CONCAT(employees.employee_category_id) as employee_category_ids"))
+                    ->groupBy('customer_id', 'date');
     }
 
     public function getTargetCustomers()

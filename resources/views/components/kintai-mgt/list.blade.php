@@ -23,6 +23,7 @@
                     @endif
                     <th class="font-thin py-3 px-2 text-center">稼働時間</th>
                     <th class="font-thin py-3 px-2 text-center">残業時間</th>
+                    <th class="font-thin py-3 px-2 text-center">拠点確認者</th>
                     <th class="font-thin py-3 px-2 text-center">拠点確認日時</th>
                     <th class="font-thin py-3 px-2 text-center">コメント</th>
                 </tr>
@@ -41,7 +42,7 @@
                             <a href="{{ route('kintai_mgt.detail', ['kintai_id' => $kintai->kintai_id]) }}" class="text-center border border-blue-500 bg-blue-100 text-blue-500 text-xs px-2 py-1">詳細</a>
                         </td>
                         <td class="py-1 px-2 border text-center">{{ \Carbon\CarbonImmutable::parse($kintai->work_day)->isoFormat('YYYY年MM月DD日(ddd)') }}</td>
-                        <td class="py-1 px-2 border text-center">{{ $kintai->base->base_name }}</td>
+                        <td class="py-1 px-2 border text-center">{{ $kintai->employee->base->base_name }}</td>
                         <td class="py-1 px-2 border text-center">{{ $kintai->employee_category_name }}</td>
                         <td class="py-1 px-2 border text-left">{{ $kintai->employee_last_name.' '.$kintai->employee_first_name }}</td>
                         <td class="py-1 px-2 border text-center">{{ substr($kintai->begin_time_adj, 0, 5) }}</td>
@@ -59,6 +60,7 @@
                         @else
                             <td class="py-1 px-2 border text-center">@if(!is_null($kintai->finish_time)){{ number_format(0 / 60, 2) }}@endif</td>
                         @endif
+                        <td class="py-1 px-2 border text-center">@if(!is_null($kintai->base_checked_at)) {{ $kintai->user->last_name.' '.$kintai->user->first_name }} @endif</td>
                         <td class="py-1 px-2 border text-center">@if(!is_null($kintai->base_checked_at)){{ \Carbon\CarbonImmutable::parse($kintai->base_checked_at)->isoFormat('Y年MM月DD日 HH時mm分ss秒') }}@endif</td>
                         <td class="py-1 px-2 border text-left">{{ $kintai->comment }}</td>
                     </tr>

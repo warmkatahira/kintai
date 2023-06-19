@@ -10,8 +10,11 @@ class EmployeeCategory extends Model
     use HasFactory;
     // 主キーカラムを変更
     protected $primaryKey = 'employee_category_id';
+    // オートインクリメント無効化
+    public $incrementing = false;
     // 操作するカラムを許可
     protected $fillable = [
+        'employee_category_id',
         'employee_category_name',
         'is_no_rest_available',
         'is_add_rest_available',

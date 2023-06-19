@@ -17,7 +17,7 @@ class BaseCheckController extends Controller
         $BaseCheckService = new BaseCheckService;
         // 現在の日時を取得
         $nowDate = CarbonImmutable::now();
-        // 拠点確認日時を更新
+        // 拠点確認ユーザーIDと拠点確認日時を更新
         $BaseCheckService->updateBaseCheck($request->chk, $nowDate);
         return redirect()->back()->with([
             'alert_type' => 'success',

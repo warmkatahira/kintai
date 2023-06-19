@@ -39,7 +39,7 @@ class PunchFinishEnterService
         }
         if($over_time_start == 0){
             // 社員の場合
-            if($employee_category_id == EmployeeCategoryEnum::FULL_TIME_EMPLOYEE){
+            if($employee_category_id <= EmployeeCategoryEnum::CONTRACT_EMPLOYEE){
                 $over_time_start = 8.0;
                 $over_time_calc = 7.5;
             }
