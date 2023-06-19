@@ -162,8 +162,7 @@ class PunchFinishInputService
     public function getSupportedBases()
     {
         // 拠点情報を取得
-        $support_bases = Base::all();
-        return $support_bases;
+        return Base::getAll()->get();
     }
 
     // 追加休憩取得時間を取得

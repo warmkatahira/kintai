@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('customer_name', 20);
             $table->unsignedInteger('customer_group_id')->nullable();
             $table->string('base_id', 20);
+            $table->boolean('is_status')->default(1);
             $table->timestamps();
         });
     }

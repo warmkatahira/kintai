@@ -18,6 +18,7 @@ class Customer extends Model
         'customer_name',
         'customer_group_id',
         'base_id',
+        'is_status',
     ];
     // 全て取得
     public static function getAll()
@@ -29,10 +30,10 @@ class Customer extends Model
     {
         return self::where('customer_id', $customer_id);
     }
-    // 指定した拠点のレコードを取得
+    // 指定した拠点の有効なレコードを取得
     public static function getSpecifyBase($base_id)
     {
-        return self::where('base_id', $base_id);
+        return self::where('base_id', $base_id)->where('is_status', 1);
     }
     // 指定した荷主グループのレコードを取得
     public static function getSpecifyCustomerGroup($customer_group_id)

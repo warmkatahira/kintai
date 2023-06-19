@@ -15,6 +15,7 @@ class CustomerUpdateService
             'base_id' => $request->base_id,
             'customer_name' => $request->customer_name,
             'customer_group_id' => $request->customer_group_id,
+            'is_status' => $request->is_status,
         ]);
         return;
     }

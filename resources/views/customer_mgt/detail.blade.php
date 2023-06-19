@@ -6,6 +6,13 @@
             <a href="{{ session('back_url_1') }}" class="w-40 text-xl py-4 rounded-lg text-center bg-black text-white">戻る</a>
             <a href="{{ route('customer_update.index', ['customer_id' => $customer->customer_id]) }}" class="w-40 text-xl py-4 rounded-lg text-center bg-blue-200 ml-auto">更新</a>
         </div>
+        <!-- ステータス -->
+        <div class="flex flex-col">
+            <p class="border-l-8 border-theme-sub text-xl pl-3 my-3">ステータス</p>
+            <div class="flex flex-row">
+                <x-detail-div label="ステータス" :value="$customer->is_status == 1 ? '有効' : '無効'" />
+            </div>
+        </div>
         <!-- 荷主情報 -->
         <div class="flex flex-col">
             <p class="border-l-8 border-theme-sub text-xl pl-3 my-3">荷主情報</p>

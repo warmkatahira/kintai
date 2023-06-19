@@ -13,6 +13,7 @@
         <div class="bg-white border border-gray-200 px-10 py-5 whitespace-nowrap">
             <form method="POST" action="{{ route('customer_update.update') }}" class="m-0" id="customer_update_form">
                 @csrf
+                <x-customer-mgt.create-select label="ステータス" id="is_status" :db="$customer->is_status" required="1" tippy="0" />
                 <x-create-select label="拠点" id="base_id" :forValue="$bases" text="base_name" :db="$customer->base_id" required="1" tippy="0" />
                 <x-create-input label="荷主名" type="text" id="customer_name" :db="$customer->customer_name" required="1" tippy="0" />
                 <x-create-select label="荷主グループ" id="customer_group_id" :forValue="$customer_groups" text="customer_group_name" :db="$customer->customer_group_id" required="0" tippy="0" />
