@@ -15,7 +15,7 @@
                 @csrf
                 <x-create-input label="拠点ID" type="text" id="base_id" :db="null" required="1" tippy="0" />
                 <x-create-input label="拠点名" type="text" id="base_name" :db="null" required="1" tippy="0" />
-                <x-base-mgt.create-select label="有効/無効" id="is_add_rest_available" :db="null" required="1" tippy="0" />
+                <x-base-mgt.create-select label="追加休憩取得" id="is_add_rest_available" :db="null" required="1" tippy="0" />
                 <button type="button" id="base_create_enter" class="border border-blue-500 text-blue-500 bg-blue-100 py-1 px-10 mt-5">追加</button>
             </form>
         </div>

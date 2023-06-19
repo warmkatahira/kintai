@@ -20,7 +20,7 @@
                     <p class="w-96 text-sm py-2 px-3">{{ $base->base_id }}</p>
                 </div>
                 <x-create-input label="拠点名" type="text" id="base_name" :db="$base->base_name" required="1" tippy="0" />
-                <x-base-mgt.create-select label="有効/無効" id="is_add_rest_available" :db="$base->is_add_rest_available" required="1" tippy="0" />
+                <x-base-mgt.create-select label="追加休憩取得" id="is_add_rest_available" :db="$base->is_add_rest_available" required="1" tippy="0" />
                 <input type="hidden" name="base_id" value="{{ $base->base_id }}">
                 <button type="button" id="base_update_enter" class="border border-blue-500 text-blue-500 bg-blue-100 py-1 px-10 mt-5">更新</button>
             </form>
