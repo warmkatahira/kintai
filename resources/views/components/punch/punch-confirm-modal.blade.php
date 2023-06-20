@@ -12,13 +12,15 @@
                 @if($earlyWorkAvailable)
                     <div class="col-span-12 grid grid-cols-12 gap-4 mb-5">
                         <p id="message" class="col-span-12 text-4xl hidden">早出時間を選択して、出勤ボタンを押して下さい。</p>
-                        <div id="early_work_select_info_div" class="col-span-12 grid grid-cols-12 gap-4 hidden">
-                            @foreach($earlyWorkSelectInfo as $info)
-                                <div class="col-span-3">
-                                    <input type="radio" name="early_work_select_info" value="{{ $info }}" id="{{ $info }}" class="early_work_select_info hidden">
-                                    <label id="{{ $info.'_label' }}" for="{{ $info }}" class="cursor-pointer flex flex-col w-full max-w-lg mx-auto text-center border-2 rounded-lg border-gray-900 p-2 text-2xl">{{ $info }}</label>
-                                </div>
-                            @endforeach
+                        <div id="early_work_select_info_div" class="col-span-12 hidden">
+                            <div class="col-span-12 grid grid-cols-12 gap-4">
+                                @foreach($earlyWorkSelectInfo as $info)
+                                    <div class="col-span-3">
+                                        <input type="radio" name="early_work_select_info" value="{{ $info }}" id="{{ $info }}" class="early_work_select_info hidden">
+                                        <label id="{{ $info.'_label' }}" for="{{ $info }}" class="cursor-pointer flex flex-col w-full max-w-lg mx-auto text-center border-2 rounded-lg border-gray-900 p-2 text-2xl">{{ $info }}</label>
+                                    </div>
+                                @endforeach
+                            </div>
                         </div>
                     </div>
                 @endif
