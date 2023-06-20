@@ -56,6 +56,12 @@ return [
             'throw' => false,
         ],
 
+        'sakura-vps' => [
+            'driver' => 'local',
+            'root' => '/var/backup/laravel',
+            'throw' => false,
+        ],
+
     ],
 
     /*
