@@ -13,7 +13,7 @@ class KintaiDeleteController extends Controller
     public function __construct()
     {
         // ミドルウェアを適用するメソッドを指定
-        $this->middleware('FindByKintai')->only(['delete']);
+        $this->middleware(['FindByKintai', 'KintaiOperationAllAvailable'])->only(['delete']);
     }
 
     public function delete(Request $request)

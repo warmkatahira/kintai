@@ -20,7 +20,7 @@ class PunchUpdateController extends Controller
     public function __construct()
     {
         // ミドルウェアを適用するメソッドを指定
-        $this->middleware('FindByKintai')->only(['index']);
+        $this->middleware(['FindByKintai', 'KintaiOperationAllAvailable'])->only(['index']);
     }
 
     public function index(Request $request)

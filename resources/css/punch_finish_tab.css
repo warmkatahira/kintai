@@ -1,5 +1,5 @@
 .tab{
-    border-bottom: 3px solid rgb(59 130 246);
+    border-bottom: 3px solid #B0E0E6;
     display: flex;
     justify-content: space-around;
     padding:0;
@@ -26,8 +26,7 @@
 
 .tab_menu.active{
     display: block;
-    color: white;
-    background-color: rgb(59 130 246);
+    background-color: #B0E0E6;
     cursor: pointer;
 }
 

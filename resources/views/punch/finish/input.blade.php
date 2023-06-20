@@ -1,7 +1,7 @@
 @vite(['resources/css/punch_finish_tab.css', 'resources/js/punch/punch_finish_input.js', 'resources/js/punch/punch_finish_tab.js'])
 
 <x-app-layout>
-    <x-page-header content="退勤打刻"/>
+    <x-page-header content="退勤打刻 > 時間入力"/>
     <div class="my-5">
         <!-- 操作ボタン -->
         <div class="flex whitespace-nowrap mb-2">
@@ -12,12 +12,12 @@
             @csrf
             <div class="grid grid-cols-12">
                 <!-- 概要情報を表示 -->
-                <div class="col-span-12 grid grid-cols-12 text-4xl py-3 text-white bg-blue-500 rounded-t-lg">
+                <div class="col-span-12 grid grid-cols-12 text-4xl py-3 bg-theme-sub rounded-t-lg">
                     <p id="employee_name" class="col-start-1 col-span-4 pl-3">{{ $kintai->employee->employee_last_name.$kintai->employee->employee_first_name }}<span class="text-xl ml-3">さん</span></p>
                     <p class="col-start-5 col-span-4 text-center">出勤 {{ substr($kintai->begin_time_adj, 0, 5) }}</p>
                     <p class="col-start-9 col-span-4 text-center">退勤 {{ substr($finish_time_adj, 0, 5) }}</p>
                 </div>
-                <div class="col-start-1 col-span-12 border-2 border-blue-500 bg-white">
+                <div class="col-start-1 col-span-12 border-2 border-theme-sub bg-white">
                     <div class="py-5 grid grid-cols-12">
                         <p class="col-span-1 text-xl text-center pt-1">外出(時)</p>
                         <p class="col-span-2 text-2xl text-left">{{ number_format($kintai->out_return_time / 60, 2) }}</p>
@@ -33,8 +33,8 @@
                     </div>
                 </div>
                 <!-- 休憩未取得時間を表示 -->
-                <p class="col-start-1 col-span-12 text-4xl py-3 pl-3 text-white bg-blue-500">休憩未取得時間</p>
-                <div class="col-start-1 col-span-12 border-2 border-blue-500 bg-white">
+                <p class="col-start-1 col-span-12 text-4xl py-3 pl-3 bg-theme-sub">休憩未取得時間</p>
+                <div class="col-start-1 col-span-12 border-2 border-theme-sub bg-white">
                     <div class="p-5 grid grid-cols-12 gap-4">
                         @foreach($no_rest_times as $no_rest_time)
                             <div class="col-span-2">
@@ -46,8 +46,8 @@
                 </div>
                 <!-- 追加休憩取得時間を表示(追加休憩時間が有効かつパートのみ) -->
                 @if($add_rest_available && $employee->employee_category_id == App\Enums\EmployeeCategoryEnum::PART_TIME_EMPLOYEE)
-                    <p class="col-start-1 col-span-12 text-4xl py-3 pl-3 text-white bg-blue-500">追加休憩取得時間</p>
-                    <div class="col-start-1 col-span-12 border-2 border-blue-500 bg-white">
+                    <p class="col-start-1 col-span-12 text-4xl py-3 pl-3 bg-theme-sub">追加休憩取得時間</p>
+                    <div class="col-start-1 col-span-12 border-2 border-theme-sub bg-white">
                         <div class="p-5 grid grid-cols-12 gap-4">
                             @foreach($add_rest_times as $add_rest_time)
                                 <div class="col-span-2">
@@ -59,11 +59,11 @@
                     </div>
                 @endif
                 <!-- 入力した荷主稼働時間情報を表示 -->
-                <div class="col-span-12 grid grid-cols-12 text-4xl py-3 text-white bg-blue-500">
+                <div class="col-span-12 grid grid-cols-12 text-4xl py-3 bg-theme-sub">
                     <p class="col-span-4 pl-3">荷主稼働時間</p>
                     <p class="col-start-8 col-span-5 text-right pr-3">残り入力時間：<span id="input_time_left"></span></p>
                 </div>
-                <div class="col-start-1 col-span-12 border-2 border-blue-500 rounded-b-lg grid grid-cols-12 bg-white">
+                <div class="col-start-1 col-span-12 border-2 border-theme-sub rounded-b-lg grid grid-cols-12 bg-white">
                     <div id="input_working_time_info" class="p-5 col-span-12 grid grid-cols-12 gap-4"></div>
                 </div>
             </div>

@@ -127,15 +127,15 @@ Route::middleware(['auth', 'userStatusCheck', 'OperationLogRecord'])->group(func
         });
         // -+-+-+-+-+-+-+-+-+-+-+-+ 勤怠削除 -+-+-+-+-+-+-+-+-+-+-+-+
         Route::controller(KintaiDeleteController::class)->prefix('kintai_delete')->name('kintai_delete.')->group(function(){
-            Route::post('', 'delete')->name('delete')->middleware('KintaiOperationAllAvailable');
+            Route::post('', 'delete')->name('delete');
         });
         // -+-+-+-+-+-+-+-+-+-+-+-+ 勤怠修正 -+-+-+-+-+-+-+-+-+-+-+-+
         Route::controller(KintaiUpdateController::class)->prefix('kintai_update')->name('kintai_update.')->group(function(){
-            Route::post('comment_update', 'comment_update')->name('comment_update')->middleware('KintaiOperationAllAvailable');
+            Route::post('comment_update', 'comment_update')->name('comment_update');
         });
         // -+-+-+-+-+-+-+-+-+-+-+-+ 修正打刻 -+-+-+-+-+-+-+-+-+-+-+-+
         Route::controller(PunchUpdateController::class)->prefix('punch_update')->name('punch_update.')->group(function(){
-            Route::get('', 'index')->name('index')->middleware('KintaiOperationAllAvailable');
+            Route::get('', 'index')->name('index');
             Route::get('input', 'input')->name('input')->middleware('kintaiCloseCheck');
             Route::post('enter', 'enter')->name('enter');
         });

@@ -18,8 +18,6 @@ class KintaiOperationAllAvailable
      */
     public function handle(Request $request, Closure $next): Response
     {
-        // 勤怠IDが存在するかチェック
-        $response = app(FindByKintai::class)->handle($request, $next);
         // 勤怠を取得
         $kintai = Kintai::getSpecify($request->kintai_id)->first();
         // 勤怠操作が無効である

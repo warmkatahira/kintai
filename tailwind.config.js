@@ -22,7 +22,7 @@ export default {
                 theme: {
                     'main': "#FFE5B4",
                     'sub': "#B0E0E6",
-                    'third': "#E6E6FA",
+                    'third': "#8CD790",
                 },
             },
         },
