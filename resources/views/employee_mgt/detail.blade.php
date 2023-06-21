@@ -31,12 +31,12 @@
         <div class="flex flex-col">
             <p class="border-l-8 border-theme-sub text-xl pl-3 my-3">当月稼働情報</p>
             <div class="flex flex-row">
-                <x-detail-div label="稼働日数" :value="$working_days.' 日'" class="w-40 text-center" />
-                <x-detail-div label="総稼働時間" :value="number_format($total_working_time / 60, 2)" class="w-40 text-center" />
+                <x-detail-div label="稼働日数" :value="$working_days.' 日'" class="w-40 text-right pr-3" />
+                <x-detail-div label="総稼働時間" :value="number_format($total_working_time / 60, 2).' 時間'" class="w-40 text-right pr-3" />
                 @if(Gate::check('isShortTimeInfoAvailable') || $employee->over_time_start == 0)
-                    <x-detail-div label="総残業時間" :value="number_format($total_over_time / 60, 2)" class="w-40 text-center" />
+                    <x-detail-div label="総残業時間" :value="number_format($total_over_time / 60, 2).' 時間'" class="w-40 text-right pr-3" />
                 @else
-                    <x-detail-div label="総残業時間" :value="number_format(0 / 60, 2)" class="w-40 text-center" />
+                    <x-detail-div label="総残業時間" :value="number_format(0 / 60, 2).' 時間'" class="w-40 text-right pr-3" />
                 @endif
             </div>
         </div>
@@ -44,7 +44,7 @@
         <div class="flex flex-col w-4/12">
             <p class="border-l-8 border-theme-sub text-xl pl-3 my-3">当月稼働時間トップ3</p>
             @foreach($customer_working_time as $key => $data)
-                <div class="flex flex-row border-b-4 border-theme-sub">
+                <div class="flex flex-row border-b-4 border-theme-sub pt-1">
                     <p class=""><span class="mr-5">{{ ($key + 1).'位' }}</span>{{ $data->customer_name }}</p>
                     <p class="ml-auto text-right">{{ number_format(($data->total_customer_working_time / 60), 2).' 時間（'.number_format((($data->total_customer_working_time / $total_working_time) * 100),2).' %）' }}</p>
                 </div>
