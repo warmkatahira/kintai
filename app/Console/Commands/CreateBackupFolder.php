@@ -37,7 +37,7 @@ class CreateBackupFolder extends Command
         // ディレクトリを作成
         $disk->makeDirectory($directory);
 
-        // 所有者を設定 (Apache ユーザーと laraweb グループ)
+        // 所有者を設定 (Apache ユーザーと katahira グループ)
         $owner = 'apache';
         $group = 'katahira';
         $path = $disk->path($directory);
@@ -45,6 +45,6 @@ class CreateBackupFolder extends Command
 
         // パーミッションを設定 (775)
         $permissions = 0775;
-        $disk->chmod($directory, $permissions);
+        exec("chmod -R {$permissions} {$path}");
     }
 }
