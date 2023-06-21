@@ -28,6 +28,6 @@ class CreateBackupFolder extends Command
     public function handle()
     {
         $currentMonth = CarbonImmutable::now()->format('Y-m');
-        Storage::disk('sakura-vps')->makeDirectory("backups/{$currentMonth}");
+        Storage::disk('sakura-vps')->makeDirectory("KINTAI/{$currentMonth}");
     }
 }
