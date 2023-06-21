@@ -38,7 +38,7 @@ class BackupMove extends Command
             // ファイル名から年月を取得
             $date = substr($filename, 0, 7);
             // $dateと同じ名前のフォルダへファイルを移動
-            rename($disk.'KINTAI/'.$filename, $disk.'KINTAI/'.$date.$filename);
+            $disk->move('KINTAI/'.$filename, 'KINTAI/'.$date.'/'.$filename);
         }
     }
 }
