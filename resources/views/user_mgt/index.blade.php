@@ -4,7 +4,7 @@
         <!-- ページネーション -->
         <x-pagenation :pages="$users" />
     </div>
-    <div class="flex flex-row items-start mb-3">
+    <div class="flex flex-row items-start mb-2">
         <!-- 検索条件 -->
         <x-user-mgt.search :bases="$bases" searchRoute="user_mgt.search" resetRoute="user_mgt.index" />
         <!-- ユーザー一覧 -->
