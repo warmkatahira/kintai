@@ -12,8 +12,9 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule): void
     {
-        // $schedule->command('inspire')->hourly();
-        // DBバックアップを毎日AM 03:00に実行
+        // DBバックアップを格納するフォルダを作成（毎月1日の00:00）
+        $schedule->command('backup:create-folder')->monthlyOn(21, '09:03');
+        // DBバックアップを取得（毎日AM 03:00）
         $schedule->command('backup:run --disable-notifications --only-db')->dailyAt('03:00');
     }
 
@@ -23,6 +24,7 @@ class Kernel extends ConsoleKernel
     protected function commands(): void
     {
         $this->load(__DIR__.'/Commands');
+        $this->load(__DIR__.'/Commands/CreateBackupFolder.php');
 
         require base_path('routes/console.php');
     }

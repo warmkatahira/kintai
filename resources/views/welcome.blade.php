@@ -41,5 +41,8 @@
             <p class="text-2xl">勤怠管理システム</p>
             <p class="text-7xl Calistoga">KINTAI</p>
         </div>
+        <div class="text-center mt-5">
+            <img src="{{ asset('image/favicon.svg') }}" class="inline-block w-52">
+        </div>
     </body>
 </html>
