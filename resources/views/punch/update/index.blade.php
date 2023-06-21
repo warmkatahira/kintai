@@ -12,7 +12,7 @@
                 </div>
                 <div class="flex flex-row mt-1">
                     <label for="employee_id" class="w-52 bg-black text-white text-center text-sm py-2">従業員</label>
-                    <input type="text" class="w-96 text-sm" value="{{ $kintai->employee->employee_last_name.$kintai->employee->employee_first_name }}" readonly>
+                    <input type="text" class="w-40 text-sm" value="{{ $kintai->employee->employee_last_name.$kintai->employee->employee_first_name }}" readonly>
                     <input type="hidden" id="employee_id" name="employee_id" value="{{ $kintai->employee_id }}">
                 </div>
                 <div class="flex flex-row mt-1">
