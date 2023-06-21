@@ -13,11 +13,11 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule): void
     {
         // DBバックアップを格納するフォルダを作成（毎月1日AM 00:00）
-        $schedule->command('backup:create-folder')->monthlyOn(1, '00:00');
+        $schedule->command('backup:create-folder')->monthlyOn(21, '09:49');
         // DBバックアップを取得（毎日AM 03:00）
-        $schedule->command('backup:run --disable-notifications --only-db')->dailyAt('03:00');
+        $schedule->command('backup:run --disable-notifications --only-db')->dailyAt('09:49');
         // DBバックアップを年月のフォルダへ移動（毎日AM 03:10）
-        $schedule->command('backup:move')->dailyAt('03:10');
+        $schedule->command('backup:move')->dailyAt('09:50');
     }
 
     /**

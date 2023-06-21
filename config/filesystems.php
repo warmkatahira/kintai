@@ -60,6 +60,10 @@ return [
             'driver' => 'local',
             'root' => '/var/backup/laravel',
             'throw' => false,
+            'permissions' => [
+                'file' => 0644, // ファイルのデフォルトパーミッション
+                'dir' => 0700,  // ディレクトリのデフォルトパーミッション
+            ],
         ],
 
     ],
