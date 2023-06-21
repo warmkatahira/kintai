@@ -16,8 +16,8 @@ class Kernel extends ConsoleKernel
         $schedule->command('backup:create-folder')->monthlyOn(1, '00:00');
         // DBバックアップを取得（毎日AM 03:00）
         $schedule->command('backup:run --disable-notifications --only-db')->dailyAt('03:00');
-        // DBバックアップを移動（毎日AM 03:10）
-        $schedule->command('backup:move')->everyMinute();
+        // DBバックアップを年月のフォルダへ移動（毎日AM 03:10）
+        $schedule->command('backup:move')->dailyAt('03:10');
     }
 
     /**
