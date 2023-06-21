@@ -13,7 +13,7 @@ class CreateBackupFolder extends Command
      *
      * @var string
      */
-    protected $signature = 'app:create-backup-folder';
+    protected $signature = 'backup:create-folder';
 
     /**
      * The console command description.
