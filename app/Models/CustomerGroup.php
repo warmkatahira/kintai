@@ -19,7 +19,7 @@ class CustomerGroup extends Model
     // 全て取得
     public static function getAll()
     {
-        return self::orderBy('customer_group_id', 'asc');
+        return self::orderBy('customer_group_sort_order', 'asc');
     }
     // 指定されたレコードを取得
     public static function getSpecify($customer_group_id)
@@ -29,13 +29,13 @@ class CustomerGroup extends Model
     // 指定した拠点のレコードを取得
     public static function getSpecifyBase($base_id)
     {
-        return self::where('base_id', $base_id);
+        return self::where('base_id', $base_id)->orderBy('customer_group_sort_order', 'asc');
     }
     // customersテーブルとのリレーション
     Public function customers()
     {
         // Customerモデルのデータを引っ張てくる
-        return $this->hasMany(Customer::class, 'customer_group_id', 'customer_group_id');
+        return $this->hasMany(Customer::class, 'customer_group_id', 'customer_group_id')->orderBy('customer_sort_order', 'asc');
     }
     // basesテーブルとのリレーション
     public function base()

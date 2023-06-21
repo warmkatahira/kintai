@@ -19,11 +19,12 @@ class Customer extends Model
         'customer_group_id',
         'base_id',
         'is_status',
+        'customer_sort_order',
     ];
     // 全て取得
     public static function getAll()
     {
-        return self::orderBy('customer_id', 'asc');
+        return self::orderBy('customer_sort_order', 'asc');
     }
     // 指定されたレコードを取得
     public static function getSpecify($customer_id)
@@ -33,12 +34,12 @@ class Customer extends Model
     // 指定した拠点の有効なレコードを取得
     public static function getSpecifyBase($base_id)
     {
-        return self::where('base_id', $base_id)->where('is_status', 1);
+        return self::where('base_id', $base_id)->where('is_status', 1)->orderBy('customer_sort_order', 'asc');
     }
     // 指定した荷主グループのレコードを取得
     public static function getSpecifyCustomerGroup($customer_group_id)
     {
-        return self::where('customer_group_id', $customer_group_id)->orderBy('customer_id', 'asc');
+        return self::where('customer_group_id', $customer_group_id)->orderBy('customer_sort_order', 'asc');
     }
     // basesテーブルとのリレーション
     public function base()

@@ -189,7 +189,7 @@ Route::middleware(['auth', 'userStatusCheck', 'OperationLogRecord'])->group(func
             });
             // -+-+-+-+-+-+-+-+-+-+-+-+ 荷主更新 -+-+-+-+-+-+-+-+-+-+-+-+
             Route::controller(CustomerUpdateController::class)->prefix('customer_update')->name('customer_update.')->group(function(){
-                Route::get('', 'index')->name('index');
+                Route::get('', 'index')->name('index')->middleware('CustomerUpdateAvailable');
                 Route::post('update', 'update')->name('update');
             });
             // -+-+-+-+-+-+-+-+-+-+-+-+ 荷主グループ管理 -+-+-+-+-+-+-+-+-+-+-+-+
@@ -205,7 +205,7 @@ Route::middleware(['auth', 'userStatusCheck', 'OperationLogRecord'])->group(func
             });
             // -+-+-+-+-+-+-+-+-+-+-+-+ 荷主グループ更新 -+-+-+-+-+-+-+-+-+-+-+-+
             Route::controller(CustomerGroupUpdateController::class)->prefix('customer_group_update')->name('customer_group_update.')->group(function(){
-                Route::get('', 'index')->name('index');
+                Route::get('', 'index')->name('index')->middleware('CustomerGroupUpdateAvailable');
                 Route::post('update', 'update')->name('update');
             });
         });
@@ -245,6 +245,7 @@ Route::middleware(['auth', 'userStatusCheck', 'OperationLogRecord'])->group(func
         Route::controller(CustomerWorkingTimeRankController::class)->prefix('customer_working_time_rank')->name('customer_working_time_rank.')->group(function(){
             Route::get('', 'index')->name('index');
             Route::get('search', 'search')->name('search');
+            Route::get('detail', 'detail')->name('detail');
         });
     });
     // ★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆ 経理管理 ★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆

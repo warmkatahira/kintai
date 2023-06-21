@@ -127,7 +127,8 @@ class CustomerWorkingTimeRankService
             ->leftJoinSub($kintais_2, 'KINTAIS_2', function ($join) {
                 $join->on('customers.customer_id', '=', 'KINTAIS_2.customer_id');
             })
-            ->select('customers.customer_id', 'customers.base_id', 'customers.customer_name', 'KINTAIS.total_customer_working_time as total_customer_working_time_total', 'KINTAIS_1.total_customer_working_time as total_customer_working_time_full', 'KINTAIS_2.total_customer_working_time as total_customer_working_time_part');
+            ->where('KINTAIS.total_customer_working_time', '!=', 0)
+            ->select('customers.customer_id', 'customers.base_id', 'customers.customer_name', 'KINTAIS.total_customer_working_time as total_customer_working_time_total', 'KINTAIS_1.total_customer_working_time as total_customer_working_time_shain', 'KINTAIS_2.total_customer_working_time as total_customer_working_time_part', 'KINTAIS.date');
     }
 
     public function setOrderbyCondition($customers)
@@ -136,19 +137,39 @@ class CustomerWorkingTimeRankService
         // 合計
         if(session('search_orderby') == 'total'){
             $customers->orderBy('total_customer_working_time_total', 'desc')
-                        ->orderBy('total_customer_working_time_full', 'desc')
+                        ->orderBy('total_customer_working_time_shain', 'desc')
                         ->orderBy('total_customer_working_time_part', 'desc');
         }
-        // 正社員
-        if(session('search_orderby') == 'full'){
-            $customers->orderBy('total_customer_working_time_full', 'desc')
+        // 社員
+        if(session('search_orderby') == 'shain'){
+            $customers->orderBy('total_customer_working_time_shain', 'desc')
                         ->orderBy('total_customer_working_time_part', 'desc');
         }
         // パート
         if(session('search_orderby') == 'part'){
             $customers->orderBy('total_customer_working_time_part', 'desc')
-                        ->orderBy('total_customer_working_time_full', 'desc');
+                        ->orderBy('total_customer_working_time_shain', 'desc');
         }
         return $customers->paginate(50);
+    }
+
+    // 荷主稼働時間の多い従業員トップ10を取得
+    public function getCustomerWorkingTime($start_day, $end_day, $customer_id)
+    {
+        // 当月の勤怠を抽出
+        $kintais = Kintai::whereDate('work_day', '>=', $start_day)
+                            ->whereDate('work_day', '<=', $end_day);
+        // 当月の勤怠と選択した荷主の勤怠詳細を結合
+        $employees = KintaiDetail::where('customer_id', $customer_id)
+            ->joinSub($kintais, 'KINTAIS', function ($join) {
+                $join->on('kintai_details.kintai_id', '=', 'KINTAIS.kintai_id');
+            })
+            ->join('employees', 'employees.employee_id', 'KINTAIS.employee_id')
+            ->select(DB::raw("sum(customer_working_time) as total_customer_working_time, DATE_FORMAT(work_day, '%Y-%m') as date, employees.*"))
+            ->groupBy('date', 'employees.employee_id')
+            ->orderBy('total_customer_working_time', 'desc')
+            ->take(5)
+            ->get();
+        return $employees;
     }
 }

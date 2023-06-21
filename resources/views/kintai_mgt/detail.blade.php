@@ -32,40 +32,40 @@
         </div>
         <div class="flex flex-col">
             <p class="border-l-8 border-theme-sub text-xl pl-3 my-3">勤怠概要</p>
-            <x-detail-div label="出勤日" :value="\Carbon\CarbonImmutable::parse($kintai->work_day)->isoFormat('YYYY年MM月DD日(ddd)')" />
-            <x-detail-div label="拠点" :value="$kintai->employee->base->base_name" />
+            <x-detail-div label="出勤日" :value="\Carbon\CarbonImmutable::parse($kintai->work_day)->isoFormat('YYYY年MM月DD日(ddd)')" class="w-40 text-center" />
+            <x-detail-div label="拠点" :value="$kintai->employee->base->base_name" class="w-40 text-center" />
             <div class="flex flex-row">
-                <x-detail-div label="従業員区分" :value="$kintai->employee->employee_category->employee_category_name" />
-                <x-detail-div label="従業員名" :value="$kintai->employee->employee_last_name.' '.$kintai->employee->employee_first_name" />
+                <x-detail-div label="従業員区分" :value="$kintai->employee->employee_category->employee_category_name" class="w-40 text-center" />
+                <x-detail-div label="従業員名" :value="$kintai->employee->employee_last_name.' '.$kintai->employee->employee_first_name" class="w-40 text-center" />
             </div>
             <div class="flex flex-row">
-                <x-detail-div label="出勤時間" :value="substr($kintai->begin_time_adj, 0, 5)" />
-                <x-detail-div label="退勤時間" :value="substr($kintai->finish_time_adj, 0, 5)" />
+                <x-detail-div label="出勤時間" :value="substr($kintai->begin_time_adj, 0, 5)" class="w-40 text-center" />
+                <x-detail-div label="退勤時間" :value="substr($kintai->finish_time_adj, 0, 5)" class="w-40 text-center" />
             </div>
             <div class="flex flex-row">
-                <x-detail-div label="外出時間" :value="substr($kintai->out_time_adj, 0, 5)" />
-                <x-detail-div label="戻り時間" :value="substr($kintai->return_time_adj, 0, 5)" />
-                <x-detail-div label="外出戻り時間" :value="$kintai->out_return_time == 0 ? '' : number_format($kintai->out_return_time / 60, 2)" />
+                <x-detail-div label="外出時間" :value="substr($kintai->out_time_adj, 0, 5)" class="w-40 text-center" />
+                <x-detail-div label="戻り時間" :value="substr($kintai->return_time_adj, 0, 5)" class="w-40 text-center" />
+                <x-detail-div label="外出戻り時間" :value="$kintai->out_return_time == 0 ? '' : number_format($kintai->out_return_time / 60, 2)" class="w-40 text-center" />
             </div>
             <div class="flex flex-row">
-                <x-detail-div label="休憩取得時間" :value="is_null($kintai->rest_time) ? '' : number_format($kintai->rest_time / 60, 2)" />
-                <x-detail-div label="休憩未取得時間" :value="is_null($kintai->no_rest_time) ? '' : number_format($kintai->no_rest_time / 60, 2)" />
+                <x-detail-div label="休憩取得時間" :value="is_null($kintai->rest_time) ? '' : number_format($kintai->rest_time / 60, 2)" class="w-40 text-center" />
+                <x-detail-div label="休憩未取得時間" :value="is_null($kintai->no_rest_time) ? '' : number_format($kintai->no_rest_time / 60, 2)" class="w-40 text-center" />
                 @if($add_rest_available)
-                    <x-detail-div label="追加休憩取得時間" :value="is_null($kintai->add_rest_time) ? '' : number_format($kintai->add_rest_time / 60, 2)" />
+                    <x-detail-div label="追加休憩取得時間" :value="is_null($kintai->add_rest_time) ? '' : number_format($kintai->add_rest_time / 60, 2)" class="w-40 text-center" />
                 @endif
             </div>
             <div class="flex flex-row">
-                <x-detail-div label="稼働時間" :value="is_null($kintai->working_time) ? '' : number_format($kintai->working_time / 60, 2)" />
+                <x-detail-div label="稼働時間" :value="is_null($kintai->working_time) ? '' : number_format($kintai->working_time / 60, 2)" class="w-40 text-center" />
                 @if(Gate::check('isShortTimeInfoAvailable') || $kintai->employee->over_time_start == 0)
-                    <x-detail-div label="残業時間" :value="is_null($kintai->over_time) ? '' : number_format($kintai->over_time /60, 2)" />
+                    <x-detail-div label="残業時間" :value="is_null($kintai->over_time) ? '' : number_format($kintai->over_time /60, 2)" class="w-40 text-center" />
                 @else
-                    <x-detail-div label="残業時間" :value="number_format(0 /60, 2)" />
+                    <x-detail-div label="残業時間" :value="number_format(0 /60, 2)" class="w-40 text-center" />
                 @endif
             </div>
             <div class="flex flex-row">
-                <x-detail-div label="早出" :value="$kintai->is_early_worked == 1 ? '○' : ''" />
-                <x-detail-div label="手動打刻" :value="$kintai->is_manual_punched == 1 ? '○' : ''" />
-                <x-detail-div label="修正" :value="$kintai->is_modified == 1 ? '○' : ''" />
+                <x-detail-div label="早出" :value="$kintai->is_early_worked == 1 ? '○' : ''" class="w-40 text-center" />
+                <x-detail-div label="手動打刻" :value="$kintai->is_manual_punched == 1 ? '○' : ''" class="w-40 text-center" />
+                <x-detail-div label="修正" :value="$kintai->is_modified == 1 ? '○' : ''" class="w-40 text-center" />
             </div>
         </div>
         <div class="flex flex-col">

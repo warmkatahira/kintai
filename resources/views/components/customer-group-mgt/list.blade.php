@@ -7,7 +7,7 @@
                     <th class="font-thin py-3 px-2 text-center">詳細</th>
                     <th class="font-thin py-3 px-2 text-center">拠点</th>
                     <th class="font-thin py-3 px-2 text-center">荷主グループ名</th>
-                    <th class="font-thin py-3 px-2 text-center">荷主グループ順</th>
+                    <th class="font-thin py-3 px-2 text-center">荷主グループ並び順</th>
                 </tr>
             </thead>
             <tbody class="bg-white">

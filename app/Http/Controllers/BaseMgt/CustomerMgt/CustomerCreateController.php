@@ -31,7 +31,7 @@ class CustomerCreateController extends Controller
             DB::transaction(function () use (&$request) {
                 // インスタンス化
                 $CustomerCreateService = new CustomerCreateService;
-                // レコードを変更
+                // レコードを追加
                 $CustomerCreateService->createCustomer($request);
             });
         } catch (\Exception $e) {

@@ -9,7 +9,7 @@
                     <th class="font-thin py-3 px-2 text-center">拠点</th>
                     <th class="font-thin py-3 px-2 text-center">荷主名</th>
                     <th class="font-thin py-3 px-2 text-center">荷主グループ名</th>
-                    <th class="font-thin py-3 px-2 text-center">当月稼働時間</th>
+                    <th class="font-thin py-3 px-2 text-center">荷主並び順</th>
                 </tr>
             </thead>
             <tbody class="bg-white">
@@ -22,7 +22,7 @@
                         <td class="py-1 px-2 border text-center">{{ $customer->base->base_name }}</td>
                         <td class="py-1 px-2 border text-left">{{ $customer->customer_name }}</td>
                         <td class="py-1 px-2 border text-center">@if(!is_null($customer->customer_group)){{ $customer->customer_group->customer_group_name }}@endif</td>
-                        <td class="py-1 px-2 border text-right">{{ number_format($customer->total_customer_working_time / 60, 2) }}</td>
+                        <td class="py-1 px-2 border text-right">{{ $customer->customer_sort_order }}</td>
                     </tr>
                 @endforeach
             </tbody>

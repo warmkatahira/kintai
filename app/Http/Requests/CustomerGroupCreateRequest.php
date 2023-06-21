@@ -47,7 +47,7 @@ class CustomerGroupCreateRequest extends FormRequest
         return [
             'base_id' => '拠点',
             'customer_group_name' => '荷主グループ名',
-            'customer_group_sort_order' => '荷主グループ順',
+            'customer_group_sort_order' => '荷主グループ並び順',
         ];
     }
 }

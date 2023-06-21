@@ -89,6 +89,8 @@ class Kernel extends HttpKernel
         'UserMgtAvailable' => \App\Http\Middleware\Available\UserMgtAvailable::class,
         'KintaiOperationAllAvailable' => \App\Http\Middleware\Available\KintaiOperationAllAvailable::class,
         'EmployeeUpdateAvailable' => \App\Http\Middleware\Available\EmployeeUpdateAvailable::class,
+        'CustomerUpdateAvailable' => \App\Http\Middleware\Available\CustomerUpdateAvailable::class,
+        'CustomerGroupUpdateAvailable' => \App\Http\Middleware\Available\CustomerGroupUpdateAvailable::class,
         'BaseMgtAvailable' => \App\Http\Middleware\Available\BaseMgtAvailable::class,
         'KintaiReportDownloadAvailable' => \App\Http\Middleware\Available\KintaiReportDownloadAvailable::class,
         'DataDownloadAvailable' => \App\Http\Middleware\Available\DataDownloadAvailable::class,

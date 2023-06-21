@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Services\CommonService;
 use App\Services\Other\CustomerWorkingTimeRankService;
 use App\Models\Base;
+use App\Models\Customer;
 
 class CustomerWorkingTimeRankController extends Controller
 {
@@ -49,6 +50,27 @@ class CustomerWorkingTimeRankController extends Controller
         return view('other.customer_working_time_rank.index')->with([
             'bases' => $bases,
             'customers' => $customers,
+        ]);
+    }
+
+    public function detail(Request $request)
+    {
+        // インスタンス化
+        $CustomerWorkingTimeRankService = new CustomerWorkingTimeRankService;
+        $CommonService = new CommonService;
+        // 月初・月末の日付を取得
+        $start_end_of_month = $CommonService->getStartEndOfMonth($request->date);
+        // 荷主情報を取得
+        $customer = Customer::getSpecify($request->customer_id)->first();
+        // 荷主稼働時間の多い従業員トップ10を取得
+        $employees = $CustomerWorkingTimeRankService->getCustomerWorkingTime($start_end_of_month['start'], $start_end_of_month['end'], $request->customer_id);
+        return view('other.customer_working_time_rank.detail')->with([
+            'date' => $request->date,
+            'customer' => $customer,
+            'employees' => $employees,
+            'total' => $request->total,
+            'shain' => $request->shain,
+            'part' => $request->part,
         ]);
     }
 }

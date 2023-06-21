@@ -35,7 +35,6 @@ class CustomerMgtController extends Controller
         $bases = Base::getAll()->get();
         // 荷主を取得
         $customers = $CustomerMgtService->getCustomerSearch($start_end_of_month['start'], $start_end_of_month['end']);
-        //dd($customers);
         return view('customer_mgt.index')->with([
             'bases' => $bases,
             'customers' => $customers,
@@ -78,14 +77,8 @@ class CustomerMgtController extends Controller
         $start_end_of_month = $CommonService->getStartEndOfMonth($nowDate);
         // 荷主を取得
         $customer = Customer::getSpecify($request->customer_id)->first();
-        // 当月の荷主の総稼働時間を取得
-        $kintai = $CustomerMgtService->getKintais($start_end_of_month['start'], $start_end_of_month['end'], $request->customer_id)->first();
-        // 荷主稼働時間の多い従業員トップ5を取得
-        $customer_working_time = $CustomerMgtService->getCustomerWorkingTime($start_end_of_month['start'], $start_end_of_month['end'], $request->customer_id);
         return view('customer_mgt.detail')->with([
             'customer' => $customer,
-            'kintai' => $kintai,
-            'customer_working_time' => $customer_working_time,
         ]);
     }
 }

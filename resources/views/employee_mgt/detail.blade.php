@@ -13,17 +13,17 @@
         <div class="flex flex-col">
             <p class="border-l-8 border-theme-sub text-xl pl-3 my-3">従業員情報</p>
             <div class="flex flex-row">
-                <x-detail-div label="拠点" :value="$employee->base->base_name" />
-                <x-detail-div label="従業員区分" :value="$employee->employee_category->employee_category_name" />
+                <x-detail-div label="拠点" :value="$employee->base->base_name" class="w-40 text-center" />
+                <x-detail-div label="従業員区分" :value="$employee->employee_category->employee_category_name" class="w-40 text-center" />
             </div>
             <div class="flex flex-row">
-                <x-detail-div label="従業員番号" :value="$employee->employee_no" />
-                <x-detail-div label="従業員名" :value="$employee->employee_last_name.' '.$employee->employee_first_name" />
+                <x-detail-div label="従業員番号" :value="$employee->employee_no" class="w-40 text-center" />
+                <x-detail-div label="従業員名" :value="$employee->employee_last_name.' '.$employee->employee_first_name" class="w-40 text-center" />
             </div>
             <div class="flex flex-row">
-                <x-detail-div label="月間稼働可能時間" :value="number_format($employee->monthly_workable_time, 2)" />
+                <x-detail-div label="月間稼働可能時間" :value="number_format($employee->monthly_workable_time, 2)" class="w-40 text-center" />
                 @can('isShortTimeInfoAvailable')
-                    <x-detail-div label="残業開始時間" :value="number_format($employee->over_time_start, 2)" />
+                    <x-detail-div label="残業開始時間" :value="number_format($employee->over_time_start, 2)" class="w-40 text-center" />
                 @endcan
             </div>
         </div>
@@ -31,12 +31,12 @@
         <div class="flex flex-col">
             <p class="border-l-8 border-theme-sub text-xl pl-3 my-3">当月稼働情報</p>
             <div class="flex flex-row">
-                <x-detail-div label="稼働日数" :value="$working_days.' 日'" />
-                <x-detail-div label="総稼働時間" :value="number_format($total_working_time / 60, 2)" />
+                <x-detail-div label="稼働日数" :value="$working_days.' 日'" class="w-40 text-center" />
+                <x-detail-div label="総稼働時間" :value="number_format($total_working_time / 60, 2)" class="w-40 text-center" />
                 @if(Gate::check('isShortTimeInfoAvailable') || $employee->over_time_start == 0)
-                    <x-detail-div label="総残業時間" :value="number_format($total_over_time / 60, 2)" />
+                    <x-detail-div label="総残業時間" :value="number_format($total_over_time / 60, 2)" class="w-40 text-center" />
                 @else
-                    <x-detail-div label="総残業時間" :value="number_format(0 / 60, 2)" />
+                    <x-detail-div label="総残業時間" :value="number_format(0 / 60, 2)" class="w-40 text-center" />
                 @endif
             </div>
         </div>

@@ -16,6 +16,7 @@ class CustomerUpdateService
             'customer_name' => $request->customer_name,
             'customer_group_id' => $request->customer_group_id,
             'is_status' => $request->is_status,
+            'customer_sort_order' => $request->customer_sort_order,
         ]);
         return;
     }

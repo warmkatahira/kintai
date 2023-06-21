@@ -17,6 +17,7 @@ return new class extends Migration
             $table->unsignedInteger('customer_group_id')->nullable();
             $table->string('base_id', 20);
             $table->boolean('is_status')->default(1);
+            $table->unsignedInteger('customer_sort_order')->default(100);
             $table->timestamps();
         });
     }

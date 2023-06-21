@@ -30,6 +30,7 @@ class CustomerUpdateRequest extends FormRequest
             'customer_name' => 'required|max:20',
             'customer_group_id' => 'nullable|exists:customer_groups,customer_group_id',
             'is_status' => 'required|boolean',
+            'customer_sort_order' => 'required|integer|gt:0',
         ];
     }
 
@@ -40,6 +41,8 @@ class CustomerUpdateRequest extends FormRequest
             'max' => ":attributeは:max文字以内で入力して下さい。",
             'exists' => ':attributeが存在しません。',
             'boolean' => ':attributeが正しくありません。',
+            'integer' => ':attributeは整数で設定して下さい。',
+            'gt' => ':attributeは0より大きい値で設定して下さい。',
         ];
     }
 
@@ -51,6 +54,7 @@ class CustomerUpdateRequest extends FormRequest
             'customer_name' => '荷主名',
             'customer_group_id' => '荷主グループ',
             'is_status' => 'ステータス',
+            'customer_sort_order' => '荷主並び順',
         ];
     }
 }

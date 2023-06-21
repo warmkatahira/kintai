@@ -15,7 +15,7 @@
                 @csrf
                 <x-create-select label="拠点" id="base_id" :forValue="$bases" text="base_name" :db="null" required="1" tippy="0" />
                 <x-create-input label="荷主グループ名" type="text" id="customer_group_name" :db="null" required="1" tippy="0" />
-                <x-create-input label="荷主グループ順" type="text" id="customer_group_sort_order" :db="null" required="1" tippy="0" />
+                <x-create-input label="荷主グループ並び順" type="text" id="customer_group_sort_order" :db="null" required="1" tippy="0" />
                 <button type="button" id="customer_group_create_enter" class="border border-blue-500 text-blue-500 bg-blue-100 py-1 px-10 mt-5">追加</button>
             </form>
         </div>
