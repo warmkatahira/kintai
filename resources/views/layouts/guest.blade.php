@@ -34,6 +34,7 @@
             <!-- アラート表示 -->
             <x-alert/>
             <div class="flex flex-col">
+                <p class="text-center ">勤怠管理システム</p>
                 <p class="text-center text-5xl Calistoga mb-2">KINTAI</p>
                 <a href="{{ route('welcome.index') }}" class="text-center">
                     <x-application-logo class="w-20 h-20 fill-current text-gray-500" />
