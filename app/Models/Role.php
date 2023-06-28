@@ -36,6 +36,7 @@ class Role extends Model
         'is_lock_kintai_operation_available',
         'is_all_kintai_operation_available',
         'is_short_time_info_available',
+        'is_all_base_operation_available',
     ];
     // 全て取得
     public static function getAll()

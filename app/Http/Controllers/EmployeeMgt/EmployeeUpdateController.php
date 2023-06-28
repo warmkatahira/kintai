@@ -9,6 +9,7 @@ use App\Services\EmployeeMgt\EmployeeUpdateService;
 use App\Models\EmployeeCategory;
 use App\Models\Employee;
 use App\Models\Base;
+use Illuminate\Support\Facades\Auth;
 
 class EmployeeUpdateController extends Controller
 {
@@ -20,8 +21,12 @@ class EmployeeUpdateController extends Controller
 
     public function index(Request $request)
     {
-        // 拠点情報を取得
-        $bases = Base::getAll()->get();
+        // 拠点情報を取得(全拠点操作の状態によって可変)
+        if(Auth::user()->role->is_all_base_operation_available == 1){
+            $bases = Base::getAll()->get();
+        }else{
+            $bases = Base::getSpecify(Auth::user()->base_id)->get();
+        }
         // 従業員区分を取得
         $employee_categories = EmployeeCategory::getAll()->get();
         // 従業員の情報を取得

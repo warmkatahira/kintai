@@ -60,7 +60,7 @@ class PunchManualController extends Controller
         $PunchUpdateService->setSessionKintaiModifyInfo($out_return_time, $begin_finish_time, $rest_time, $no_rest_times, $working_time, $request->punch_begin_type);
         // 自拠点の荷主情報を取得
         $customers = Customer::getSpecifyBase(Auth::user()->base_id)->get();
-        $customer_groups = CustomerGroup::getSpecifyBase(Auth::user()->base_id)->get();
+        $customer_groups = CustomerGroup::getSpecifyBase(Auth::user()->base_id)->has('customers')->get();
         // 荷主から応援タブの情報を取得
         $support_bases = $PunchFinishInputService->getSupportedBases();
         // 追加休憩取得時間を取得

@@ -52,7 +52,7 @@ class PunchFinishController extends Controller
         $working_time = $PunchFinishInputService->getWorkingTime($kintai->begin_time_adj, $finish_time_adj, $rest_time, $kintai->out_return_time, $request->add_rest_time);
         // 自拠点の荷主情報を取得
         $customers = Customer::getSpecifyBase(Auth::user()->base_id)->get();
-        $customer_groups = CustomerGroup::getSpecifyBase(Auth::user()->base_id)->get();
+        $customer_groups = CustomerGroup::getSpecifyBase(Auth::user()->base_id)->has('customers')->get();
         // 荷主から応援タブの情報を取得
         $support_bases = $PunchFinishInputService->getSupportedBases();
         // 追加休憩取得時間を取得

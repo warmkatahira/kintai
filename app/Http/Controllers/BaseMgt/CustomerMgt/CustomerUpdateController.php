@@ -21,8 +21,12 @@ class CustomerUpdateController extends Controller
 
     public function index(Request $request)
     {
-        // 拠点情報を取得
-        $bases = Base::getAll()->get();
+        // 拠点情報を取得(全拠点操作の状態によって可変)
+        if(Auth::user()->role->is_all_base_operation_available == 1){
+            $bases = Base::getAll()->get();
+        }else{
+            $bases = Base::getSpecify(Auth::user()->base_id)->get();
+        }
         // 荷主を取得
         $customer = Customer::getSpecify($request->customer_id)->first();
         // 自拠点の荷主グループを取得

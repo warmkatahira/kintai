@@ -30,6 +30,7 @@
                     <th class="font-thin py-3 px-2 text-center">ロック後の勤怠操作</th>
                     <th class="font-thin py-3 px-2 text-center">全勤怠操作</th>
                     <th class="font-thin py-3 px-2 text-center">時短情報</th>
+                    <th class="font-thin py-3 px-2 text-center">全拠点操作</th>
                 </tr>
             </thead>
             <tbody class="bg-white">
@@ -63,6 +64,7 @@
                         <td class="py-1 px-2 border text-center {{ App\Enums\RoleEnum::get_class($role->is_lock_kintai_operation_available) }}">{{ App\Enums\RoleEnum::get_jp($role->is_lock_kintai_operation_available) }}</td>
                         <td class="py-1 px-2 border text-center {{ App\Enums\RoleEnum::get_class($role->is_all_kintai_operation_available) }}">{{ App\Enums\RoleEnum::get_jp($role->is_all_kintai_operation_available) }}</td>
                         <td class="py-1 px-2 border text-center {{ App\Enums\RoleEnum::get_class($role->is_short_time_info_available) }}">{{ App\Enums\RoleEnum::get_jp($role->is_short_time_info_available) }}</td>
+                        <td class="py-1 px-2 border text-center {{ App\Enums\RoleEnum::get_class($role->is_all_base_operation_available) }}">{{ App\Enums\RoleEnum::get_jp($role->is_all_base_operation_available) }}</td>
                     </tr>
                 @endforeach
             </tbody>

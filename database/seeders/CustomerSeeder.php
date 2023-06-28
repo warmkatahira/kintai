@@ -15,14 +15,20 @@ class CustomerSeeder extends Seeder
     {
         Customer::create([
             'customer_id' => '230606-001',
-            'customer_name' => 'レンシス',
+            'customer_name' => '荷主A',
             'customer_group_id' => 1,
             'base_id' => '00_Honsha',
         ]);
         Customer::create([
             'customer_id' => '230606-002',
-            'customer_name' => 'フロムアイズ',
+            'customer_name' => '荷主B',
             'customer_group_id' => 1,
+            'base_id' => '00_Honsha',
+        ]);
+        Customer::create([
+            'customer_id' => '230607-001',
+            'customer_name' => '荷主C',
+            'customer_group_id' => 2,
             'base_id' => '00_Honsha',
         ]);
         Customer::create([

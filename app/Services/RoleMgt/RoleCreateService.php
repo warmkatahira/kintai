@@ -35,6 +35,7 @@ class RoleCreateService
             'is_lock_kintai_operation_available' => $request->is_lock_kintai_operation_available,
             'is_all_kintai_operation_available' => $request->is_all_kintai_operation_available,
             'is_short_time_info_available' => $request->is_short_time_info_available,
+            'is_all_base_operation_available' => $request->is_all_base_operation_available,
         ]);
         return;
     }

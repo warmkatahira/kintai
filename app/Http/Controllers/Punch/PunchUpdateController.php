@@ -65,7 +65,7 @@ class PunchUpdateController extends Controller
         $support_bases = $PunchFinishInputService->getSupportedBases();
         // 自拠点の荷主情報を取得
         $customers = Customer::getSpecifyBase(Auth::user()->base_id)->get();
-        $customer_groups = CustomerGroup::getSpecifyBase(Auth::user()->base_id)->get();
+        $customer_groups = CustomerGroup::getSpecifyBase(Auth::user()->base_id)->has('customers')->get();
         // 追加休憩取得時間を取得
         $add_rest_times = $PunchFinishInputService->getAddRestTime($kintai->employee_id);
         // 追加休憩取得時間が有効か判定

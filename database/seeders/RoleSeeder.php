@@ -38,6 +38,7 @@ class RoleSeeder extends Seeder
             'is_lock_kintai_operation_available' => 1,
             'is_all_kintai_operation_available' => 1,
             'is_short_time_info_available' => 1,
+            'is_all_base_operation_available' => 1,
         ]);
         Role::create([
             'role_name' => '経理',
@@ -64,6 +65,7 @@ class RoleSeeder extends Seeder
             'is_lock_kintai_operation_available' => 1,
             'is_all_kintai_operation_available' => 1,
             'is_short_time_info_available' => 1,
+            'is_all_base_operation_available' => 1,
         ]);
         Role::create([
             'role_name' => '本社',
