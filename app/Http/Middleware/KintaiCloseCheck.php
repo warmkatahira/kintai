@@ -18,6 +18,10 @@ class KintaiCloseCheck
      */
     public function handle(Request $request, Closure $next): Response
     {
+        // ロック後の勤怠操作が有効であれば通す
+        if(Auth::user()->role->is_lock_kintai_operation_available == 1){
+            return $next($request);
+        }
         // 提出情報を取得する日付を取得（出勤日のパラメータがあればそちらを使用）
         if(isset($request->work_day)){
             $work_day = new CarbonImmutable($request->work_day);
@@ -35,7 +39,7 @@ class KintaiCloseCheck
         if($kintai_close > 0){
             return redirect()->route('top.index')->with([
                 'alert_type' => 'error',
-                'alert_message' => $close_date.'の勤怠は提出されている為、打刻できませんでした。',
+                'alert_message' => $close_date.'の勤怠は提出されている為、打刻できません。',
             ]);
         }
         return $next($request);
