@@ -19,6 +19,9 @@ return new class extends Migration
             $table->boolean('is_status')->default(1);
             $table->unsignedInteger('customer_sort_order')->default(100);
             $table->timestamps();
+            // 外部キー制約
+            $table->foreign('base_id')->references('base_id')->on('bases');
+            $table->foreign('customer_group_id')->references('customer_group_id')->on('customer_groups');
         });
     }
 

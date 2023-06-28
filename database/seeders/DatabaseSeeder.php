@@ -21,6 +21,7 @@ class DatabaseSeeder extends Seeder
             EmployeeCategorySeeder::class,
             EmployeeSeeder::class,
             IpLimitSeeder::class,
+            LCSeeder::class,
         ]);
     }
 }

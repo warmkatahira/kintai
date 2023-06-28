@@ -25,6 +25,8 @@ return new class extends Migration
             $table->timestamp('last_login_at')->nullable();
             $table->rememberToken();
             $table->timestamps();
+            // 外部キー制約
+            $table->foreign('role_id')->references('role_id')->on('roles');
         });
     }
 
