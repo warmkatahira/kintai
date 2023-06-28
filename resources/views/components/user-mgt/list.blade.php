@@ -20,11 +20,11 @@
                         <td class="py-1 px-2 border text-center">
                             <a href="{{ route('user_update.index', ['id' => $user->id]) }}" class="text-center border border-blue-500 bg-blue-100 text-blue-500 text-xs px-2 py-1">更新</a>
                         </td>
-                        <td class="py-1 px-2 border text-center">{{ $user->base->base_name }}</td>
-                        <td class="py-1 px-2 border text-center">{{ $user->user_id }}</td>
-                        <td class="py-1 px-2 border text-center">{{ $user->last_name.' '.$user->first_name }}</td>
-                        <td class="py-1 px-2 border text-center">{{ $user->email }}</td>
-                        <td class="py-1 px-2 border text-center">@if(!is_null($user->role)) {{ $user->role->role_name }}@endif</td>
+                        <td class="py-1 px-2 border text-left">{{ $user->base->base_name }}</td>
+                        <td class="py-1 px-2 border text-left">{{ $user->user_id }}</td>
+                        <td class="py-1 px-2 border text-left">{{ $user->last_name.' '.$user->first_name }}</td>
+                        <td class="py-1 px-2 border text-left">{{ $user->email }}</td>
+                        <td class="py-1 px-2 border text-left">@if(!is_null($user->role)) {{ $user->role->role_name }}@endif</td>
                         <td class="py-1 px-2 border text-center">{{ App\Enums\StatusEnum::get_jp($user->status) }}</td>
                         <td class="py-1 px-2 border text-center">{{ \Carbon\CarbonImmutable::parse($user->last_login_at)->isoFormat('Y年MM月DD日 HH時mm分ss秒') }}</td>
                     </tr>

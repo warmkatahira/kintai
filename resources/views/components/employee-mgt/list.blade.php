@@ -23,8 +23,8 @@
                         <td class="py-1 px-2 border text-center">
                             <a href="{{ route('employee_mgt.detail', ['employee_id' => $employee->employee_id]) }}" class="text-center border border-blue-500 bg-blue-100 text-blue-500 text-xs px-2 py-1">詳細</a>
                         </td>
-                        <td class="py-1 px-2 border text-center">{{ $employee->base->base_name }}</td>
-                        <td class="py-1 px-2 border text-center">{{ $employee->employee_category->employee_category_name }}</td>
+                        <td class="py-1 px-2 border text-left">{{ $employee->base->base_name }}</td>
+                        <td class="py-1 px-2 border text-left">{{ $employee->employee_category->employee_category_name }}</td>
                         <td class="py-1 px-2 border text-center">{{ $employee->employee_no }}</td>
                         <td class="py-1 px-2 border text-left">{{ $employee->employee_last_name.' '.$employee->employee_first_name }}</td>
                         <td class="py-1 px-2 border text-right">{{ number_format($employee->monthly_workable_time, 2) }}</td>
