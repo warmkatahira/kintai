@@ -21,7 +21,7 @@ class UserMgtService
     public function setDefaultCondition()
     {
         // 初期条件をセット
-        session(['search_base_id' => Auth::user()->base_id]);
+        //session(['search_base_id' => Auth::user()->base_id]);
         return;
     }
 
