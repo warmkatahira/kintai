@@ -15,8 +15,6 @@
                 <ul class="drop">
                     @can('isManualPunchAvailable')
                         <li><a href="{{ route('punch_manual_begin_only.index') }}">手動打刻(出勤のみ)</a></li>
-                    @endcan
-                    @can('isManualPunchAvailable')
                         <li><a href="{{ route('punch_manual.index') }}">手動打刻</a></li>
                     @endcan
                     @can('isCustomerMgtFuncAvailable')
