@@ -13,6 +13,7 @@
         <div class="bg-white border border-gray-200 px-10 py-5 whitespace-nowrap">
             <form method="POST" action="{{ route('employee_update.update') }}" class="m-0" id="employee_update_form">
                 @csrf
+                <x-employee-mgt.create-select label="有効/無効" id="is_available" :db="$employee->is_available" required="1" tippy="0" />
                 <x-create-select label="拠点" id="base_id" :forValue="$bases" text="base_name" :db="$employee->base_id" required="1" tippy="0" />
                 <x-create-select label="従業員区分" id="employee_category_id" :forValue="$employee_categories" text="employee_category_name" :db="$employee->employee_category_id" required="1" tippy="0" />
                 <x-create-input label="従業員番号" type="text" id="employee_no" :db="$employee->employee_no" required="1" tippy="0" />

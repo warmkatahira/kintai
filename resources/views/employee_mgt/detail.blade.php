@@ -9,6 +9,13 @@
                 <a href="{{ route('employee_update.index', ['employee_id' => $employee->employee_id]) }}" class="w-40 text-xl py-4 rounded-lg text-center bg-blue-200 ml-auto">更新</a>
             @endif
         </div>
+        <!-- 有効/無効 -->
+        <div class="flex flex-col">
+            <p class="border-l-8 border-theme-sub text-xl pl-3 my-3">有効/無効</p>
+            <div class="flex flex-row">
+                <x-detail-div label="有効/無効" :value="$employee->is_available == 1 ? '有効' : '無効'" class="w-40 text-center" />
+            </div>
+        </div>
         <!-- 従業員情報 -->
         <div class="flex flex-col">
             <p class="border-l-8 border-theme-sub text-xl pl-3 my-3">従業員情報</p>

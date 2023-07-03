@@ -5,7 +5,7 @@
             <thead>
                 <tr class="text-left text-white bg-gray-600 sticky top-0">
                     <th class="font-thin py-3 px-2 text-center">詳細</th>
-                    <th class="font-thin py-3 px-2 text-center">ステータス</th>
+                    <th class="font-thin py-3 px-2 text-center">有効/無効</th>
                     <th class="font-thin py-3 px-2 text-center">拠点</th>
                     <th class="font-thin py-3 px-2 text-center">荷主名</th>
                     <th class="font-thin py-3 px-2 text-center">荷主グループ名</th>

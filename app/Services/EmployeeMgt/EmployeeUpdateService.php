@@ -20,6 +20,7 @@ class EmployeeUpdateService
             'employee_last_name' => $request->employee_last_name,
             'employee_first_name' => $request->employee_first_name,
             'monthly_workable_time' => $request->monthly_workable_time,
+            'is_available' => $request->is_available,
         ];
         // 時短情報が有効な場合のみ更新する
         if(Gate::allows('isShortTimeInfoAvailable')){

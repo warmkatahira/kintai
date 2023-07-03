@@ -9,11 +9,11 @@
                 <a href="{{ route('customer_update.index', ['customer_id' => $customer->customer_id]) }}" class="w-40 text-xl py-4 rounded-lg text-center bg-blue-200 ml-auto">更新</a>
             @endif
         </div>
-        <!-- ステータス -->
+        <!-- 有効/無効 -->
         <div class="flex flex-col">
-            <p class="border-l-8 border-theme-sub text-xl pl-3 my-3">ステータス</p>
+            <p class="border-l-8 border-theme-sub text-xl pl-3 my-3">有効/無効</p>
             <div class="flex flex-row">
-                <x-detail-div label="ステータス" :value="$customer->is_available == 1 ? '有効' : '無効'" class="w-40 text-center" />
+                <x-detail-div label="有効/無効" :value="$customer->is_available == 1 ? '有効' : '無効'" class="w-40 text-center" />
             </div>
         </div>
         <!-- 荷主情報 -->

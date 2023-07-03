@@ -4,7 +4,7 @@ namespace App\Http\Controllers\EmployeeMgt;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Http\Requests\EmployeeCreateRequest;
+use App\Http\Requests\EmployeeUpdateRequest;
 use App\Services\EmployeeMgt\EmployeeUpdateService;
 use App\Models\EmployeeCategory;
 use App\Models\Employee;
@@ -38,7 +38,7 @@ class EmployeeUpdateController extends Controller
         ]);
     }
 
-    public function update(EmployeeCreateRequest $request)
+    public function update(EmployeeUpdateRequest $request)
     {
         // インスタンス化
         $EmployeeUpdateService = new EmployeeUpdateService;
