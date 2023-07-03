@@ -18,7 +18,7 @@
                         <td class="py-1 px-2 border text-center">
                             <a href="{{ route('customer_mgt.detail', ['customer_id' => $customer->customer_id]) }}" class="text-center border border-blue-500 bg-blue-100 text-blue-500 text-xs px-2 py-1">詳細</a>
                         </td>
-                        <td class="py-1 px-2 border text-center">{{ $customer->is_status == 1 ? '有効' : '無効' }}</td>
+                        <td class="py-1 px-2 border text-center">{{ $customer->is_available == 1 ? '有効' : '無効' }}</td>
                         <td class="py-1 px-2 border text-center">{{ $customer->base->base_name }}</td>
                         <td class="py-1 px-2 border text-left">{{ $customer->customer_name }}</td>
                         <td class="py-1 px-2 border text-center">@if(!is_null($customer->customer_group)){{ $customer->customer_group->customer_group_name }}@endif</td>

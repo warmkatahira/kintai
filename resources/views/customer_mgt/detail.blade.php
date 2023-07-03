@@ -13,7 +13,7 @@
         <div class="flex flex-col">
             <p class="border-l-8 border-theme-sub text-xl pl-3 my-3">ステータス</p>
             <div class="flex flex-row">
-                <x-detail-div label="ステータス" :value="$customer->is_status == 1 ? '有効' : '無効'" class="w-40 text-center" />
+                <x-detail-div label="ステータス" :value="$customer->is_available == 1 ? '有効' : '無効'" class="w-40 text-center" />
             </div>
         </div>
         <!-- 荷主情報 -->

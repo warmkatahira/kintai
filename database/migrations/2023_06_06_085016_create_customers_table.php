@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('customer_name', 20);
             $table->unsignedInteger('customer_group_id')->nullable();
             $table->string('base_id', 20);
-            $table->boolean('is_status')->default(1);
+            $table->boolean('is_available')->default(1);
             $table->unsignedInteger('customer_sort_order')->default(100);
             $table->timestamps();
             // 外部キー制約

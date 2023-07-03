@@ -29,7 +29,7 @@ class CustomerUpdateRequest extends FormRequest
             'base_id' => 'required|exists:bases,base_id',
             'customer_name' => 'required|max:20',
             'customer_group_id' => 'nullable|exists:customer_groups,customer_group_id',
-            'is_status' => 'required|boolean',
+            'is_available' => 'required|boolean',
             'customer_sort_order' => 'required|integer|gt:0',
         ];
     }
@@ -53,7 +53,7 @@ class CustomerUpdateRequest extends FormRequest
             'base_id' => '拠点',
             'customer_name' => '荷主名',
             'customer_group_id' => '荷主グループ',
-            'is_status' => 'ステータス',
+            'is_available' => '有効/無効',
             'customer_sort_order' => '荷主並び順',
         ];
     }

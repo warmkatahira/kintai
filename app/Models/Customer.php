@@ -18,7 +18,7 @@ class Customer extends Model
         'customer_name',
         'customer_group_id',
         'base_id',
-        'is_status',
+        'is_available',
         'customer_sort_order',
     ];
     // 全て取得
@@ -34,7 +34,7 @@ class Customer extends Model
     // 指定した拠点の有効なレコードを取得
     public static function getSpecifyBase($base_id)
     {
-        return self::where('base_id', $base_id)->where('is_status', 1)->orderBy('customer_sort_order', 'asc');
+        return self::where('base_id', $base_id)->where('is_available', 1)->orderBy('customer_sort_order', 'asc');
     }
     // 指定した荷主グループのレコードを取得
     public static function getSpecifyCustomerGroup($customer_group_id)

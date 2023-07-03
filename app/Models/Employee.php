@@ -22,6 +22,7 @@ class Employee extends Model
         'employee_category_id',
         'monthly_workable_time',
         'over_time_start',
+        'is_available',
     ];
     // 全て取得
     public static function getAll()

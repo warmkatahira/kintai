@@ -17,7 +17,7 @@
         <ul class="tab_detail_wrap">
             <div class="grid grid-cols-12 gap-4 mt-5">
                 @foreach($customer_group->customers as $customer)
-                    @if($customer->is_status == 1)
+                    @if($customer->is_available == 1)
                         <button type="button" class="working_time_input_modal_open col-span-4 text-center text-2xl bg-theme-sub rounded-lg py-4 px-2" value="{{ $customer->customer_id }}">{{ $customer->customer_name }}</button>
                     @endif
                 @endforeach
