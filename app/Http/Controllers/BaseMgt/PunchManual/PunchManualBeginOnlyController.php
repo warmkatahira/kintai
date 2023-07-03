@@ -6,9 +6,9 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Services\Punch\PunchManualBeginOnlyService;
-use App\Services\Punch\PunchBeginService;
 use App\Http\Requests\PunchManualBeginOnlyRequest;
 use App\Models\Employee;
+use App\Models\Kintai;
 
 class PunchManualBeginOnlyController extends Controller
 {
@@ -25,6 +25,15 @@ class PunchManualBeginOnlyController extends Controller
     {
         // インスタンス化
         $PunchManualBeginOnlyService = new PunchManualBeginOnlyService;
+        // 打刻しようとしている条件のレコードを取得
+        $kintai = Kintai::checkKintaiRecordCreateAvailable($request->work_day, $request->employee_id);
+        // 既に存在する勤怠であれば中断
+        if(isset($kintai)){
+            return redirect()->back()->with([
+                'alert_type' => 'error',
+                'alert_message' => '打刻されている勤怠です。'.$kintai->employee->employee_last_name.$kintai->employee->employee_first_name.'('.$request->work_day.')',
+            ]);
+        }
         // 勤怠テーブルにレコードを追加
         $kintai = $PunchManualBeginOnlyService->createKintai($request);
         return redirect()->route('top.index')->with([

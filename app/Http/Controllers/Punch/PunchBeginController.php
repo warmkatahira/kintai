@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Services\Punch\PunchBeginService;
 use Carbon\CarbonImmutable;
+use App\Models\Kintai;
 
 class PunchBeginController extends Controller
 {
@@ -32,6 +33,17 @@ class PunchBeginController extends Controller
     {
         // インスタンス化
         $PunchBeginService = new PunchBeginService;
+        // 今日の日付をインスタンス化
+        $work_day = CarbonImmutable::today();
+        // 打刻しようとしている条件のレコードを取得
+        $kintai = Kintai::checkKintaiRecordCreateAvailable($work_day, $request->punch_id);
+        // 既に存在する勤怠であれば中断
+        if(isset($kintai)){
+            return redirect()->route('top.index')->with([
+                'alert_type' => 'error',
+                'alert_message' => '打刻されている勤怠です。'.$kintai->employee->employee_last_name.$kintai->employee->employee_first_name.'('.$work_day->format('Y-m-d').')',
+            ]);
+        }
         // 勤怠テーブルにレコードを追加
         $kintai = $PunchBeginService->createKintai($request);
         session()->flash('punch_type', '出勤');

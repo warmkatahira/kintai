@@ -13,6 +13,7 @@ use App\Http\Requests\PunchManualRequest;
 use App\Models\Employee;
 use App\Models\Customer;
 use App\Models\CustomerGroup;
+use App\Models\Kintai;
 
 class PunchManualController extends Controller
 {
@@ -33,8 +34,8 @@ class PunchManualController extends Controller
         $PunchManualService = new PunchManualService;
         $PunchFinishInputService = new PunchFinishInputService;
         $PunchUpdateService = new PunchUpdateService;
-        // 打刻可能な条件であるか確認
-        $kintai = $PunchManualService->checkPunchAvailable($request);
+        // 打刻しようとしている条件のレコードを取得
+        $kintai = Kintai::checkKintaiRecordCreateAvailable($request->work_day, $request->employee_id);
         // 既に存在する勤怠であれば中断
         if(isset($kintai)){
             return redirect()->back()->with([

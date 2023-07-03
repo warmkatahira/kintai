@@ -8,15 +8,6 @@ use App\Models\Kintai;
 
 class PunchManualService
 {
-    // 打刻可能な条件であるか確認
-    public function checkPunchAvailable($request)
-    {
-        // 入力された出勤日と従業員の勤怠が存在するか確認
-        return Kintai::where('employee_id', $request->employee_id)
-                        ->where('work_day', $request->work_day)
-                        ->first();
-    }
-
     public function createKintai($request)
     {
         // 早出フラグを取得(リクエストパラメータがある = 早出となる) ※早出は1

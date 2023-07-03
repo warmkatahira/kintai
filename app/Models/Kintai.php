@@ -107,4 +107,12 @@ class Kintai extends Model
                 ->whereDate('work_day', '<=', $yesterday)
                 ->count();
     }
+    // 勤怠レコードを追加できるかチェック用
+    public static function checkKintaiRecordCreateAvailable($work_day, $employee_id)
+    {
+        // レコードを取得
+        return Kintai::where('employee_id', $employee_id)
+                        ->where('work_day', $work_day)
+                        ->first();
+    }
 }
