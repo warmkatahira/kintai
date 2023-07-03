@@ -147,6 +147,11 @@
     "isEntry": true,
     "src": "resources/js/punch/punch_finish_tab.js"
   },
+  "resources/js/punch/punch_manual_begin_only.js": {
+    "file": "assets/punch_manual_begin_only-41b2f8a8.js",
+    "isEntry": true,
+    "src": "resources/js/punch/punch_manual_begin_only.js"
+  },
   "resources/js/role_mgt/role_create.js": {
     "file": "assets/role_create-563cd999.js",
     "isEntry": true,

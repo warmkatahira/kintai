@@ -32,8 +32,6 @@ class PunchBeginController extends Controller
     {
         // インスタンス化
         $PunchBeginService = new PunchBeginService;
-        // 現在の日時を取得
-        $nowDate = CarbonImmutable::now();
         // 勤怠テーブルにレコードを追加
         $kintai = $PunchBeginService->createKintai($request);
         session()->flash('punch_type', '出勤');

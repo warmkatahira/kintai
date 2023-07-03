@@ -25,6 +25,7 @@ export default defineConfig({
             'resources/js/punch/punch_finish_input.js',
             'resources/js/punch/punch_finish_tab.js',
             'resources/css/punch_finish_tab.css',
+            'resources/js/punch/punch_manual_begin_only.js',
             'resources/js/search_date_period.js',
             'resources/js/kintai_mgt/kintai_detail.js',
             'resources/js/kintai_mgt/kintai_mgt.js',

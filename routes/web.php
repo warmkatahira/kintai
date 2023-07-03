@@ -25,6 +25,7 @@ use Illuminate\Support\Facades\Route;
     use App\Http\Controllers\EmployeeMgt\EmployeeUpdateController;
 // +-+-+-+-+-+-+-+- 拠点管理 +-+-+-+-+-+-+-+-
     // +-+-+-+-+-+-+-+- 手動打刻 +-+-+-+-+-+-+-+-
+    use App\Http\Controllers\BaseMgt\PunchManual\PunchManualBeginOnlyController;
     use App\Http\Controllers\BaseMgt\PunchManual\PunchManualController;
     // +-+-+-+-+-+-+-+- 荷主管理 +-+-+-+-+-+-+-+-
     use App\Http\Controllers\BaseMgt\CustomerMgt\CustomerMgtController;
@@ -168,6 +169,11 @@ Route::middleware(['auth', 'userStatusCheck', 'OperationLogRecord'])->group(func
     // ★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆ 拠点管理 ★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆
     Route::middleware(['BaseMgtFuncAvailable'])->group(function () {
         Route::middleware(['ManualPunchAvailable'])->group(function () {
+            // -+-+-+-+-+-+-+-+-+-+-+-+ 手動打刻(出勤のみ) -+-+-+-+-+-+-+-+-+-+-+-+
+            Route::controller(PunchManualBeginOnlyController::class)->prefix('punch_manual_begin_only')->name('punch_manual_begin_only.')->group(function(){
+                Route::get('', 'index')->name('index');
+                Route::post('enter', 'enter')->name('enter')->middleware('kintaiCloseCheck');
+            });
             // -+-+-+-+-+-+-+-+-+-+-+-+ 手動打刻 -+-+-+-+-+-+-+-+-+-+-+-+
             Route::controller(PunchManualController::class)->prefix('punch_manual')->name('punch_manual.')->group(function(){
                 Route::get('', 'index')->name('index');
