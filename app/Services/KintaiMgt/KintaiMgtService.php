@@ -88,7 +88,7 @@ class KintaiMgtService
         }
         // 従業員区分条件がある場合
         if (!empty(session('search_employee_category_id'))) {
-            $kintais->where('employee_category_id', session('search_employee_category_id'));
+            $kintais->where('employees.employee_category_id', session('search_employee_category_id'));
         }
         // 従業員名条件がある場合
         if (!empty(session('search_employee_name'))) {
