@@ -83,6 +83,13 @@ class PunchFinishController extends Controller
         $PunchFinishEnterService = new PunchFinishEnterService;
         // 勤怠情報を取得
         $kintai = Kintai::getSpecify($request->kintai_id)->first();
+        // 既に退勤済みの勤怠であれば中断
+        if(!is_null($kintai->finish_time)){
+            return redirect()->route('top.index')->with([
+                'alert_type' => 'error',
+                'alert_message' => '退勤されている勤怠です。'.$kintai->employee->employee_last_name.$kintai->employee->employee_first_name.'('.$kintai->work_day.')',
+            ]);
+        }
         // 残業時間を算出
         $over_time = $PunchFinishEnterService->getOverTime($kintai, $request->working_time);
         // 勤怠概要を更新
