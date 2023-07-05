@@ -128,7 +128,7 @@
     "src": "resources/js/punch/punch_common.js"
   },
   "resources/js/punch/punch_complete_popup.js": {
-    "file": "assets/punch_complete_popup-a5511d0d.js",
+    "file": "assets/punch_complete_popup-b40d5310.js",
     "isEntry": true,
     "src": "resources/js/punch/punch_complete_popup.js"
   },
