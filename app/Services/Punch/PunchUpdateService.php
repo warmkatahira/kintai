@@ -81,7 +81,7 @@ class PunchUpdateService
         ]);
     }
 
-    public function setSessionKintaiModifyInfo($out_return_time, $begin_finish_time, $rest_time, $no_rest_times, $working_time, $punch_begin_type)
+    public function setSessionKintaiModifyInfo($out_return_time, $begin_finish_time, $rest_time, $no_rest_times, $working_time, $punch_begin_type, $rest_times)
     {
         // 外出時間
         session(['out_time' => $out_return_time['out_time']]);
@@ -101,6 +101,8 @@ class PunchUpdateService
         session(['rest_time' => $rest_time]);
         // 休憩未取得回数
         session(['no_rest_times' => $no_rest_times]);
+        // 休憩取得回数
+        session(['rest_times' => $rest_times]);
         // 稼働時間
         session(['working_time' => $working_time]);
         // 早出フラグ
@@ -119,7 +121,7 @@ class PunchUpdateService
             'finish_time' => session('finish_time'),
             'finish_time_adj' => session('finish_time_adj'),
             'rest_time' => $request->rest_time,
-            'no_rest_time' => $request->no_rest_time,
+            'no_rest_time' => $request->has('no_rest_time') ? $request->no_rest_time : $request->org_rest_time - $request->rest_time_select,
             'add_rest_time' => isset($request->add_rest_time) ? $request->add_rest_time : 0,
             'out_time' => session('out_time'),
             'out_time_adj' => session('out_time_adj'),

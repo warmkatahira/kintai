@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Carbon\CarbonImmutable;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Models\Base;
 use App\Models\Kintai;
 use App\Models\Customer;
 use App\Models\CustomerGroup;
@@ -48,6 +49,8 @@ class PunchFinishController extends Controller
         }
         // 休憩未取得回数の情報を取得
         $no_rest_times = $PunchFinishInputService->getNoRestTime($kintai->employee_id, $rest_time);
+        // 休憩取得回数の情報を取得
+        $rest_times = $PunchFinishInputService->getRestTime($kintai->employee_id, $rest_time);
         // 稼働時間を算出
         $working_time = $PunchFinishInputService->getWorkingTime($kintai->begin_time_adj, $finish_time_adj, $rest_time, $kintai->out_return_time, $request->add_rest_time);
         // 自拠点の荷主情報を取得
@@ -61,6 +64,8 @@ class PunchFinishController extends Controller
         $add_rest_available = $PunchFinishInputService->checkAddRestAvailable();
         // 従業員情報を取得
         $employee = Employee::getSpecify($kintai->employee_id)->first();
+        // 拠点情報を取得（休憩関連選択モードを取得するため）
+        $base = Base::getSpecify(Auth::user()->base_id)->first();
         return view('punch.finish.input')->with([
             'kintai' => $kintai,
             'finish_time' => $finish_time,
@@ -68,12 +73,14 @@ class PunchFinishController extends Controller
             'working_time' => $working_time,
             'rest_time' => $rest_time,
             'no_rest_times' => $no_rest_times,
+            'rest_times' => $rest_times,
             'customers' => $customers,
             'customer_groups' => $customer_groups,
             'support_bases' => $support_bases,
             'add_rest_times' => $add_rest_times,
             'add_rest_available' => $add_rest_available,
             'employee' => $employee,
+            'base' => $base,
         ]);
     }
 

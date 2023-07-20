@@ -17,6 +17,7 @@ class Base extends Model
         'base_id',
         'base_name',
         'is_add_rest_available',
+        'rest_related_select_mode',
     ];
     // 全て取得
     public static function getAll()

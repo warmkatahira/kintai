@@ -59,7 +59,7 @@ class PunchFinishEnterService
             'finish_time' => $request->finish_time,
             'finish_time_adj' => $request->finish_time_adj,
             'rest_time' => $request->rest_time,
-            'no_rest_time' => $request->no_rest_time,
+            'no_rest_time' => $request->has('no_rest_time') ? $request->no_rest_time : $request->org_rest_time - $request->rest_time_select,
             'add_rest_time' => isset($request->add_rest_time) ? $request->add_rest_time : 0,
             'working_time' => $request->working_time * 60, // 0.25単位から分単位に変換
             'over_time' => $over_time * 60, // 0.25単位から分単位に変換

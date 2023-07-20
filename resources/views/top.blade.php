@@ -12,7 +12,7 @@
             </div>
         </div>
         <div class="flex flex-row justify-center mt-5">
-            <a href="{{ route('punch.index') }}" class="text-5xl w-full text-center p-20 bg-theme-sub">打刻はこちら</a>
+            <a href="{{ route('punch.index') }}" class="text-5xl text-center py-20 px-80 bg-theme-sub">打刻はこちら</a>
         </div>
     </div>
 </x-app-layout>

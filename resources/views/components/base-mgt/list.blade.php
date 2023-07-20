@@ -8,6 +8,7 @@
                     <th class="font-thin py-3 px-2 text-center">拠点ID</th>
                     <th class="font-thin py-3 px-2 text-center">拠点名</th>
                     <th class="font-thin py-3 px-2 text-center">追加休憩取得</th>
+                    <th class="font-thin py-3 px-2 text-center">休憩関連選択モード</th>
                 </tr>
             </thead>
             <tbody class="bg-white">
@@ -19,6 +20,7 @@
                         <td class="py-1 px-2 border text-left">{{ $base->base_id }}</td>
                         <td class="py-1 px-2 border text-center">{{ $base->base_name }}</td>
                         <td class="py-1 px-2 border text-center">@if($base->is_add_rest_available == 1) ○ @endif</td>
+                        <td class="py-1 px-2 border text-center">{{ $base->rest_related_select_mode == 'no_rest' ? '休憩未取得' : '休憩取得' }}</td>
                     </tr>
                 @endforeach
             </tbody>

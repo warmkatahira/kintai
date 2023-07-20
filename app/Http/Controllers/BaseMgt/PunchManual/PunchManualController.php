@@ -14,6 +14,7 @@ use App\Models\Employee;
 use App\Models\Customer;
 use App\Models\CustomerGroup;
 use App\Models\Kintai;
+use App\Models\Base;
 
 class PunchManualController extends Controller
 {
@@ -55,10 +56,12 @@ class PunchManualController extends Controller
         }
         // 休憩未取得回数の情報を取得
         $no_rest_times = $PunchFinishInputService->getNoRestTime($request->employee_id, $rest_time);
+        // 休憩取得回数の情報を取得
+        $rest_times = $PunchFinishInputService->getRestTime($request->employee_id, $rest_time);
         // 稼働時間を算出
         $working_time = $PunchFinishInputService->getWorkingTime($begin_finish_time['begin_time_adj'], $begin_finish_time['finish_time_adj'], $rest_time, $out_return_time['out_return_time'], 0);
         // 各種情報をセッションに格納
-        $PunchUpdateService->setSessionKintaiModifyInfo($out_return_time, $begin_finish_time, $rest_time, $no_rest_times, $working_time, $request->punch_begin_type);
+        $PunchUpdateService->setSessionKintaiModifyInfo($out_return_time, $begin_finish_time, $rest_time, $no_rest_times, $working_time, $request->punch_begin_type, $rest_times);
         // 自拠点の荷主情報を取得
         $customers = Customer::getSpecifyBase(Auth::user()->base_id)->get();
         $customer_groups = CustomerGroup::getSpecifyBase(Auth::user()->base_id)->has('customers')->get();
@@ -70,6 +73,8 @@ class PunchManualController extends Controller
         $add_rest_available = $PunchFinishInputService->checkAddRestAvailable();
         // 従業員情報を取得
         $employee = Employee::getSpecify($request->employee_id)->first();
+        // 拠点情報を取得（休憩関連選択モードを取得するため）
+        $base = Base::getSpecify(Auth::user()->base_id)->first();
         return view('punch.manual.input')->with([
             'customers' => $customers,
             'customer_groups' => $customer_groups,
@@ -78,6 +83,7 @@ class PunchManualController extends Controller
             'support_bases' => $support_bases,
             'add_rest_times' => $add_rest_times,
             'add_rest_available' => $add_rest_available,
+            'base' => $base,
         ]);
     }
 

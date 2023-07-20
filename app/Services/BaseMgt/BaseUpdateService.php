@@ -14,6 +14,7 @@ class BaseUpdateService
         Base::getSpecify($request->base_id)->update([
             'base_name' => $request->base_name,
             'is_add_rest_available' => $request->is_add_rest_available,
+            'rest_related_select_mode' => $request->rest_related_select_mode,
         ]);
         return;
     }

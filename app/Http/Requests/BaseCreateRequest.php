@@ -28,6 +28,7 @@ class BaseCreateRequest extends FormRequest
             'base_id' => 'required|unique:bases,base_id',
             'base_name' => 'required|max:20',
             'is_add_rest_available' => 'required|boolean',
+            'rest_related_select_mode' => 'required',
         ];
     }
 
@@ -47,6 +48,7 @@ class BaseCreateRequest extends FormRequest
             'base_id' => '拠点ID',
             'base_name' => '拠点名',
             'is_add_rest_available' => '追加休憩取得有効',
+            'rest_related_select_mode' => '休憩関連選択モード',
         ];
     }
 }

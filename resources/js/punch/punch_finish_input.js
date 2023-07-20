@@ -97,6 +97,11 @@ $(".no_rest_time_select").on("click",function(){
     rest_time_update();
 });
 
+// 休憩取得時間が変更されたら
+$(".rest_time_select").on("click",function(){
+    rest_time_update();
+});
+
 // 追加休憩取得時間が変更されたら
 $(".add_rest_time_select").on("click",function(){
     rest_time_update();
@@ -110,7 +115,13 @@ window.onload = function(){
 function rest_time_update(){
     // 要素を取得
     var no_rest_times = document.getElementsByName("no_rest_time");
+    var rest_times = document.getElementsByName("rest_time_select");
     var add_rest_times = document.getElementsByName("add_rest_time");
+    var rest_related_select_mode = document.getElementById("rest_related_select_mode");
+    // ここで初期値をセットしている
+    var select_no_rest_time_value = 0;
+    var select_rest_time_value = 0;
+    var select_add_rest_time_value = 0;
     // 休憩未取得時間の処理
     for(var i = 0; i < no_rest_times.length; i++){
         const element = document.getElementById(no_rest_times[i].id + '_label');
@@ -118,15 +129,31 @@ function rest_time_update(){
             element.classList.add('bg-blue-200');
             // 選択している休憩時間を取得
             var select_no_rest_time = document.getElementById(no_rest_times[i].id);
+            select_no_rest_time_value = select_no_rest_time.value;
         }
         if(!no_rest_times[i].checked) {
             // 非選択要素のCSSを調整
             element.classList.remove('bg-blue-200');
         }
     }
+    // 休憩取得時間の処理
+    for(var i = 0; i < rest_times.length; i++){
+        const element = document.getElementById(rest_times[i].id + '_label');
+        if(rest_times[i].checked) {
+            element.classList.add('bg-blue-200');
+            // 選択している休憩時間を取得
+            var select_rest_time = document.getElementById(rest_times[i].id);
+            select_rest_time_value = select_rest_time.value;
+        }
+        if(!rest_times[i].checked) {
+            // 非選択要素のCSSを調整
+            element.classList.remove('bg-blue-200');
+        }
+    }
+    if(rest_related_select_mode.value == 'no_rest'){
+        select_rest_time_value = org_rest_time.value;
+    }
     // 追加休憩取得時間の処理
-    // 追加休憩取得時間は表示がない拠点もあるので、ここで初期値をセットしている
-    var select_add_rest_time_value = 0;
     for(var i = 0; i < add_rest_times.length; i++){
         const element = document.getElementById(add_rest_times[i].id + '_label');
         if(add_rest_times[i].checked) {
@@ -141,11 +168,12 @@ function rest_time_update(){
         }
     }
     // 休憩時間を変更 
-    rest_time.value = Number(org_rest_time.value) - Number(select_no_rest_time.value) + Number(select_add_rest_time_value);
+    rest_time.value = Number(org_rest_time.value) - Number(select_no_rest_time_value) + Number(select_add_rest_time_value) - (Number(org_rest_time.value) - Number(select_rest_time_value));
+    console.log((Number(org_rest_time.value) - Number(select_rest_time_value)));
     // 勤務時間を変更
-    working_time.value = ((Number(org_working_time.value) + Number(select_no_rest_time.value) - Number(select_add_rest_time_value)) / 60).toFixed(2);
+    working_time.value = ((Number(org_working_time.value) + Number(select_no_rest_time_value) - Number(select_add_rest_time_value) + (Number(org_rest_time.value) - Number(select_rest_time_value))) / 60).toFixed(2);
     // 残り入力時間を変更
-    input_time_left.innerHTML = ((Number(org_working_time.value) + Number(select_no_rest_time.value) - Number(select_add_rest_time_value)) / 60).toFixed(2);
+    input_time_left.innerHTML = ((Number(org_working_time.value) + Number(select_no_rest_time_value) - Number(select_add_rest_time_value) + (Number(org_rest_time.value) - Number(select_rest_time_value))) / 60).toFixed(2);
     let elements = document.getElementsByClassName('working_time_input');
     for(var k = 0; k < elements.length; k++){
         input_time_left.innerHTML = (Number(input_time_left.innerHTML) - Number(elements[k].value)).toFixed(2);
@@ -163,8 +191,11 @@ $('#punch_finish_enter').on("click",function(){
         if(Number($('#input_time_left').html()) < 0){
             throw new Error('荷主稼働時間がマイナスになっています。\n時間を調整して下さい。');
         }
-        if($('[name="no_rest_time"]:checked').length == 0){
+        if($('[name="no_rest_time"]').length > 0 && $('[name="no_rest_time"]:checked').length == 0){
             throw new Error('休憩未取得時間が選択されていません。');
+        }
+        if($('[name="rest_time_select"]').length > 0 && $('[name="rest_time_select"]:checked').length == 0){
+            throw new Error('休憩取得時間が選択されていません。');
         }
         if($('[name="add_rest_time"]').length > 0 && $('[name="add_rest_time"]:checked').length == 0){
             throw new Error('追加休憩取得時間が選択されていません。');

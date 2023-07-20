@@ -141,6 +141,43 @@ class PunchFinishInputService
         return $no_rest_times;        
     }
 
+    // 休憩取得回数の情報を取得
+    public function getRestTime($employee_id, $rest_time)
+    {
+        // 従業員情報を取得
+        $employee = Employee::getSpecify($employee_id)->first();
+        // 変数をセット
+        $rest_times = [];
+        array_push($rest_times, ['minute' => $rest_time, 'text1' => $rest_time . '分']);
+        // 休憩未取得が有効であれば処理を継続
+        if($employee->employee_category->is_no_rest_available == 1){
+            // 休憩時間に合わせて選択肢を変動
+            if($rest_time == 15){
+                array_push($rest_times, ['minute' => 0, 'text1' => '0分']);
+            }
+            if($rest_time == 30){
+                array_push($rest_times, ['minute' => 15, 'text1' => '15分']);
+                array_push($rest_times, ['minute' => 0, 'text1' => '0分']);
+            }
+            if($rest_time == 60){
+                array_push($rest_times, ['minute' => 0, 'text1' => '0分']);
+            }
+            if($rest_time == 75){
+                array_push($rest_times, ['minute' => 60, 'text1' => '60分']);
+                array_push($rest_times, ['minute' => 15, 'text1' => '15分']);
+                array_push($rest_times, ['minute' => 0, 'text1' => '0分']);
+            }
+            if($rest_time == 90){
+                array_push($rest_times, ['minute' => 75, 'text1' => '75分']);
+                array_push($rest_times, ['minute' => 60, 'text1' => '60分']);
+                array_push($rest_times, ['minute' => 30, 'text1' => '30分']);
+                array_push($rest_times, ['minute' => 15, 'text1' => '15分']);
+                array_push($rest_times, ['minute' => 0, 'text1' => '0分']);
+            }
+        }
+        return $rest_times;        
+    }
+
     // 稼働時間を算出
     public function getWorkingTime($begin_time_adj, $finish_time_adj, $rest_time, $out_return_time, $add_rest_time)
     {

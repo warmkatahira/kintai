@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Punch;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Models\Base;
 use App\Models\Kintai;
 use App\Models\KintaiDetail;
 use App\Models\Customer;
@@ -57,10 +58,12 @@ class PunchUpdateController extends Controller
         }
         // 休憩未取得回数の情報を取得
         $no_rest_times = $PunchFinishInputService->getNoRestTime($kintai->employee_id, $rest_time);
+        // 休憩取得回数の情報を取得
+        $rest_times = $PunchFinishInputService->getRestTime($kintai->employee_id, $rest_time);
         // 稼働時間を算出
         $working_time = $PunchFinishInputService->getWorkingTime($begin_finish_time['begin_time_adj'], $begin_finish_time['finish_time_adj'], $rest_time, $out_return_time['out_return_time'], $kintai->add_rest_time);
         // 各種情報をセッションに格納
-        $PunchUpdateService->setSessionKintaiModifyInfo($out_return_time, $begin_finish_time, $rest_time, $no_rest_times, $working_time, $request->punch_begin_type);
+        $PunchUpdateService->setSessionKintaiModifyInfo($out_return_time, $begin_finish_time, $rest_time, $no_rest_times, $working_time, $request->punch_begin_type, $rest_times);
         // 荷主から応援タブの情報を取得
         $support_bases = $PunchFinishInputService->getSupportedBases();
         // 自拠点の荷主情報を取得
@@ -72,6 +75,8 @@ class PunchUpdateController extends Controller
         $add_rest_available = $PunchFinishInputService->checkAddRestAvailable();
         // 従業員情報を取得
         $employee = Employee::getSpecify($kintai->employee_id)->first();
+        // 拠点情報を取得（休憩関連選択モードを取得するため）
+        $base = Base::getSpecify(Auth::user()->base_id)->first();
         return view('punch.update.input')->with([
             'kintai' => $kintai,
             'kintai_details' => $kintai_details,
@@ -81,6 +86,7 @@ class PunchUpdateController extends Controller
             'add_rest_times' => $add_rest_times,
             'add_rest_available' => $add_rest_available,
             'employee' => $employee,
+            'base' => $base,
         ]);
     }
 
