@@ -19,7 +19,7 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     // 主キーカラムを変更
-    protected $primaryKey = 'role_id';
+    protected $primaryKey = 'id';
     // 操作するカラムを許可
     protected $fillable = [
         'user_id',

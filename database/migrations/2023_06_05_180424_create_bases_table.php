@@ -15,7 +15,7 @@ return new class extends Migration
             $table->string('base_id', 20)->primary();
             $table->string('base_name', 20);
             $table->boolean('is_add_rest_available')->default(0);
-            $table->string('rest_related_select_mode', '7')->default('no_rest');;
+            $table->string('rest_related_select_mode', '7')->default('no_rest');
             $table->timestamps();
         });
     }
