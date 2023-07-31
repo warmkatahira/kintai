@@ -8,7 +8,21 @@
             </div>
             <div class="flex flex-col w-48">
                 <p class="text-xl text-center py-2 bg-black text-white">退勤処理漏れ</p>
-                <p class="text-3xl text-center py-6 bg-white">{{ number_format($no_finish_kintai_count) }}</p>
+                <p class="text-3xl text-center py-6 bg-white">
+                    @if($no_finish_kintai_count > 0)
+                        <a href="{{ route('kintai_mgt.search', 
+                            [
+                                'search_base_id' => Auth::user()->base_id,
+                                'search_target' => App\Enums\KintaiMgtEnum::TARGET_NO_FINISH,
+                                'search_work_day_from' => $no_finish_from,
+                                'search_work_day_to' => $no_finish_to,
+                            ]
+                        ) }}" class="text-blue-600 underline">{{ number_format($no_finish_kintai_count) }}</a>
+                    @endif
+                    @if($no_finish_kintai_count == 0)
+                        {{ number_format($no_finish_kintai_count) }}
+                    @endif
+                </p>
             </div>
         </div>
         <div class="flex flex-row justify-center mt-5">

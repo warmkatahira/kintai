@@ -104,8 +104,7 @@ class Kintai extends Model
                     $query->where('base_id', Auth::user()->base_id);
                 })
                 ->whereNull('finish_time')
-                ->whereDate('work_day', '<=', $yesterday)
-                ->count();
+                ->whereDate('work_day', '<=', $yesterday);
     }
     // 勤怠レコードを追加できるかチェック用
     public static function checkKintaiRecordCreateAvailable($work_day, $employee_id)
