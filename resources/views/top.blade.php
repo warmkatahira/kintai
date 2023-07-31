@@ -9,7 +9,7 @@
             <div class="flex flex-col w-48">
                 <p class="text-xl text-center py-2 bg-black text-white">退勤処理漏れ</p>
                 <p class="text-3xl text-center py-6 bg-white">
-                    @if($no_finish_kintai_count > 0)
+                    @if($no_finish_kintai_count > 0 && Gate::allows('isKintaiMgtFuncAvailable'))
                         <a href="{{ route('kintai_mgt.search', 
                             [
                                 'search_base_id' => Auth::user()->base_id,
@@ -18,8 +18,7 @@
                                 'search_work_day_to' => $no_finish_to,
                             ]
                         ) }}" class="text-blue-600 underline">{{ number_format($no_finish_kintai_count) }}</a>
-                    @endif
-                    @if($no_finish_kintai_count == 0)
+                    @else
                         {{ number_format($no_finish_kintai_count) }}
                     @endif
                 </p>
