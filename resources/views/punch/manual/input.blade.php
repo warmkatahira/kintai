@@ -6,7 +6,7 @@
         <!-- 操作ボタン -->
         <div class="flex whitespace-nowrap mb-2">
             <a href="{{ route('punch_manual.index') }}" class="w-40 text-xl py-4 rounded-lg text-center bg-black text-white">戻る</a>
-            <p class="ml-auto text-4xl py-2">{{ \Carbon\CarbonImmutable::now()->isoFormat('YYYY年MM月DD日(ddd)') }}</p>
+            <p class="ml-auto text-4xl py-2">{{ \Carbon\CarbonImmutable::parse($work_day)->isoFormat('YYYY年MM月DD日(ddd)') }}</p>
         </div>
         <form method="POST" id="punch_enter_form" action="{{ route('punch_manual.enter') }}" class="m-0">
             @csrf
