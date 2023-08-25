@@ -22,7 +22,7 @@
                         </td>
                         <td class="py-1 px-2 border text-center">{{ sprintf('%03d', $customers->firstItem() + $loop->index) }}</td>
                         <td class="py-1 px-2 border text-center">{{ \Carbon\CarbonImmutable::parse($customer->date)->isoFormat('YYYY年MM月') }}</td>
-                        <td class="py-1 px-2 border text-center">{{ $customer->base->base_name }}</td>
+                        <td class="py-1 px-2 border">{{ $customer->base->base_name }}</td>
                         <td class="py-1 px-2 border text-left">{{ $customer->customer_name }}</td>
                         <td class="py-1 px-2 border text-right">{{ number_format($customer->total_customer_working_time_shain / 60, 2) }}</td>
                         <td class="py-1 px-2 border text-right">{{ number_format($customer->total_customer_working_time_part / 60, 2) }}</td>

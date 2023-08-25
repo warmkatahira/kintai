@@ -168,7 +168,7 @@ class CustomerWorkingTimeRankService
             ->select(DB::raw("sum(customer_working_time) as total_customer_working_time, DATE_FORMAT(work_day, '%Y-%m') as date, employees.*"))
             ->groupBy('date', 'employees.employee_id')
             ->orderBy('total_customer_working_time', 'desc')
-            ->take(5)
+            ->take(10)
             ->get();
         return $employees;
     }

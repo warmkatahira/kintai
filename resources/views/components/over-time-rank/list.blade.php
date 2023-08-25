@@ -18,7 +18,7 @@
                     <tr class="text-left hover:bg-theme-sub cursor-default">
                         <td class="py-1 px-2 border text-center">{{ sprintf('%03d', $employees->firstItem() + $loop->index) }}</td>
                         <td class="py-1 px-2 border text-center">{{ \Carbon\CarbonImmutable::parse($employee->date)->isoFormat('YYYY年MM月') }}</td>
-                        <td class="py-1 px-2 border text-center">{{ $employee->base->base_name }}</td>
+                        <td class="py-1 px-2 border">{{ $employee->base->base_name }}</td>
                         <td class="py-1 px-2 border text-center">{{ $employee->employee_category->employee_category_name }}</td>
                         <td class="py-1 px-2 border text-center">{{ $employee->employee_no }}</td>
                         <td class="py-1 px-2 border text-left">{{ $employee->employee_last_name.' '.$employee->employee_first_name }}</td>

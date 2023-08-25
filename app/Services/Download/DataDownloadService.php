@@ -11,6 +11,7 @@ use App\Models\Employee;
 use Carbon\CarbonImmutable;
 use App\Enums\DataDownloadEnum;
 use App\Enums\EmployeeCategoryEnum;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class DataDownloadService
 {
@@ -28,6 +29,11 @@ class DataDownloadService
         if($request->download_item == DataDownloadEnum::WORKING_TIME_BY_EMPLOYEE){
             $download_data = $this->getWorkingTimeByEmployee($base, $request->base_id, $start_day, $end_day, $request->aggregate_unit);
             $file_name = '【'.$base->base_name.'】【'.$request->aggregate_unit.'】稼働時間(従業員別)_'.CarbonImmutable::parse($start_day)->isoFormat('YYYY年MM月DD日').'-'.CarbonImmutable::parse($end_day)->isoFormat('YYYY年MM月DD日').'.csv';
+        }
+        // 稼働時間(荷主×従業員別)
+        if($request->download_item == DataDownloadEnum::WORKING_TIME_BY_CUSTOMER_EMPLOYEE){
+            $download_data = $this->getWorkingTimeByCustomerEmployee($base, $request->base_id, $start_day, $end_day, $request->aggregate_unit);
+            $file_name = '【'.$base->base_name.'】【'.$request->aggregate_unit.'】稼働時間(荷主×従業員別)_'.CarbonImmutable::parse($start_day)->isoFormat('YYYY年MM月DD日').'-'.CarbonImmutable::parse($end_day)->isoFormat('YYYY年MM月DD日').'.csv';
         }
         return compact('download_data', 'file_name');
     }
@@ -141,12 +147,13 @@ class DataDownloadService
                             });
         // 日単位か月単位かで日付をフォーマットするか可変
         if($aggregate_unit == '日単位'){
-            $employees->select(DB::raw("work_day as date, employee_category_name, employee_no, employee_last_name, employee_first_name, sum(working_time) as total_working_time"));
+            $employees->select(DB::raw("work_day as date, employee_category_name, employee_no, employee_last_name, employee_first_name, sum(working_time) as total_working_time, sum(over_time) as total_over_time"));
         }else{
-            $employees->select(DB::raw("DATE_FORMAT(work_day, '%Y-%m') as date, employee_category_name, employee_no, employee_last_name, employee_first_name, sum(working_time) as total_working_time"));
+            $employees->select(DB::raw("DATE_FORMAT(work_day, '%Y-%m') as date, employee_category_name, employee_no, employee_last_name, employee_first_name, sum(working_time) as total_working_time, sum(over_time) as total_over_time"));
         }
         $employees = $employees->groupBy('date', 'employee_no')
                     ->orderBy('employee_no')
+                    ->orderBy('date')
                     ->get();
         // データを格納する配列をセット
         $download_data = [];
@@ -159,6 +166,67 @@ class DataDownloadService
                 '従業員番号' => $employee->employee_no,
                 '従業員名' => $employee->employee_last_name.' '.$employee->employee_first_name,
                 '稼働時間' => $employee->total_working_time / 60,
+                '残業時間' => $employee->total_over_time / 60,
+            ];
+            $download_data[] = $param;
+        }
+        return $download_data;
+    }
+
+    // 稼働時間(荷主×従業員別)
+    public function getWorkingTimeByCustomerEmployee($base, $base_id, $start_day, $end_day, $aggregate_unit)
+    {
+        // 荷主マスタと拠点マスタをユニオン
+        $customers = Customer::where('base_id', $base_id)
+                            ->select('customers.customer_id', 'customer_name', DB::raw("'' as support"))
+                            ->union(Base::select('base_id', 'base_name', DB::raw("'○' as support")));
+        // 指定された年月・拠点の勤怠を取得
+        $subquery = Kintai::whereDate('work_day', '>=', $start_day)
+                        ->whereDate('work_day', '<=', $end_day)
+                        ->whereHas('employee.base', function ($query) use ($base_id) {
+                            $query->where('base_id', $base_id);
+                        })
+                        ->join('kintai_details', 'kintai_details.kintai_id', 'kintais.kintai_id')
+                        ->select('kintais.*', 'kintai_details.customer_id', 'kintai_details.customer_working_time');
+        // 拠点の従業員情報を取得
+        $employees = Employee::where('base_id', $base_id)
+                        ->join('employee_categories', 'employee_categories.employee_category_id', 'employees.employee_category_id')
+                        ->select('employees.*', 'employee_categories.employee_category_name');
+        // サブクエリを結合
+        $employees = DB::table(DB::raw("({$employees->toSql()}) as employees"))
+                    ->mergeBindings($employees->getQuery())
+                    ->leftJoin(DB::raw("({$subquery->toSql()}) as subquery"), function ($join) {
+                        $join->on('employees.employee_id', '=', 'subquery.employee_id');
+                    })
+                    ->mergeBindings($subquery->getQuery())
+                    ->leftJoin(DB::raw("({$customers->toSql()}) as customers"), function ($join) {
+                        $join->on('subquery.customer_id', '=', 'customers.customer_id');
+                    })
+                    ->mergeBindings($customers->getQuery());
+        // 日単位か月単位かで日付をフォーマットするか可変
+        if($aggregate_unit == '日単位'){
+            $employees->select(DB::raw("work_day as date, employee_category_name, employee_no, employee_last_name, employee_first_name, subquery.customer_id, customer_name, sum(customer_working_time) as total_customer_working_time, support"));
+        }else{
+            $employees->select(DB::raw("DATE_FORMAT(work_day, '%Y-%m') as date, employee_category_name, employee_no, employee_last_name, employee_first_name, subquery.customer_id, customer_name, sum(customer_working_time) as total_customer_working_time, support"));
+        }
+        $employees = $employees->groupBy('date', 'employee_no', 'customer_id', 'customer_name', 'support')
+                    ->orderBy('employee_no')
+                    ->orderBy('date')
+                    ->orderBy('customer_id')
+                    ->get();
+        // データを格納する配列をセット
+        $download_data = [];
+        // 対象の分だけループ処理
+        foreach($employees as $employee){
+            $param = [
+                '日付' => $aggregate_unit == '日単位' ? CarbonImmutable::parse($employee->date)->isoFormat('YYYY年MM月DD日') : CarbonImmutable::parse($employee->date)->isoFormat('YYYY年MM月'),
+                '拠点' => $base->base_name,
+                '従業員区分' => $employee->employee_category_name,
+                '従業員番号' => $employee->employee_no,
+                '従業員名' => $employee->employee_last_name.' '.$employee->employee_first_name,
+                '荷主' => $employee->customer_name,
+                '応援' => $employee->support,
+                '稼働時間' => $employee->total_customer_working_time / 60,
             ];
             $download_data[] = $param;
         }
