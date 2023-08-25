@@ -46,9 +46,12 @@ class PunchBeginController extends Controller
         }
         // 勤怠テーブルにレコードを追加
         $kintai = $PunchBeginService->createKintai($request);
+        // 当月の過去の勤怠で退勤されていないものがないか確認
+        $no_finish_kintai_count = $PunchBeginService->countNoFinishKintai($request->punch_id);
         session()->flash('punch_type', '出勤');
         session()->flash('employee_name', $kintai->employee->employee_last_name.''.$kintai->employee->employee_first_name);
         session()->flash('message', '本日も宜しくお願いします');
+        session()->flash('no_finish_kintai_count', $no_finish_kintai_count);
         return redirect()->back();
     }
 }

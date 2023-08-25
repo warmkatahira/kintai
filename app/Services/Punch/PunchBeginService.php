@@ -8,6 +8,7 @@ use Carbon\CarbonImmutable;
 use App\Models\Employee;
 use App\Models\Kintai;
 use App\Models\KintaiDetail;
+use App\Services\CommonService;
 
 class PunchBeginService
 {
@@ -91,5 +92,20 @@ class PunchBeginService
             $begin_time_adj = $begin_time_adj->format('H:i:00');
         }
         return $begin_time_adj;
+    }
+
+    // 当月の過去の勤怠で退勤されていないものがないか確認
+    public function countNoFinishKintai($employee_id)
+    {
+        // インスタンス化
+        $CommonService = new CommonService;
+        // 当月の月初・月末の日付を取得
+        $start_end_of_month = $CommonService->getStartEndOfMonth(CarbonImmutable::today());
+        // 今月月初から昨日までの自分の勤怠で退勤処理がされていない勤怠の数を取得
+        return Kintai::whereDate('work_day', '>=', $start_end_of_month['start'])
+                        ->whereDate('work_day', '<=', CarbonImmutable::yesterday())
+                        ->where('employee_id', $employee_id)
+                        ->whereNull('finish_time')
+                        ->count();
     }
 }
