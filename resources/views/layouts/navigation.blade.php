@@ -79,7 +79,6 @@
     <ul class="user_info">
         <li class="dropdown"><a href="#" class="trigger-drop">{{ Auth::user()->last_name.' '.Auth::user()->first_name.'さん' }}</a>
             <ul class="drop">
-                <li><a href="">アカウント</a></li>
                 <li>
                     <form method="POST" action="{{ route('logout') }}" class="m-0">
                         @csrf
