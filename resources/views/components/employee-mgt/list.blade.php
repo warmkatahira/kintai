@@ -20,7 +20,7 @@
             </thead>
             <tbody class="bg-white">
                 @foreach($employees as $employee)
-                    <tr class="text-left hover:bg-theme-sub cursor-default">
+                    <tr class="text-left hover:bg-theme-sub cursor-default @if($employee->is_available == 0) text-red-600 @endif">
                         <td class="py-1 px-2 border text-center">
                             <a href="{{ route('employee_mgt.detail', ['employee_id' => $employee->employee_id]) }}" class="text-center border border-blue-500 bg-blue-100 text-blue-500 text-xs px-2 py-1">詳細</a>
                         </td>

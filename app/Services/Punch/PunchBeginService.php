@@ -47,7 +47,11 @@ class PunchBeginService
     // 出勤打刻対象者を取得
     public function getPunchBeginTargetEmployee()
     {
-        return Employee::getSpecifyBase(Auth::user()->base_id)->doesntHave('punch_begin_targets')->where('is_available', 1)->get();
+        return Employee::getSpecifyBase(Auth::user()->base_id)
+                    ->doesntHave('punch_begin_targets')
+                    ->orderBy('employee_category_id', 'asc')
+                    ->orderBy('employee_no', 'asc')
+                    ->get();
     }
 
     // 勤怠テーブルにレコードを追加

@@ -25,7 +25,8 @@ class PunchReturnService
                 $join->on('employees.employee_id', '=', 'KINTAIS.employee_id');
             })
             ->select('employees.employee_no', 'employees.employee_last_name', 'employees.employee_first_name', 'KINTAIS.kintai_id')
-            ->orderBy('employee_no')
+            ->orderBy('employee_category_id', 'asc')
+            ->orderBy('employee_no', 'asc')
             ->get();
         return $employees;
     }

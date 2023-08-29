@@ -13,7 +13,7 @@
         <div class="bg-white border border-gray-200 px-10 py-5 whitespace-nowrap">
             <form method="POST" action="{{ route('employee_create.create') }}" class="m-0" id="employee_create_form">
                 @csrf
-                <x-create-select label="拠点" id="base_id" :forValue="$bases" text="base_name" :db="null" required="1" tippy="0" />
+                <x-create-select label="拠点" id="base_id" :forValue="$bases" text="base_name" :db="Auth::user()->base_id" required="1" tippy="0" />
                 <x-create-select label="従業員区分" id="employee_category_id" :forValue="$employee_categories" text="employee_category_name" :db="null" required="1" tippy="0" />
                 <x-create-input label="従業員番号" type="text" id="employee_no" :db="null" required="1" tippy="0" />
                 <x-create-input label="従業員名(姓)" type="text" id="employee_last_name" :db="null" required="1" tippy="0" />

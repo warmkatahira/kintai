@@ -13,6 +13,7 @@ use App\Services\Employee\EmployeeRegisterService;
 use App\Services\Download\KintaiReportDownloadService;
 use App\Services\Punch\PunchFinishInputService;
 use App\Services\CommonService;
+use App\Enums\StatusEnum;
 
 class EmployeeMgtController extends Controller
 {
@@ -36,10 +37,15 @@ class EmployeeMgtController extends Controller
         $employee_categories = EmployeeCategory::getAll()->get();
         // 従業員を取得
         $employees = $EmployeeMgtService->getEmployeeSearch();
+        // ステータス情報を取得($xx->aaの形式でアクセスできるようにしている)
+        $statuses = collect(StatusEnum::PULLDOWN_LIST)->map(function ($item) {
+            return (object) $item;
+        });
         return view('employee_mgt.index')->with([
             'bases' => $bases,
             'employees' => $employees,
             'employee_categories' => $employee_categories,
+            'statuses' => $statuses,
         ]);
     }
 
@@ -57,10 +63,15 @@ class EmployeeMgtController extends Controller
         $employee_categories = EmployeeCategory::getAll()->get();
         // 従業員を取得
         $employees = $EmployeeMgtService->getEmployeeSearch();
+        // ステータス情報を取得($xx->aaの形式でアクセスできるようにしている)
+        $statuses = collect(StatusEnum::PULLDOWN_LIST)->map(function ($item) {
+            return (object) $item;
+        });
         return view('employee_mgt.index')->with([
             'bases' => $bases,
             'employees' => $employees,
             'employee_categories' => $employee_categories,
+            'statuses' => $statuses,
         ]);
     }
 

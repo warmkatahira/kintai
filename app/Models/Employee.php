@@ -44,10 +44,10 @@ class Employee extends Model
     {
         // 現在の日時を取得
         $nowDate = CarbonImmutable::now();
-        // 今日の日付の勤怠が無い従業員
+        // 有効かつ今日の日付の勤怠が無い従業員
         return $this->hasMany(Kintai::class, 'employee_id', 'employee_id')
-                ->where('work_day', $nowDate->format('Y-m-d'))
-                ->orderBy('employee_no');
+                ->where('is_available', 1)
+                ->where('work_day', $nowDate->format('Y-m-d'));
     }
     // basesテーブルとのリレーション
     public function base()

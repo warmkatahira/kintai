@@ -41,6 +41,7 @@ class KintaiReportDownloadService
                         ->where('is_available', 1)
                         ->join('bases', 'bases.base_id', 'employees.base_id')
                         ->select('employee_id', 'employee_no', 'employee_last_name', 'employee_first_name', 'bases.base_id', 'base_name', 'employee_category_id', 'over_time_start')
+                        ->orderBy('employee_category_id', 'asc')
                         ->orderBy('employee_no', 'asc');
     }
 

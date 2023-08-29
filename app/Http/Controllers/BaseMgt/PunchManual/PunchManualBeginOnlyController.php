@@ -15,7 +15,11 @@ class PunchManualBeginOnlyController extends Controller
     public function index()
     {
         // 自拠点の従業員を取得
-        $employees = Employee::getSpecifyBase(Auth::user()->base_id)->get();
+        $employees = Employee::getSpecifyBase(Auth::user()->base_id)
+                        ->where('is_available', 1)
+                        ->orderBy('employee_category_id', 'asc')
+                        ->orderBy('employee_no', 'asc')
+                        ->get();
         return view('punch.manual_begin_only.index')->with([
             'employees' => $employees,
         ]);

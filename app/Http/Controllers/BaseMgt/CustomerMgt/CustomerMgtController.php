@@ -9,6 +9,7 @@ use App\Services\CommonService;
 use App\Models\Base;
 use App\Models\Customer;
 use Carbon\CarbonImmutable;
+use App\Enums\StatusEnum;
 
 class CustomerMgtController extends Controller
 {
@@ -35,9 +36,14 @@ class CustomerMgtController extends Controller
         $bases = Base::getAll()->get();
         // 荷主を取得
         $customers = $CustomerMgtService->getCustomerSearch($start_end_of_month['start'], $start_end_of_month['end']);
+        // ステータス情報を取得($xx->aaの形式でアクセスできるようにしている)
+        $statuses = collect(StatusEnum::PULLDOWN_LIST)->map(function ($item) {
+            return (object) $item;
+        });
         return view('customer_mgt.index')->with([
             'bases' => $bases,
             'customers' => $customers,
+            'statuses' => $statuses,
         ]);
     }
 
@@ -58,9 +64,14 @@ class CustomerMgtController extends Controller
         $bases = Base::getAll()->get();
         // 荷主を取得
         $customers = $CustomerMgtService->getCustomerSearch($start_end_of_month['start'], $start_end_of_month['end']);
+        // ステータス情報を取得($xx->aaの形式でアクセスできるようにしている)
+        $statuses = collect(StatusEnum::PULLDOWN_LIST)->map(function ($item) {
+            return (object) $item;
+        });
         return view('customer_mgt.index')->with([
             'bases' => $bases,
             'customers' => $customers,
+            'statuses' => $statuses,
         ]);
     }
 

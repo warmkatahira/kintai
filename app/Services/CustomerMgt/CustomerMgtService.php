@@ -16,6 +16,7 @@ class CustomerMgtService
         // セッションを削除
         session()->forget([
             'search_base_id',
+            'search_available',
             'search_customer_name'
         ]);
         return;
@@ -25,6 +26,7 @@ class CustomerMgtService
     {
         // 初期条件をセット
         session(['search_base_id' => Auth::user()->base_id]);
+        session(['search_available' => 1]);
         return;
     }
 
@@ -32,6 +34,7 @@ class CustomerMgtService
     {
         // セッションに検索条件をセット
         session(['search_base_id' => $request->search_base_id]);
+        session(['search_available' => $request->search_available]);
         session(['search_customer_name' => $request->search_customer_name]);
         return;
     }
@@ -45,6 +48,10 @@ class CustomerMgtService
         // 拠点条件がある場合
         if (session('search_base_id') != null) {
             $customers->where('base_id', session('search_base_id'));
+        }
+        // 有効/無効条件がある場合
+        if (session('search_available') != null) {
+            $customers->where('is_available', session('search_available'));
         }
         // 荷主名条件がある場合
         if (session('search_customer_name') != null) {

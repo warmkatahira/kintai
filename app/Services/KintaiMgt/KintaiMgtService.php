@@ -118,7 +118,7 @@ class KintaiMgtService
             }
         }
         // 出勤日と従業員番号で並び替え
-        $kintais = $kintais->orderBy('work_day', 'asc')->orderBy('employees.employee_no', 'asc')->paginate(50);
+        $kintais = $kintais->orderBy('work_day', 'asc')->orderBy('employees.employee_category_id', 'asc')->orderBy('employees.employee_no', 'asc')->paginate(50);
         return $kintais;
     }
 

@@ -147,11 +147,12 @@ class DataDownloadService
                             });
         // 日単位か月単位かで日付をフォーマットするか可変
         if($aggregate_unit == '日単位'){
-            $employees->select(DB::raw("work_day as date, employee_category_name, employee_no, employee_last_name, employee_first_name, sum(working_time) as total_working_time, sum(over_time) as total_over_time"));
+            $employees->select(DB::raw("work_day as date, employees.employee_category_id, employee_category_name, employee_no, employee_last_name, employee_first_name, sum(working_time) as total_working_time, sum(over_time) as total_over_time"));
         }else{
-            $employees->select(DB::raw("DATE_FORMAT(work_day, '%Y-%m') as date, employee_category_name, employee_no, employee_last_name, employee_first_name, sum(working_time) as total_working_time, sum(over_time) as total_over_time"));
+            $employees->select(DB::raw("DATE_FORMAT(work_day, '%Y-%m') as date, employees.employee_category_id, employee_category_name, employee_no, employee_last_name, employee_first_name, sum(working_time) as total_working_time, sum(over_time) as total_over_time"));
         }
-        $employees = $employees->groupBy('date', 'employee_no')
+        $employees = $employees->groupBy('date', 'employee_no', 'employee_category_id')
+                    ->orderBy('employee_category_id')
                     ->orderBy('employee_no')
                     ->orderBy('date')
                     ->get();
@@ -160,8 +161,8 @@ class DataDownloadService
         // 対象の分だけループ処理
         foreach($employees as $employee){
             $param = [
-                '日付' => $aggregate_unit == '日単位' ? CarbonImmutable::parse($employee->date)->isoFormat('YYYY年MM月DD日') : CarbonImmutable::parse($employee->date)->isoFormat('YYYY年MM月'),
                 '拠点' => $base->base_name,
+                '日付' => $aggregate_unit == '日単位' ? CarbonImmutable::parse($employee->date)->isoFormat('YYYY年MM月DD日') : CarbonImmutable::parse($employee->date)->isoFormat('YYYY年MM月'),
                 '従業員区分' => $employee->employee_category_name,
                 '従業員番号' => $employee->employee_no,
                 '従業員名' => $employee->employee_last_name.' '.$employee->employee_first_name,
@@ -205,11 +206,12 @@ class DataDownloadService
                     ->mergeBindings($customers->getQuery());
         // 日単位か月単位かで日付をフォーマットするか可変
         if($aggregate_unit == '日単位'){
-            $employees->select(DB::raw("work_day as date, employee_category_name, employee_no, employee_last_name, employee_first_name, subquery.customer_id, customer_name, sum(customer_working_time) as total_customer_working_time, support"));
+            $employees->select(DB::raw("work_day as date, employees.employee_category_id, employee_category_name, employee_no, employee_last_name, employee_first_name, subquery.customer_id, customer_name, sum(customer_working_time) as total_customer_working_time, support"));
         }else{
-            $employees->select(DB::raw("DATE_FORMAT(work_day, '%Y-%m') as date, employee_category_name, employee_no, employee_last_name, employee_first_name, subquery.customer_id, customer_name, sum(customer_working_time) as total_customer_working_time, support"));
+            $employees->select(DB::raw("DATE_FORMAT(work_day, '%Y-%m') as date, employees.employee_category_id, employee_category_name, employee_no, employee_last_name, employee_first_name, subquery.customer_id, customer_name, sum(customer_working_time) as total_customer_working_time, support"));
         }
-        $employees = $employees->groupBy('date', 'employee_no', 'customer_id', 'customer_name', 'support')
+        $employees = $employees->groupBy('date', 'employee_no', 'customer_id', 'customer_name', 'support', 'employee_category_id')
+                    ->orderBy('employee_category_id')            
                     ->orderBy('employee_no')
                     ->orderBy('date')
                     ->orderBy('customer_id')
@@ -219,8 +221,8 @@ class DataDownloadService
         // 対象の分だけループ処理
         foreach($employees as $employee){
             $param = [
-                '日付' => $aggregate_unit == '日単位' ? CarbonImmutable::parse($employee->date)->isoFormat('YYYY年MM月DD日') : CarbonImmutable::parse($employee->date)->isoFormat('YYYY年MM月'),
                 '拠点' => $base->base_name,
+                '日付' => $aggregate_unit == '日単位' ? CarbonImmutable::parse($employee->date)->isoFormat('YYYY年MM月DD日') : CarbonImmutable::parse($employee->date)->isoFormat('YYYY年MM月'),
                 '従業員区分' => $employee->employee_category_name,
                 '従業員番号' => $employee->employee_no,
                 '従業員名' => $employee->employee_last_name.' '.$employee->employee_first_name,

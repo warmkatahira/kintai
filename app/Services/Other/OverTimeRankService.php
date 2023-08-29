@@ -79,6 +79,6 @@ class OverTimeRankService
                     ->orWhere('employee_first_name', 'LIKE', '%'.session('search_employee_name').'%');
         }
         // 残業時間が多い順に並び替え
-        return $employees->orderBy('total_over_time', 'desc')->paginate(500);
+        return $employees->orderBy('total_over_time', 'desc')->orderBy('employee_category_id', 'asc')->orderBy('employee_no', 'asc')->paginate(500);
     }
 }
