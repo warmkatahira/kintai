@@ -82,7 +82,7 @@ class EmployeeMgtService
             $employees->where('employee_category_id', session('search_employee_category_id'));
         }
         // 従業員番号で並び替え
-        $employees = $employees->orderBy('employee_category_id', 'asc')->orderBy('employee_no', 'asc')->paginate(50);
+        $employees = $employees->orderBy('base_id', 'asc')->orderBy('employee_category_id', 'asc')->orderBy('employee_no', 'asc')->paginate(50);
         return $employees;
     }
 
