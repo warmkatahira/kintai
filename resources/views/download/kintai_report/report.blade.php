@@ -143,7 +143,7 @@
             </div>
             <div class="info_parent">
                 <span class="info_label">総残業時間</span>
-                <span class="info_text">{{ number_format($kintai['total_over_time'] / 60, 2).'時間' }}</span>
+                <span class="info_text">{{ number_format(($kintai['total_over_time'] + (!isset($over40[$employee_id]) ? 0 : $over40[$employee_id]['total'])) / 60, 2).'時間' }}</span>
             </div>
             <div class="info_parent">
                 <span class="info_label">祝日総稼働時間</span>

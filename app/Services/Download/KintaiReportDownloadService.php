@@ -141,6 +141,8 @@ class KintaiReportDownloadService
         foreach($employees->get() as $employee){
             // 従業員区分がパートのみを対象とする
             if($employee->employee_category_id == EmployeeCategoryEnum::PART_TIME_EMPLOYEE){
+                // 合計時間を格納する変数をセット
+                $total_over40 = 0;
                 // 情報を格納する配列をセット
                 $over40[$employee->employee_id] = [];
                 // 月の日数分だけループ処理
@@ -162,8 +164,12 @@ class KintaiReportDownloadService
                                                                     ->select(DB::raw("sum(working_time) as total_working_time, sum(over_time) as total_over_time, (sum(working_time) - sum(over_time) - 2400) as over40, DATE_FORMAT(work_day, '%v') as date"))
                                                                     ->groupBy('employee_id', 'date')
                                                                     ->first();
+                        // 0より大きいかつnullでなければ合計時間に足す
+                        $total_over40 += !is_null($over40[$employee->employee_id][$date]) && $over40[$employee->employee_id][$date]->over40 > 0 ? $over40[$employee->employee_id][$date]->over40 : 0;
                     }
                 }
+                // 合計時間を配列にセット
+                $over40[$employee->employee_id]['total'] = $total_over40;
             }
         }
         return isset($over40) ? $over40 : array();
@@ -218,7 +224,7 @@ class KintaiReportDownloadService
                                     ->join('kintai_details', 'kintai_details.kintai_id', 'kintais.kintai_id')
                                     ->whereDate('work_day', '>=', $start_day)
                                     ->whereDate('work_day', '<=', $end_day)
-                                    ->where('kintai_details.customer_id', '230606-003') // 大洋製薬のcustomer_idを設定
+                                    ->where('kintai_details.customer_id', '230829-016') // 大洋製薬のcustomer_idを設定
                                     ->select('kintais.work_day', 'kintais.employee_id')
                                     ->get();
                     // 配列に格納
