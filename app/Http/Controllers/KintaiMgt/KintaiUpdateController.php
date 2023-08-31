@@ -14,7 +14,7 @@ class KintaiUpdateController extends Controller
     public function __construct()
     {
         // ミドルウェアを適用するメソッドを指定
-        $this->middleware(['FindByKintai', 'KintaiOperationAllAvailable'])->only(['comment_update']);
+        $this->middleware(['FindByKintai', 'CommentOperationAllAvailable'])->only(['comment_update']);
     }
 
     public function comment_update(KintaiCommentUpdateRequest $request)

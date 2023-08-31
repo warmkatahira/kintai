@@ -15,6 +15,7 @@ class RoleUpdateService
             'is_kintai_mgt_func_available' => $request->is_kintai_mgt_func_available,
             'is_base_check_available' => $request->is_kintai_mgt_func_available == 0 ? 0 : $request->is_base_check_available,
             'is_kintai_operation_available' => $request->is_kintai_mgt_func_available == 0 ? 0 : $request->is_kintai_operation_available,
+            'is_comment_operation_available' => $request->is_kintai_mgt_func_available == 0 ? 0 : $request->is_comment_operation_available,
             'is_employee_mgt_func_available' => $request->is_employee_mgt_func_available,
             'is_employee_operation_available' => $request->is_employee_mgt_func_available == 0 ? 0 : $request->is_employee_operation_available,
             'is_base_mgt_func_available' => $request->is_base_mgt_func_available,

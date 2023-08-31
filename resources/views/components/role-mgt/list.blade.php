@@ -10,6 +10,7 @@
                     <th class="font-thin py-3 px-2 text-center">勤怠管理機能</th>
                     <th class="font-thin py-3 px-2 text-center">拠点確認</th>
                     <th class="font-thin py-3 px-2 text-center">勤怠操作</th>
+                    <th class="font-thin py-3 px-2 text-center">コメント操作</th>
                     <th class="font-thin py-3 px-2 text-center">従業員管理機能</th>
                     <th class="font-thin py-3 px-2 text-center">従業員操作</th>
                     <th class="font-thin py-3 px-2 text-center">拠点管理機能</th>
@@ -44,6 +45,7 @@
                         <td class="py-1 px-2 border text-center {{ App\Enums\RoleEnum::get_class($role->is_kintai_mgt_func_available) }}">{{ App\Enums\RoleEnum::get_jp($role->is_kintai_mgt_func_available) }}</td>
                         <td class="py-1 px-2 border text-center {{ App\Enums\RoleEnum::get_class($role->is_base_check_available) }}">{{ App\Enums\RoleEnum::get_jp($role->is_base_check_available) }}</td>
                         <td class="py-1 px-2 border text-center {{ App\Enums\RoleEnum::get_class($role->is_kintai_operation_available) }}">{{ App\Enums\RoleEnum::get_jp($role->is_kintai_operation_available) }}</td>
+                        <td class="py-1 px-2 border text-center {{ App\Enums\RoleEnum::get_class($role->is_comment_operation_available) }}">{{ App\Enums\RoleEnum::get_jp($role->is_comment_operation_available) }}</td>
                         <td class="py-1 px-2 border text-center {{ App\Enums\RoleEnum::get_class($role->is_employee_mgt_func_available) }}">{{ App\Enums\RoleEnum::get_jp($role->is_employee_mgt_func_available) }}</td>
                         <td class="py-1 px-2 border text-center {{ App\Enums\RoleEnum::get_class($role->is_employee_operation_available) }}">{{ App\Enums\RoleEnum::get_jp($role->is_employee_operation_available) }}</td>
                         <td class="py-1 px-2 border text-center {{ App\Enums\RoleEnum::get_class($role->is_base_mgt_func_available) }}">{{ App\Enums\RoleEnum::get_jp($role->is_base_mgt_func_available) }}</td>

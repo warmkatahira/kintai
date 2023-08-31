@@ -17,6 +17,7 @@ return new class extends Migration
             $table->boolean('is_kintai_mgt_func_available')->default(0);
             $table->boolean('is_base_check_available')->default(0);
             $table->boolean('is_kintai_operation_available')->default(0);
+            $table->boolean('is_comment_operation_available')->default(0);
             $table->boolean('is_employee_mgt_func_available')->default(0);
             $table->boolean('is_employee_operation_available')->default(0);
             $table->boolean('is_base_mgt_func_available')->default(0);

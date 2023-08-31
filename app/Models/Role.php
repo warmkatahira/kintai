@@ -16,6 +16,7 @@ class Role extends Model
         'is_kintai_mgt_func_available',
         'is_base_check_available',
         'is_kintai_operation_available',
+        'is_comment_operation_available',
         'is_employee_mgt_available',
         'is_employee_operation_available',
         'is_base_mgt_available',

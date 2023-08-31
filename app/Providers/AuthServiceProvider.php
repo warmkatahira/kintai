@@ -113,7 +113,7 @@ class AuthServiceProvider extends ServiceProvider
         Gate::define('isShortTimeInfoAvailable', function($user){
             return ($user->role->is_short_time_info_available == 1);
         });
-        // 拠点やロック有無などを全て考慮して操作できる勤怠であるか
+        // 拠点やロック有無などを全て考慮して勤怠操作できる勤怠であるか
         Gate::define('isKintaiOperationAllAvailable', function($user, $base_id, $locked_at) {
             return (
                 // 勤怠操作が有効である
@@ -135,6 +135,17 @@ class AuthServiceProvider extends ServiceProvider
                 !is_null($kintai->finish_time) &&
                 // 自拠点と同じ勤怠
                 $user->base_id == $kintai->base_id
+            );
+        });
+        // 拠点やロック有無などを全て考慮してコメント操作できる勤怠であるか
+        Gate::define('isCommentOperationAllAvailable', function($user, $base_id, $locked_at) {
+            return (
+                // 勤怠操作が有効である
+                $user->role->is_comment_operation_available == 1 &&
+                // 自拠点の勤怠であるか、全勤怠操作が有効である
+                ($user->base_id == $base_id || $user->role->is_all_kintai_operation_available == 1) &&
+                // ロックされていないか、ロックされている場合、ロック後の勤怠操作が有効である
+                (is_null($locked_at) || (!is_null($locked_at) && $user->role->is_lock_kintai_operation_available == 1))
             );
         });
     }

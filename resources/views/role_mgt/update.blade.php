@@ -17,6 +17,7 @@
                 <x-role-mgt.create-select label="勤怠管理機能" id="is_kintai_mgt_func_available" :forValue="$roles" :db="$role->is_kintai_mgt_func_available" required="1" tippy="0" />
                 <x-role-mgt.create-select label="拠点確認" id="is_base_check_available" :forValue="$roles" :db="$role->is_base_check_available" required="1" tippy="0" />
                 <x-role-mgt.create-select label="勤怠操作" id="is_kintai_operation_available" :forValue="$roles" :db="$role->is_kintai_operation_available" required="1" tippy="0" />
+                <x-role-mgt.create-select label="コメント操作" id="is_comment_operation_available" :forValue="$roles" :db="$role->is_comment_operation_available" required="1" tippy="0" />
                 <x-role-mgt.create-select label="従業員管理機能" id="is_employee_mgt_func_available" :forValue="$roles" :db="$role->is_employee_mgt_func_available" required="1" tippy="0" />
                 <x-role-mgt.create-select label="従業員操作" id="is_employee_operation_available" :forValue="$roles" :db="$role->is_employee_operation_available" required="1" tippy="0" />
                 <x-role-mgt.create-select label="拠点管理機能" id="is_base_mgt_func_available" :forValue="$roles" :db="$role->is_base_mgt_func_available" required="1" tippy="0" />

@@ -25,7 +25,7 @@
                 <input type="text" name="comment" class="text-sm w-96" value="{{ old('comment', $kintai->comment) }}" autocomplete="off">
                 <input type="hidden" name="kintai_id" value="{{ $kintai->kintai_id }}">
                 <!-- 拠点やロック有無などを全て考慮して操作できるか -->
-                @can('isKintaiOperationAllAvailable', [$kintai->employee->base_id, $kintai->locked_at])
+                @can('isCommentOperationAllAvailable', [$kintai->employee->base_id, $kintai->locked_at])
                     <button type="button" id="comment_update" class="bg-blue-600 text-white text-sm text-center px-5">更新</button>
                 @endcan
             </form>

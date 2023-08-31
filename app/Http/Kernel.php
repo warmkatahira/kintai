@@ -83,6 +83,7 @@ class Kernel extends HttpKernel
         'HolidayMgtAvailable' => \App\Http\Middleware\Available\HolidayMgtAvailable::class,
         'KintaiCloseAvailable' => \App\Http\Middleware\Available\KintaiCloseAvailable::class,
         'KintaiMgtFuncAvailable' => \App\Http\Middleware\Available\KintaiMgtFuncAvailable::class,
+        'CommentOperationAllAvailable' => \App\Http\Middleware\Available\CommentOperationAllAvailable::class,
         'ManualPunchAvailable' => \App\Http\Middleware\Available\ManualPunchAvailable::class,
         'RoleMgtAvailable' => \App\Http\Middleware\Available\RoleMgtAvailable::class,
         'SystemMgtFuncAvailable' => \App\Http\Middleware\Available\SystemMgtFuncAvailable::class,
