@@ -13,7 +13,9 @@ class TodayKintaiController extends Controller
     {
         // 自拠点の従業員情報を取得
         $employees = Employee::getSpecifyBase(Auth::user()->base_id)
-                        ->orderBy('employee_no')
+                        ->where('is_available', 1)
+                        ->orderBy('employee_category_id', 'asc')
+                        ->orderBy('employee_no', 'asc')
                         ->get();
         return view('punch.today_kintai.index')->with([
             'employees' => $employees,

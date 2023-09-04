@@ -23,7 +23,9 @@ class ThisMonthKintaiService
             })
             ->where('employees.base_id', Auth::user()->base_id)
             ->join('bases', 'employees.base_id', 'bases.base_id')
-            ->select('employees.employee_id', 'employees.employee_no', 'employee_last_name', 'employee_first_name', 'employee_category_id', 'KINTAIS.total_working_time', 'KINTAIS.total_over_time', 'base_name', 'over_time_start')
+            ->select('employees.employee_id', 'employees.employee_no', 'employee_last_name', 'employee_first_name', 'employee_category_id', 'KINTAIS.total_working_time', 'KINTAIS.total_over_time', 'base_name', 'over_time_start', 'is_available')
+            ->where('is_available', 1)
+            ->orderBy('employees.employee_category_id', 'asc')
             ->orderBy('employees.employee_no', 'asc')
             ->get();
         return $month_kintais;

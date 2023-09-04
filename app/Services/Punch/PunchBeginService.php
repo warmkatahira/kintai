@@ -49,6 +49,7 @@ class PunchBeginService
     {
         return Employee::getSpecifyBase(Auth::user()->base_id)
                     ->doesntHave('punch_begin_targets')
+                    ->where('is_available', 1)
                     ->orderBy('employee_category_id', 'asc')
                     ->orderBy('employee_no', 'asc')
                     ->get();
