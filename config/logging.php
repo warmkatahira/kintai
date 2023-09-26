@@ -131,6 +131,7 @@ return [
             'driver' => 'daily',
             'path' => storage_path('logs/operation/operation.log'),
             'level' => 'info',
+            'days' => 90, // 90日間ログを保持
         ],
     ],
 
