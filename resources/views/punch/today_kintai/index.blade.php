@@ -10,7 +10,7 @@
                 @foreach($employees as $employee)
                     <div class="col-span-3 grid grid-cols-12 text-3xl rounded-lg px-8 {{ App\Lib\GetTodayKintaiStatusFunc::Color(App\Lib\GetTodayKintaiStatusFunc::Status($employee->employee_id)) }}">
                         <p class="col-span-12 text-left mt-3">{{ App\Lib\GetTodayKintaiStatusFunc::Status($employee->employee_id) }}</p>
-                        <p class="col-span-12 text-center py-5">{{ $employee->employee_last_name.$employee->employee_first_name }}</p>
+                        <p class="col-span-12 text-center py-5">{{ $employee->employee_last_name.' '.$employee->employee_first_name }}</p>
                     </div>
                 @endforeach
             </div>

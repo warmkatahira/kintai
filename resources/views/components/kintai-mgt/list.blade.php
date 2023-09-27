@@ -18,7 +18,7 @@
                     <th class="font-thin py-3 px-2 text-center">戻り時間</th>
                     <th class="font-thin py-3 px-2 text-center">休憩取得時間</th>
                     <th class="font-thin py-3 px-2 text-center">休憩未取得時間</th>
-                    @if($addRestAvailable)
+                    @if(Gate::check('isAddRestTimeDispAvailable') || $addRestAvailable)
                         <th class="font-thin py-3 px-2 text-center">追加休憩取得時間</th>
                     @endif
                     <th class="font-thin py-3 px-2 text-center">稼働時間</th>
@@ -51,7 +51,7 @@
                         <td class="py-1 px-2 border text-center">{{ substr($kintai->return_time_adj, 0, 5) }}</td>
                         <td class="py-1 px-2 border text-center">@if(!is_null($kintai->finish_time)){{ number_format($kintai->rest_time / 60, 2) }}@endif</td>
                         <td class="py-1 px-2 border text-center">@if(!is_null($kintai->finish_time)){{ number_format($kintai->no_rest_time / 60, 2) }}@endif</td>
-                        @if($addRestAvailable)
+                        @if(Gate::check('isAddRestTimeDispAvailable') || $addRestAvailable)
                             <td class="py-1 px-2 border text-center">@if(!is_null($kintai->finish_time)){{ number_format($kintai->add_rest_time / 60, 2) }}@endif</td>
                         @endif
                         <td class="py-1 px-2 border text-center">@if(!is_null($kintai->finish_time)){{ number_format($kintai->working_time / 60, 2) }}@endif</td>

@@ -17,7 +17,7 @@
                     <label for="employee_id" class="w-52 bg-black text-white text-center text-sm py-2">従業員</label>
                     <select id="employee_id" name="employee_id" class="w-40 text-sm">
                         @foreach($employees as $employee)
-                            <option value="{{ $employee->employee_id }}" @if($employee->employee_id == old('employee_id')) selected @endif>{{ $employee->employee_last_name.$employee->employee_first_name }}</option>
+                            <option value="{{ $employee->employee_id }}" @if($employee->employee_id == old('employee_id')) selected @endif>{{ $employee->employee_last_name.' '.$employee->employee_first_name }}</option>
                         @endforeach
                     </select>
                 </div>

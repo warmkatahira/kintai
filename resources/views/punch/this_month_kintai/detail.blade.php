@@ -7,7 +7,7 @@
         </div>
         <div class="flex flex-row">
             <p class="w-40 bg-black text-white text-center py-2">従業員名</p>
-            <p class="w-96 border border-black py-2 text-center bg-white">{{ $employee->employee_last_name.$employee->employee_first_name }}</p>
+            <p class="w-96 border border-black py-2 text-center bg-white">{{ $employee->employee_last_name.' '.$employee->employee_first_name }}</p>
         </div>
         <!-- 勤怠表 -->
         <div class="scroll_wrap flex flex-grow overflow-scroll mt-2">

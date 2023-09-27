@@ -50,7 +50,7 @@
             <div class="flex flex-row">
                 <x-detail-div label="休憩取得時間" :value="is_null($kintai->rest_time) ? '' : number_format($kintai->rest_time / 60, 2)" class="w-40 text-center" />
                 <x-detail-div label="休憩未取得時間" :value="is_null($kintai->no_rest_time) ? '' : number_format($kintai->no_rest_time / 60, 2)" class="w-40 text-center" />
-                @if($add_rest_available)
+                @if(Gate::check('isAddRestTimeDispAvailable') || $add_rest_available)
                     <x-detail-div label="追加休憩取得時間" :value="is_null($kintai->add_rest_time) ? '' : number_format($kintai->add_rest_time / 60, 2)" class="w-40 text-center" />
                 @endif
             </div>

@@ -9,7 +9,7 @@
             <div class="col-span-12 grid grid-cols-12 gap-4 mt-5">
                 @foreach($month_kintais as $month_kintai)
                     <a href="{{ route('this_month_kintai.detail', ['employee_id' => $month_kintai->employee_id]) }}" class="col-span-3 grid grid-cols-12 rounded-lg px-8 py-4 bg-theme-sub text-xl">
-                        <p class="col-span-12 text-center text-3xl">{{ $month_kintai->employee_last_name.$month_kintai->employee_first_name }}</p>
+                        <p class="col-span-12 text-center text-3xl">{{ $month_kintai->employee_last_name.' '.$month_kintai->employee_first_name }}</p>
                         <div class="col-span-12 grid grid-cols-12 border-b-2 border-blue-500 mb-3">
                             <p class="col-span-4 text-left">稼働</p>
                             <p class="col-span-8 text-right">{{ number_format($month_kintai->total_working_time / 60, 2).' 時間' }}</p>

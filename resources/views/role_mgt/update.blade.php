@@ -39,6 +39,7 @@
                 <x-role-mgt.create-select label="全勤怠操作" id="is_all_kintai_operation_available" :forValue="$roles" :db="$role->is_all_kintai_operation_available" required="1" tippy="0" />
                 <x-role-mgt.create-select label="時短情報" id="is_short_time_info_available" :forValue="$roles" :db="$role->is_short_time_info_available" required="1" tippy="0" />
                 <x-role-mgt.create-select label="全拠点操作" id="is_all_base_operation_available" :forValue="$roles" :db="$role->is_all_base_operation_available" required="1" tippy="0" />
+                <x-role-mgt.create-select label="追加休憩時間表示" id="is_add_rest_time_disp_available" :forValue="$roles" :db="$role->is_add_rest_time_disp_available" required="1" tippy="0" />
                 <input type="hidden" name="role_id" value="{{ $role->role_id }}">
                 <button type="button" id="role_update_enter" class="border border-blue-500 text-blue-500 bg-blue-100 py-1 px-10 mt-5">更新</button>
             </form>

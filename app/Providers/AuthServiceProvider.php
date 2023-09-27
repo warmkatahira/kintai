@@ -148,5 +148,9 @@ class AuthServiceProvider extends ServiceProvider
                 (is_null($locked_at) || (!is_null($locked_at) && $user->role->is_lock_kintai_operation_available == 1))
             );
         });
+        // 追加休憩時間表示有効のみ許可
+        Gate::define('isAddRestTimeDispAvailable', function($user){
+            return ($user->role->is_add_rest_time_disp_available == 1);
+        });
     }
 }

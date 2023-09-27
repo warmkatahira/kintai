@@ -39,6 +39,7 @@ return new class extends Migration
             $table->boolean('is_all_kintai_operation_available')->default(0);
             $table->boolean('is_short_time_info_available')->default(0);
             $table->boolean('is_all_base_operation_available')->default(0);
+            $table->boolean('is_add_rest_time_disp_available')->default(0);
             $table->timestamps();
         });
     }
