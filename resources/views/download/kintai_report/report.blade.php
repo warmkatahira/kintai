@@ -179,7 +179,7 @@
                             <td style="{{ \Carbon\CarbonImmutable::parse($work_day)->dayOfWeekIso >= 6 || isset($holidays[$work_day]) ? 'background-color: #CCFFFF' : '' }}">{{ is_null($value) ? '' : substr($value->begin_time_adj, 0, 5) }}</td>
                             <td style="{{ \Carbon\CarbonImmutable::parse($work_day)->dayOfWeekIso >= 6 || isset($holidays[$work_day]) ? 'background-color: #CCFFFF' : '' }}">{{ is_null($value) ? '' : substr($value->finish_time_adj, 0, 5) }}</td>
                             <td style="{{ \Carbon\CarbonImmutable::parse($work_day)->dayOfWeekIso >= 6 || isset($holidays[$work_day]) ? 'background-color: #CCFFFF' : '' }}">{{ !isset($value->finish_time_adj) ? '' : number_format($value->rest_time / 60, 2) }}</td>
-                            @if($base['is_add_rest_available'])
+                            @if($base['base']->is_add_rest_available)
                                 <td style="{{ \Carbon\CarbonImmutable::parse($work_day)->dayOfWeekIso >= 6 || isset($holidays[$work_day]) ? 'background-color: #CCFFFF' : '' }}">{{ !isset($value->finish_time_adj) ? '' : number_format($value->add_rest_time / 60, 2) }}</td>
                             @endif
                             <td style="{{ \Carbon\CarbonImmutable::parse($work_day)->dayOfWeekIso >= 6 || isset($holidays[$work_day]) ? 'background-color: #CCFFFF' : '' }}">{{ is_null($value) ? '' : substr($value->out_time_adj, 0, 5) }}</td>
