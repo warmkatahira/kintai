@@ -156,7 +156,7 @@
                         <th>出勤</th>
                         <th>退勤</th>
                         <th>休憩</th>
-                        @if($base['is_add_rest_available'])
+                        @if($base['base']->is_add_rest_available)
                             <th>追休</th>
                         @endif
                         <th>外出</th>
