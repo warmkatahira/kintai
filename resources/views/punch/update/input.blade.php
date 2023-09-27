@@ -6,7 +6,7 @@
         <!-- 操作ボタン -->
         <div class="flex whitespace-nowrap mb-2">
             <a href="{{ session('back_url_2') }}" class="w-40 text-xl py-4 rounded-lg text-center bg-black text-white">戻る</a>
-            <p class="ml-auto text-4xl py-2">{{ \Carbon\CarbonImmutable::now()->isoFormat('YYYY年MM月DD日(ddd)') }}</p>
+            <p class="ml-auto text-4xl py-2">{{ \Carbon\CarbonImmutable::parse($kintai->work_day)->isoFormat('YYYY年MM月DD日(ddd)') }}</p>
         </div>
         <form method="POST" id="punch_enter_form" action="{{ route('punch_update.enter') }}" class="m-0">
             @csrf
@@ -23,6 +23,11 @@
                         <p class="col-span-2 text-2xl text-left">{{ number_format(session('out_return_time') / 60, 2) }}</p>
                         <p class="col-span-1 text-xl text-center pt-1">休憩(分)</p>
                         <input id="rest_time" name="rest_time" class="col-span-2 text-2xl text-left bg-transparent" readonly>
+                        <!-- 追加休憩取得時間を表示(追加休憩時間が有効かつパートのみ) -->
+                        @if($add_rest_available && $employee->employee_category_id == App\Enums\EmployeeCategoryEnum::PART_TIME_EMPLOYEE)
+                            <p class="col-span-1 text-xl text-center pt-1">追加休憩(分)</p>
+                            <input id="add_rest_time_disp" name="add_rest_time_disp" class="col-span-2 text-2xl text-left bg-transparent" readonly>
+                        @endif
                         <p class="col-span-1 text-xl text-center pt-1">稼働(時)</p>
                         <input id="working_time" name="working_time" class="col-span-2 text-2xl text-left bg-transparent" readonly>
                         <input type="hidden" id="org_rest_time" name="org_rest_time" value="{{ session('rest_time') }}">

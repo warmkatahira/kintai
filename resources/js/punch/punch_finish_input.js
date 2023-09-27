@@ -118,6 +118,7 @@ function rest_time_update(){
     var rest_times = document.getElementsByName("rest_time_select");
     var add_rest_times = document.getElementsByName("add_rest_time");
     var rest_related_select_mode = document.getElementById("rest_related_select_mode");
+    var add_rest_time_disp = document.getElementById("add_rest_time_disp");
     // ここで初期値をセットしている
     var select_no_rest_time_value = 0;
     var select_rest_time_value = 0;
@@ -167,13 +168,18 @@ function rest_time_update(){
             element.classList.remove('bg-blue-200');
         }
     }
-    // 休憩時間を変更 
-    rest_time.value = Number(org_rest_time.value) - Number(select_no_rest_time_value) + Number(select_add_rest_time_value) - (Number(org_rest_time.value) - Number(select_rest_time_value));
-    console.log((Number(org_rest_time.value) - Number(select_rest_time_value)));
-    // 勤務時間を変更
-    working_time.value = ((Number(org_working_time.value) + Number(select_no_rest_time_value) - Number(select_add_rest_time_value) + (Number(org_rest_time.value) - Number(select_rest_time_value))) / 60).toFixed(2);
+    // 休憩時間を変更
+    rest_time.value = Number(org_rest_time.value) - Number(select_no_rest_time_value) - (Number(org_rest_time.value) - Number(select_rest_time_value));
+    // 要素がある時だけ表示させる
+    if (add_rest_time_disp) {
+        // 追加休憩時間を変更
+        add_rest_time_disp.value = Number(select_add_rest_time_value);
+    }
+    // 勤務時間を変更(休憩等を加味していない稼働時間 + 休憩未取得 - 追加休憩取得 - 休憩取得)
+    //working_time.value = ((Number(org_working_time.value) + Number(select_no_rest_time_value) - Number(select_add_rest_time_value) + (Number(org_rest_time.value) - Number(select_rest_time_value))) / 60).toFixed(2);
+    working_time.value = ((Number(org_working_time.value) + Number(select_no_rest_time_value) - Number(select_add_rest_time_value) - Number(select_rest_time_value)) / 60).toFixed(2);
     // 残り入力時間を変更
-    input_time_left.innerHTML = ((Number(org_working_time.value) + Number(select_no_rest_time_value) - Number(select_add_rest_time_value) + (Number(org_rest_time.value) - Number(select_rest_time_value))) / 60).toFixed(2);
+    input_time_left.innerHTML = ((Number(org_working_time.value) + Number(select_no_rest_time_value) - Number(select_add_rest_time_value) - Number(select_rest_time_value)) / 60).toFixed(2);
     let elements = document.getElementsByClassName('working_time_input');
     for(var k = 0; k < elements.length; k++){
         input_time_left.innerHTML = (Number(input_time_left.innerHTML) - Number(elements[k].value)).toFixed(2);

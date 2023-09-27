@@ -192,8 +192,8 @@ class PunchFinishInputService
         $begin_time_adj_minute = $begin_time_adj_minute + $begin_time_adj_split[1];
         // 追加休憩時間がnullであれば、0をセット
         $add_rest_time = is_null($add_rest_time) ? 0 : $add_rest_time;
-        // 労働時間を算出(退勤時間調整 - 出勤時間調整 - 休憩時間 - 外出戻り時間 - 追加休憩時間)
-        $working_time = $finish_time_adj_minute - $begin_time_adj_minute - $rest_time - $out_return_time - $add_rest_time;
+        // 労働時間を算出(退勤時間調整 - 出勤時間調整 - 外出戻り時間)
+        $working_time = $finish_time_adj_minute - $begin_time_adj_minute - $out_return_time;
         return $working_time;
     }
 
