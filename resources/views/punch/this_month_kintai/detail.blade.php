@@ -20,7 +20,7 @@
                             <th class="font-thin p-2 px-2 w-1/12">退勤</th>
                             <th class="font-thin p-2 px-2 w-1/12">休憩取得</th>
                             <th class="font-thin p-2 px-2 w-1/12">休憩未取得</th>
-                            @if($add_rest_available)
+                            @if(Gate::check('isAddRestTimeDispAvailable') || $add_rest_available)
                                 <th class="font-thin p-2 px-2 w-1/12">追加休憩取得</th>
                             @endif
                             <th class="font-thin p-2 px-2 w-1/12">外出</th>
@@ -37,7 +37,7 @@
                                 <td class="p-1 px-2 border">{{ is_null($value) ? '' : substr($value->finish_time_adj, 0, 5) }}</td>
                                 <td class="p-1 px-2 border">{{ !isset($value->finish_time_adj) ? '' : number_format($value->rest_time / 60, 2) }}</td>
                                 <td class="p-1 px-2 border">{{ !isset($value->finish_time_adj) ? '' : number_format($value->no_rest_time / 60, 2) }}</td>
-                                @if($add_rest_available)
+                                @if(Gate::check('isAddRestTimeDispAvailable') || $add_rest_available)
                                     <td class="p-1 px-2 border">{{ is_null($value) ? '' : number_format($value->add_rest_time / 60, 2) }}</td>
                                 @endif
                                 <td class="p-1 px-2 border">{{ is_null($value) ? '' : substr($value->out_time_adj, 0, 5) }}</td>
