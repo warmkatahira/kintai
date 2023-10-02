@@ -18,6 +18,8 @@ class Kernel extends ConsoleKernel
         $schedule->command('backup:run --disable-notifications --only-db')->dailyAt('03:00');
         // DBバックアップを年月のフォルダへ移動（毎日AM 03:10）
         $schedule->command('backup:move')->dailyAt('03:10');
+        // 当月分の勤怠を確認し、異常があればメールを送信（毎日AM 04:00）
+        $schedule->command('check:kintai')->dailyAt('04:00');
     }
 
     /**
@@ -28,6 +30,7 @@ class Kernel extends ConsoleKernel
         $this->load(__DIR__.'/Commands');
         $this->load(__DIR__.'/Commands/CreateBackupFolder.php');
         $this->load(__DIR__.'/Commands/BackupMove.php');
+        $this->load(__DIR__.'/Commands/CheckKintai.php');
 
         require base_path('routes/console.php');
     }
