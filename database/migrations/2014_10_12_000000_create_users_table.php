@@ -23,6 +23,7 @@ return new class extends Migration
             $table->string('base_id', 20);
             $table->boolean('status')->default(0);
             $table->timestamp('last_login_at')->nullable();
+            $table->boolean('no_ip_check')->default(0);
             $table->rememberToken();
             $table->timestamps();
             // 外部キー制約

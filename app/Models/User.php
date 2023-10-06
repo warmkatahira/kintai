@@ -31,6 +31,7 @@ class User extends Authenticatable
         'base_id',
         'status',
         'last_login_at',
+        'no_ip_check',
     ];
     // 全て取得
     public static function getAll()

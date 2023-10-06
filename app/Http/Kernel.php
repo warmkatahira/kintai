@@ -21,7 +21,6 @@ class Kernel extends HttpKernel
         \Illuminate\Foundation\Http\Middleware\ValidatePostSize::class,
         \App\Http\Middleware\TrimStrings::class,
         \Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull::class,
-        \App\Http\Middleware\CheckAccessIp::class,
     ];
 
     /**
@@ -100,5 +99,7 @@ class Kernel extends HttpKernel
         'FindByEmployee' => \App\Http\Middleware\FindBy\FindByEmployee::class,
         'FindByCustomer' => \App\Http\Middleware\FindBy\FindByCustomer::class,
         'FindByCustomerGroup' => \App\Http\Middleware\FindBy\FindByCustomerGroup::class,
+        // IPチェック
+        'IPCheck' => \App\Http\Middleware\CheckAccessIp::class,
     ];
 }

@@ -10,6 +10,7 @@
                     <th class="font-thin py-3 px-2 text-center">ユーザー名</th>
                     <th class="font-thin py-3 px-2 text-center">メールアドレス</th>
                     <th class="font-thin py-3 px-2 text-center">権限</th>
+                    <th class="font-thin py-3 px-2 text-center">IPチェックなし</th>
                     <th class="font-thin py-3 px-2 text-center">ステータス</th>
                     <th class="font-thin py-3 px-2 text-center">最終ログイン日時</th>
                 </tr>
@@ -25,6 +26,7 @@
                         <td class="py-1 px-2 border text-left">{{ $user->last_name.' '.$user->first_name }}</td>
                         <td class="py-1 px-2 border text-left">{{ $user->email }}</td>
                         <td class="py-1 px-2 border text-left">@if(!is_null($user->role)) {{ $user->role->role_name }}@endif</td>
+                        <td class="py-1 px-2 border text-center">{{ App\Enums\StatusEnum::get_jp($user->no_ip_check) }}</td>
                         <td class="py-1 px-2 border text-center">{{ App\Enums\StatusEnum::get_jp($user->status) }}</td>
                         <td class="py-1 px-2 border text-center">{{ \Carbon\CarbonImmutable::parse($user->last_login_at)->isoFormat('Y年MM月DD日 HH時mm分ss秒') }}</td>
                     </tr>

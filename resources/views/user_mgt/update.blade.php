@@ -19,6 +19,7 @@
                 <x-create-input label="ユーザー名(名)" type="text" id="first_name" :db="$user->first_name" required="1" tippy="0" />
                 <x-create-input label="メールアドレス" type="text" id="email" :db="$user->email" required="1" tippy="0" />
                 <x-create-select label="権限" id="role_id" :forValue="$roles" text="role_name" :db="$user->role_id" required="1" tippy="0" />
+                <x-create-select label="IPチェックなし" id="no_ip_check" :forValue="$no_ip_checks" text="status_name" :db="$user->no_ip_check" required="1" tippy="0" />
                 <x-create-select label="ステータス" id="status" :forValue="$statuses" text="status_name" :db="$user->status" required="1" tippy="0" />
                 <input type="hidden" name="id" value="{{ $user->id }}">
                 <button type="button" id="user_update_enter" class="border border-blue-500 text-blue-500 bg-blue-100 py-1 px-10 mt-5">更新</button>

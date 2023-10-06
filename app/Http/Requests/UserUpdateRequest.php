@@ -31,6 +31,7 @@ class UserUpdateRequest extends FormRequest
             'first_name' => 'required|max:10',
             'email' => 'nullable|email|max:255|unique:users,email,'.$this->id.',id',
             'role_id' => 'required|exists:roles,role_id',
+            'no_ip_check' => 'required|boolean',
             'status' => 'required|boolean',
         ];
     }
@@ -56,6 +57,7 @@ class UserUpdateRequest extends FormRequest
             'first_name' => 'ユーザー名(名)',
             'email' => 'メールアドレス',
             'role_id' => '権限',
+            'no_ip_check' => 'IPチェックなし',
             'status' => 'ステータス',
         ];
     }

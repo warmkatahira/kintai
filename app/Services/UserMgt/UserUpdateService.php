@@ -18,6 +18,7 @@ class UserUpdateService
             'first_name' => $request->first_name,
             'email' => $request->email,
             'role_id' => $request->role_id,
+            'no_ip_check' => $request->no_ip_check,
             'status' => $request->status,
         ]);
         return;

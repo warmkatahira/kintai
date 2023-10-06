@@ -77,7 +77,7 @@ use Illuminate\Support\Facades\Route;
     });
 
 // ログインとステータスチェック
-Route::middleware(['auth', 'userStatusCheck', 'OperationLogRecord'])->group(function () {
+Route::middleware(['auth', 'userStatusCheck', 'OperationLogRecord', 'IPCheck'])->group(function () {
     // ★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆ Top ★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆
     // -+-+-+-+-+-+-+-+-+-+-+-+ TOP -+-+-+-+-+-+-+-+-+-+-+-+
     Route::controller(TopController::class)->prefix('top')->name('top.')->group(function(){

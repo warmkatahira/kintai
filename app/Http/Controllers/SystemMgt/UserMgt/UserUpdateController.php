@@ -11,6 +11,7 @@ use App\Models\Base;
 use App\Models\Role;
 use Illuminate\Support\Facades\Auth;
 use App\Enums\StatusEnum;
+use App\Enums\NoIpCheckEnum;
 
 class UserUpdateController extends Controller
 {
@@ -24,12 +25,17 @@ class UserUpdateController extends Controller
         $statuses = collect(StatusEnum::PULLDOWN_LIST)->map(function ($item) {
             return (object) $item;
         });
+        // IPチェックなし情報を取得($xx->aaの形式でアクセスできるようにしている)
+        $no_ip_checks = collect(NoIpCheckEnum::PULLDOWN_LIST)->map(function ($item) {
+            return (object) $item;
+        });
         // ユーザーを取得
         $user = User::getSpecify($request->id)->first();
         return view('user_mgt.update')->with([
             'bases' => $bases,
             'roles' => $roles,
             'statuses' => $statuses,
+            'no_ip_checks' => $no_ip_checks,
             'user' => $user,
         ]);
     }
