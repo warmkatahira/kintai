@@ -42,9 +42,9 @@
                             <a href="{{ route('kintai_mgt.detail', ['kintai_id' => $kintai->kintai_id]) }}" class="text-center border border-blue-500 bg-blue-100 text-blue-500 text-xs px-2 py-1">詳細</a>
                         </td>
                         <td class="py-1 px-2 border text-center">{{ \Carbon\CarbonImmutable::parse($kintai->work_day)->isoFormat('YYYY年MM月DD日(ddd)') }}</td>
-                        <td class="py-1 px-2 border text-center">{{ $kintai->employee->base->base_name }}</td>
+                        <td class="py-1 px-2 border">{{ $kintai->employee->base->base_name }}</td>
                         <td class="py-1 px-2 border text-center">{{ $kintai->employee_category_name }}</td>
-                        <td class="py-1 px-2 border text-left">{{ $kintai->employee_last_name.' '.$kintai->employee_first_name }}</td>
+                        <td class="py-1 px-2 border">{{ $kintai->employee_last_name.' '.$kintai->employee_first_name }}</td>
                         <td class="py-1 px-2 border text-center">{{ substr($kintai->begin_time_adj, 0, 5) }}</td>
                         <td class="py-1 px-2 border text-center">{{ substr($kintai->finish_time_adj, 0, 5) }}</td>
                         <td class="py-1 px-2 border text-center">{{ substr($kintai->out_time_adj, 0, 5) }}</td>
