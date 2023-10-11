@@ -72,6 +72,7 @@
                     @can('isBaseMgtAvailable')
                         <li><a href="{{ route('base_mgt.index') }}">拠点管理</a></li>
                     @endcan
+                    <li><a href="{{ route('temporary_use.index') }}">派遣利用入力</a></li>
                 </ul>
             </li>
         @endcan

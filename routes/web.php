@@ -47,6 +47,8 @@ use Illuminate\Support\Facades\Route;
     use App\Http\Controllers\Other\OverTimeRankController;
     // +-+-+-+-+-+-+-+- 荷主稼働ランキング +-+-+-+-+-+-+-+-
     use App\Http\Controllers\Other\CustomerWorkingTimeRankController;
+    // +-+-+-+-+-+-+-+- 派遣利用入力 +-+-+-+-+-+-+-+-
+    use App\Http\Controllers\Other\TemporaryUseController;
 // +-+-+-+-+-+-+-+- 経理管理 +-+-+-+-+-+-+-+-
     // +-+-+-+-+-+-+-+- 勤怠提出確認 +-+-+-+-+-+-+-+-
     use App\Http\Controllers\AccountingMgt\KintaiCloseCheckController;
@@ -252,6 +254,10 @@ Route::middleware(['auth', 'userStatusCheck', 'OperationLogRecord', 'IPCheck'])-
             Route::get('', 'index')->name('index');
             Route::get('search', 'search')->name('search');
             Route::get('detail', 'detail')->name('detail');
+        });
+        // -+-+-+-+-+-+-+-+-+-+-+-+ 荷主稼働ランキング -+-+-+-+-+-+-+-+-+-+-+-+
+        Route::controller(TemporaryUseController::class)->prefix('temporary_use')->name('temporary_use.')->group(function(){
+            Route::get('', 'index')->name('index');
         });
     });
     // ★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆ 経理管理 ★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆
