@@ -70,6 +70,10 @@ use Illuminate\Support\Facades\Route;
     use App\Http\Controllers\SystemMgt\BaseMgt\BaseMgtController;
     use App\Http\Controllers\SystemMgt\BaseMgt\BaseCreateController;
     use App\Http\Controllers\SystemMgt\BaseMgt\BaseUpdateController;
+    // +-+-+-+-+-+-+-+- 派遣会社管理 +-+-+-+-+-+-+-+-
+    use App\Http\Controllers\SystemMgt\TemporaryCompanyMgt\TemporaryCompanyMgtController;
+    use App\Http\Controllers\SystemMgt\TemporaryCompanyMgt\TemporaryCompanyCreateController;
+    use App\Http\Controllers\SystemMgt\TemporaryCompanyMgt\TemporaryCompanyUpdateController;
 
 
 // ★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆ Welcome ★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆
@@ -255,9 +259,13 @@ Route::middleware(['auth', 'userStatusCheck', 'OperationLogRecord', 'IPCheck'])-
             Route::get('search', 'search')->name('search');
             Route::get('detail', 'detail')->name('detail');
         });
-        // -+-+-+-+-+-+-+-+-+-+-+-+ 荷主稼働ランキング -+-+-+-+-+-+-+-+-+-+-+-+
+        // -+-+-+-+-+-+-+-+-+-+-+-+ 派遣利用 -+-+-+-+-+-+-+-+-+-+-+-+
         Route::controller(TemporaryUseController::class)->prefix('temporary_use')->name('temporary_use.')->group(function(){
             Route::get('', 'index')->name('index');
+            Route::get('search', 'search')->name('search');
+            Route::get('create', 'create_index')->name('create_index');
+            Route::post('create', 'create')->name('create');
+            Route::post('delete', 'delete')->name('delete');
         });
     });
     // ★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆ 経理管理 ★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆
@@ -334,6 +342,22 @@ Route::middleware(['auth', 'userStatusCheck', 'OperationLogRecord', 'IPCheck'])-
             });
             // -+-+-+-+-+-+-+-+-+-+-+-+ IP更新 -+-+-+-+-+-+-+-+-+-+-+-+
             Route::controller(BaseUpdateController::class)->prefix('base_update')->name('base_update.')->group(function(){
+                Route::get('', 'index')->name('index');
+                Route::post('update', 'update')->name('update');
+            });
+        });
+        Route::middleware(['TemporaryCompanyMgtAvailable'])->group(function () {
+            // -+-+-+-+-+-+-+-+-+-+-+-+ 派遣会社管理 -+-+-+-+-+-+-+-+-+-+-+-+
+            Route::controller(TemporaryCompanyMgtController::class)->prefix('temporary_company_mgt')->name('temporary_company_mgt.')->group(function(){
+                Route::get('', 'index')->name('index');
+            });
+            // -+-+-+-+-+-+-+-+-+-+-+-+ 派遣会社追加 -+-+-+-+-+-+-+-+-+-+-+-+
+            Route::controller(TemporaryCompanyCreateController::class)->prefix('temporary_company_create')->name('temporary_company_create.')->group(function(){
+                Route::get('', 'index')->name('index');
+                Route::post('create', 'create')->name('create');
+            });
+            // -+-+-+-+-+-+-+-+-+-+-+-+ 派遣会社更新 -+-+-+-+-+-+-+-+-+-+-+-+
+            Route::controller(TemporaryCompanyUpdateController::class)->prefix('temporary_company_update')->name('temporary_company_update.')->group(function(){
                 Route::get('', 'index')->name('index');
                 Route::post('update', 'update')->name('update');
             });

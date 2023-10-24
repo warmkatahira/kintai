@@ -39,6 +39,7 @@ class Role extends Model
         'is_short_time_info_available',
         'is_all_base_operation_available',
         'is_add_rest_time_disp_available',
+        'is_temporary_company_mgt_available',
     ];
     // 全て取得
     public static function getAll()

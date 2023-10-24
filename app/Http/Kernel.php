@@ -94,6 +94,7 @@ class Kernel extends HttpKernel
         'BaseMgtAvailable' => \App\Http\Middleware\Available\BaseMgtAvailable::class,
         'KintaiReportDownloadAvailable' => \App\Http\Middleware\Available\KintaiReportDownloadAvailable::class,
         'DataDownloadAvailable' => \App\Http\Middleware\Available\DataDownloadAvailable::class,
+        'TemporaryCompanyMgtAvailable' => \App\Http\Middleware\Available\TemporaryCompanyMgtAvailable::class,
         // レコード存在チェック
         'FindByKintai' => \App\Http\Middleware\FindBy\FindByKintai::class,
         'FindByEmployee' => \App\Http\Middleware\FindBy\FindByEmployee::class,

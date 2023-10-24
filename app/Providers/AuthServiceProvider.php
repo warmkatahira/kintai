@@ -152,5 +152,9 @@ class AuthServiceProvider extends ServiceProvider
         Gate::define('isAddRestTimeDispAvailable', function($user){
             return ($user->role->is_add_rest_time_disp_available == 1);
         });
+        // 派遣会社管理有効のみ許可
+        Gate::define('isTemporaryCompanyMgtAvailable', function($user){
+            return ($user->role->is_temporary_company_mgt_available == 1);
+        });
     }
 }

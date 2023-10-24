@@ -46,6 +46,9 @@ export default defineConfig({
             'resources/js/access_mgt/ip_limit_update.js',
             'resources/js/base_mgt/base_create.js',
             'resources/js/base_mgt/base_update.js',
+            'resources/js/other/temporary_use.js',
+            'resources/js/temporary_company_mgt/temporary_company_create.js',
+            'resources/js/temporary_company_mgt/temporary_company_update.js',
 		]),
 	],
 });

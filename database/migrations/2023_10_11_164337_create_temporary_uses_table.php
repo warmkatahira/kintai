@@ -17,7 +17,10 @@ return new class extends Migration
             $table->string('base_id', 20);
             $table->date('date');
             $table->string('customer_id', 20);
-            $table->unsignedInteger('customer_working_time');
+            $table->unsignedInteger('people');
+            $table->unsignedInteger('working_time');
+            $table->unsignedInteger('hourly_rate');
+            $table->unsignedInteger('register_user');
             $table->timestamps();
         });
     }

@@ -20,4 +20,9 @@ class TemporaryCompany extends Model
     {
         return self::orderBy('temporary_company_id', 'asc');
     }
+    // 指定されたレコードを取得
+    public static function getSpecify($temporary_company_id)
+    {
+        return self::where('temporary_company_id', $temporary_company_id);
+    }
 }
