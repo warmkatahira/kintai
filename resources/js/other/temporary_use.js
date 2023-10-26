@@ -66,11 +66,11 @@ $("#create_enter").on("click",function(){
             throw new Error('日付が正しく入力されていません。');
         }
         // 派遣会社が選択されているか
-        if($('[name="temporary_company_id"]').length > 0 && $('[name="temporary_company_id"]:checked').length == 0){
+        if($('[name="temporary_company_id"]:checked').length == 0){
             throw new Error('派遣会社が選択されていません。');
         }
         // 荷主会社が選択されているか
-        if($('[name="customer_id"]').length > 0 && $('[name="customer_id"]:checked').length == 0){
+        if($('[name="customer_id"]:checked').length == 0){
             throw new Error('荷主が選択されていません。');
         }
         // 人数が入力されているかチェック
