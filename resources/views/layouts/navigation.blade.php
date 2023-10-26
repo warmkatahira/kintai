@@ -44,9 +44,7 @@
                 <ul class="drop">
                     <li><a href="{{ route('over_time_rank.index') }}">残業ランキング</a></li>
                     <li><a href="{{ route('customer_working_time_rank.index') }}">荷主稼働ランキング</a></li>
-                    @can('isTemporaryCompanyMgtAvailable')
                     <li><a href="{{ route('temporary_use.index') }}">派遣利用</a></li>
-                    @endcan
                 </ul>
             </li>
         @endcan
