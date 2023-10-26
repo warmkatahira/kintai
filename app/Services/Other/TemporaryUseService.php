@@ -19,6 +19,7 @@ class TemporaryUseService
             'search_date_to',
             'search_base_id',
             'search_temporary_company_id',
+            'search_customer_name',
         ]);
         return;
     }
@@ -41,6 +42,7 @@ class TemporaryUseService
         session(['search_date_to' => $request->search_date_to]);
         session(['search_base_id' => $request->search_base_id]);
         session(['search_temporary_company_id' => $request->search_temporary_company_id]);
+        session(['search_customer_name' => $request->search_customer_name]);
         return;
     }
 
@@ -51,14 +53,20 @@ class TemporaryUseService
         session(['back_url_1' => url()->full()]);
         // 利用日条件でデータを抽出
         $temporary_uses = TemporaryUse::whereDate('date', '>=', session('search_date_from'))
-                        ->whereDate('date', '<=', session('search_date_to'));
+                            ->whereDate('date', '<=', session('search_date_to'))
+                            ->join('customers', 'customers.customer_id', 'temporary_uses.customer_id')
+                            ->select('temporary_uses.*', 'customers.customer_name');
         // 拠点条件がある場合
         if (session('search_base_id')  != null) {
-            $temporary_uses->where('base_id', session('search_base_id'));
+            $temporary_uses->where('temporary_uses.base_id', session('search_base_id'));
         }
         // 派遣会社条件がある場合
         if (session('search_temporary_company_id')  != null) {
             $temporary_uses->where('temporary_company_id', session('search_temporary_company_id'));
+        }
+        // 荷主名条件がある場合
+        if (session('search_customer_name') != null) {
+            $temporary_uses->where('customer_name', 'LIKE', '%'.session('search_customer_name').'%');
         }
         // 並び替え
         $temporary_uses->orderBy('date', 'asc')->orderBy('base_id', 'asc')->orderBy('customer_id', 'asc')->orderBy('temporary_company_id', 'asc');
