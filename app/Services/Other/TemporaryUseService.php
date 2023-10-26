@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\DB;
 use Carbon\CarbonImmutable;
 use App\Models\TemporaryUse;
 use App\Models\TemporaryCompany;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class TemporaryUseService
 {
@@ -59,8 +60,25 @@ class TemporaryUseService
         if (session('search_temporary_company_id')  != null) {
             $temporary_uses->where('temporary_company_id', session('search_temporary_company_id'));
         }
-        // 
-        return $temporary_uses->orderBy('date', 'asc')->orderBy('base_id', 'asc')->orderBy('temporary_company_id', 'asc')->paginate(50);
+        // 並び替え
+        $temporary_uses->orderBy('date', 'asc')->orderBy('base_id', 'asc')->orderBy('customer_id', 'asc')->orderBy('temporary_company_id', 'asc');
+        // 取得
+        return with([
+            'temporary_uses' => $temporary_uses->paginate(50),
+            'temporary_uses_download' => $temporary_uses,
+        ]);
+    }
+
+    // 合計情報を取得
+    public function getTemporaryUseTotal($temporary_uses)
+    {
+        // 合計人数
+        $total_people = $temporary_uses->sum('people');
+        // 合計稼働時間
+        $total_working_time = $temporary_uses->sum('working_time');
+        // 合計金額
+        $total_amount = $temporary_uses->sum(fn ($item) => ($item->working_time / 60) * $item->hourly_rate);
+        return compact('total_people', 'total_working_time', 'total_amount');
     }
 
     // 派遣利用を登録
@@ -87,5 +105,55 @@ class TemporaryUseService
     {
         TemporaryUse::where('temporary_use_id', $temporary_use_id)->delete();
         return;
+    }
+
+    // ダウンロードする派遣利用データを取得
+    public function getDownloadTemporaryUse($temporary_uses_download)
+    {
+        // チャンクサイズを指定
+        $chunkSize = 2000;
+        $response = new StreamedResponse(function () use ($chunkSize, $temporary_uses_download) {
+            // ハンドルを取得
+            $handle = fopen('php://output', 'wb');
+            // BOMを書き込む
+            fwrite($handle, "\xEF\xBB\xBF");
+            // ヘッダー行を書き込む
+            $headerRow = [
+                '利用日',
+                '拠点',
+                '派遣会社',
+                '荷主名',
+                '人数',
+                '稼働時間',
+                '時給単価',
+                '金額',
+                '入力者',
+                '入力日',
+                '入力時間',
+            ];
+            fputcsv($handle, $headerRow);
+            // レコードをチャンクごとに書き込む
+            $temporary_uses_download->chunk($chunkSize, function ($temporary_uses) use ($handle) {
+                foreach ($temporary_uses as $temporary_use) {
+                    $row = [
+                        CarbonImmutable::parse($temporary_use->date)->format('Y年m月d日'),
+                        $temporary_use->base->base_name,
+                        $temporary_use->temporary_company->temporary_company_name,
+                        $temporary_use->customer->customer_name,
+                        $temporary_use->people,
+                        ($temporary_use->working_time / 60),
+                        $temporary_use->hourly_rate,
+                        ceil(($temporary_use->working_time / 60) * $temporary_use->hourly_rate),
+                        $temporary_use->user->last_name.' '.$temporary_use->user->first_name,
+                        CarbonImmutable::parse($temporary_use->created_at)->format('Y年m月d日'),
+                        CarbonImmutable::parse($temporary_use->created_at)->format('h時i分s秒'),
+                    ];
+                    fputcsv($handle, $row);
+                }
+            });
+            // ファイルを閉じる
+            fclose($handle);
+        });
+        return $response;
     }
 }

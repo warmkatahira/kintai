@@ -3,4 +3,5 @@
     <option value="total" @if('total' == session('search_orderby')) selected @endif>合計</option>
     <option value="shain" @if('shain' == session('search_orderby')) selected @endif>社員</option>
     <option value="part" @if('part' == session('search_orderby')) selected @endif>パート</option>
+    <option value="temporary" @if('temporary' == session('search_orderby')) selected @endif>派遣</option>
 </select>

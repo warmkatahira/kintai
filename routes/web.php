@@ -266,6 +266,7 @@ Route::middleware(['auth', 'userStatusCheck', 'OperationLogRecord', 'IPCheck'])-
             Route::get('create', 'create_index')->name('create_index');
             Route::post('create', 'create')->name('create');
             Route::post('delete', 'delete')->name('delete');
+            Route::get('download', 'download')->name('download');
         });
     });
     // ★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆ 経理管理 ★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆

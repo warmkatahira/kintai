@@ -11,6 +11,7 @@ use App\Models\TemporaryUse;
 use App\Models\Base;
 use App\Services\Other\TemporaryUseService;
 use Carbon\CarbonImmutable;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class TemporaryUseController extends Controller
 {
@@ -24,14 +25,17 @@ class TemporaryUseController extends Controller
         $TemporaryUseService->setDefaultCondition();
         // 派遣利用情報を取得
         $temporary_uses = $TemporaryUseService->getTemporaryUseSearch();
+        // 合計情報を取得
+        $temporary_use_total = $TemporaryUseService->getTemporaryUseTotal($temporary_uses['temporary_uses']);
         // 拠点情報を取得
         $bases = Base::getAll()->get();
         // 派遣会社情報を取得
         $temporary_companies = TemporaryCompany::getAll()->get();
         return view('other.temporary_use.index')->with([
             'bases' => $bases,
-            'temporary_uses' => $temporary_uses,
+            'temporary_uses' => $temporary_uses['temporary_uses'],
             'temporary_companies' => $temporary_companies,
+            'temporary_use_total' => $temporary_use_total,
         ]);
     }
 
@@ -45,14 +49,17 @@ class TemporaryUseController extends Controller
         $TemporaryUseService->setSearchCondition($request);
         // 派遣利用情報を取得
         $temporary_uses = $TemporaryUseService->getTemporaryUseSearch();
+        // 合計情報を取得
+        $temporary_use_total = $TemporaryUseService->getTemporaryUseTotal($temporary_uses['temporary_uses']);
         // 拠点情報を取得
         $bases = Base::getAll()->get();
         // 派遣会社情報を取得
         $temporary_companies = TemporaryCompany::getAll()->get();
         return view('other.temporary_use.index')->with([
             'bases' => $bases,
-            'temporary_uses' => $temporary_uses,
+            'temporary_uses' => $temporary_uses['temporary_uses'],
             'temporary_companies' => $temporary_companies,
+            'temporary_use_total' => $temporary_use_total,
         ]);
     }
 
@@ -92,5 +99,19 @@ class TemporaryUseController extends Controller
             'alert_type' => 'success',
             'alert_message' => '派遣利用を削除しました。',
         ]);
+    }
+
+    public function download(Request $request)
+    {
+        // インスタンス化
+        $TemporaryUseService = new TemporaryUseService;
+        // 派遣利用情報を取得
+        $temporary_uses = $TemporaryUseService->getTemporaryUseSearch();
+        // ダウンロードする派遣利用データを取得
+        $response = $TemporaryUseService->getDownloadTemporaryUse($temporary_uses['temporary_uses_download']);
+        // ダウンロード処理
+        $response->headers->set('Content-Type', 'text/csv');
+        $response->headers->set('Content-Disposition', 'attachment; filename=派遣利用データ_' . CarbonImmutable::now()->isoFormat('Y年MM月DD日HH時mm分ss秒') . '.csv');
+        return $response;
     }
 }

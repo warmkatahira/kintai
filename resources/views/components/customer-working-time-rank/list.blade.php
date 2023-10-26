@@ -11,6 +11,7 @@
                     <th class="font-thin py-3 px-2 text-center">荷主名</th>
                     <th class="font-thin py-3 px-2 text-center">稼働時間（社員）<br><span class="text-xs">(合計に対する比率)</span></th>
                     <th class="font-thin py-3 px-2 text-center">稼働時間（パート）<br><span class="text-xs">(合計に対する比率)</span></th>
+                    <th class="font-thin py-3 px-2 text-center">稼働時間（派遣）<br><span class="text-xs">(合計に対する比率)</span></th>
                     <th class="font-thin py-3 px-2 text-center">稼働時間（合計）</th>
                 </tr>
             </thead>
@@ -31,6 +32,10 @@
                         <td class="py-1 px-2 border text-right">
                             {{ number_format($customer->total_customer_working_time_part / 60, 2) }}<br>
                             {{ '('.number_format((($customer->total_customer_working_time_part / $customer->total_customer_working_time_total) * 100), 1).' %)' }}
+                        </td>
+                        <td class="py-1 px-2 border text-right">
+                            {{ number_format($customer->total_customer_working_time_temporary / 60, 2) }}<br>
+                            {{ '('.number_format((($customer->total_customer_working_time_temporary / $customer->total_customer_working_time_total) * 100), 1).' %)' }}
                         </td>
                         <td class="py-1 px-2 border text-right">{{ number_format($customer->total_customer_working_time_total / 60, 2) }}</td>
                     </tr>

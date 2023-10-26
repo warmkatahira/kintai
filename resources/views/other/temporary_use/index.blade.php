@@ -4,7 +4,7 @@
     <x-page-header content="派遣利用"/>
     <div class="flex flex-row mb-2">
         <!-- 操作ボタン -->
-        <x-temporary-use.operation-div />
+        <x-temporary-use.operation-div :temporaryUseTotal="$temporary_use_total" />
         <!-- ページネーション -->
         <x-pagenation :pages="$temporary_uses" />
     </div>
