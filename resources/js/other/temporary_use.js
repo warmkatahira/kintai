@@ -2,7 +2,7 @@
 $(".temporary_company_select").on("click",function(){
     // 要素を取得
     var temporary_companies = document.getElementsByName("temporary_company_id");
-    // 
+    // 派遣会社要素をループ
     for(var i = 0; i < temporary_companies.length; i++){
         const element = document.getElementById(temporary_companies[i].id + '_label');
         if(temporary_companies[i].checked) {
@@ -12,14 +12,18 @@ $(".temporary_company_select").on("click",function(){
             // 非選択要素のCSSを調整
             element.classList.remove('bg-blue-200');
         }
+        let aa = temporary_companies[i].getAttribute('data-is-working-time-input-available');
+        console.log(aa);
     }
+    // 稼働時間入力有効の値を取得し、有効であれば要素を表示、無効であれば非表示
+    
 });
 
 // 荷主選択が押下されたら
 $(".customer_select").on("click",function(){
     // 要素を取得
     var customers = document.getElementsByName("customer_id");
-    // 
+    // 荷主要素をループ
     for(var i = 0; i < customers.length; i++){
         const element = document.getElementById(customers[i].id + '_label');
         if(customers[i].checked) {
@@ -109,3 +113,4 @@ $(".temporary_use_delete_enter").on("click",function(){
         $("#temporary_use_delete_form_" + temporary_use_id).submit();
     }
 });
+

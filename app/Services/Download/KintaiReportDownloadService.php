@@ -10,6 +10,8 @@ use App\Models\Kintai;
 use App\Models\Employee;
 use App\Models\EmployeeCategory;
 use App\Models\Holiday;
+use App\Models\KintaiClose;
+use App\Models\KintaiCloseEmployee;
 use Carbon\CarbonImmutable;
 use Illuminate\Support\Facades\Gate;
 use App\Enums\EmployeeCategoryEnum;
@@ -34,15 +36,32 @@ class KintaiReportDownloadService
         return $month_date;
     }
 
-    public function getDownloadEmployee($base_id)
+    public function getDownloadEmployee($base_id, $date)
     {
-        // 出力対象の従業員を取得
-        return Employee::where('employees.base_id', $base_id)
-                        ->where('is_available', 1)
-                        ->join('bases', 'bases.base_id', 'employees.base_id')
-                        ->select('employee_id', 'employee_no', 'employee_last_name', 'employee_first_name', 'bases.base_id', 'base_name', 'employee_category_id', 'over_time_start')
-                        ->orderBy('employee_category_id', 'asc')
-                        ->orderBy('employee_no', 'asc');
+        // 勤怠提出テーブルから、ダウンロード条件のレコードを取得
+        $kintai_close = KintaiClose::where('base_id', $base_id)
+                        ->where('close_date', $date)
+                        ->first();
+        // nullだったら未提出なので、現状の営業所所属従業員を取得
+        if(is_null($kintai_close)){
+            $employees = Employee::where('employees.base_id', $base_id)
+                            ->where('is_available', 1)
+                            ->join('bases', 'bases.base_id', 'employees.base_id')
+                            ->select('employee_id', 'employee_no', 'employee_last_name', 'employee_first_name', 'bases.base_id', 'base_name', 'employee_category_id', 'over_time_start')
+                            ->orderBy('employee_category_id', 'asc')
+                            ->orderBy('employee_no', 'asc');
+        }
+        // nullではなかったら提出済みなので、履歴に残っている営業所所属従業員を取得
+        if(!is_null($kintai_close)){
+            $employees = $kintai_close->kintai_close_employees()
+                            ->where('kintai_close_employees.is_available', 1)
+                            ->join('employees', 'employees.employee_id', 'kintai_close_employees.employee_id')
+                            ->join('bases', 'bases.base_id', 'employees.base_id')
+                            ->select('employees.employee_id', 'employee_no', 'employee_last_name', 'employee_first_name', 'bases.base_id', 'base_name', 'employee_category_id', 'over_time_start')
+                            ->orderBy('employee_category_id', 'asc')
+                            ->orderBy('employee_no', 'asc');
+        }
+        return $employees;
     }
 
     public function getDownloadKintai($month_date, $employees, $start_day, $end_day)

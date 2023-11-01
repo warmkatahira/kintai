@@ -15,7 +15,7 @@
                     <div class="flex flex-row flex-wrap p-5">
                         @foreach($temporary_companies as $temporary_company)
                             <div class="w-1/4 p-2">
-                                <input type="radio" name="temporary_company_id" id="{{ $temporary_company->temporary_company_id }}" value="{{ $temporary_company->temporary_company_id }}" class="temporary_company_select hidden" {{ $temporary_company->temporary_company_id == '0' ? 'checked' : '' }}>
+                                <input type="radio" name="temporary_company_id" id="{{ $temporary_company->temporary_company_id }}" value="{{ $temporary_company->temporary_company_id }}" data-is-working-time-input-available="{{ $temporary_company->is_working_time_input_available }}" class="temporary_company_select hidden" {{ $temporary_company->temporary_company_id == '0' ? 'checked' : '' }}>
                                 <label id="{{ $temporary_company->temporary_company_id.'_label' }}" for="{{ $temporary_company->temporary_company_id }}" class="cursor-pointer flex flex-col w-full max-w-lg mx-auto text-center border-2 rounded-lg border-gray-900 p-2">{{ $temporary_company->temporary_company_name }}<br>{{ number_format($temporary_company->hourly_rate).'円' }}</label>
                             </div>
                         @endforeach

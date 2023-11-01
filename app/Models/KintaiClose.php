@@ -25,4 +25,9 @@ class KintaiClose extends Model
     {
         return self::where('kintai_close_id', $kintai_close_id);
     }
+    // kintai_close_employeesテーブルとのリレーション
+    public function kintai_close_employees()
+    {
+        return $this->hasMany(KintaiCloseEmployee::class, 'kintai_close_id', 'kintai_close_id');
+    }
 }
