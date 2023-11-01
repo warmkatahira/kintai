@@ -18,6 +18,38 @@ use App\Enums\EmployeeCategoryEnum;
 
 class KintaiReportDownloadService
 {
+    public function getBase($base_id, $date)
+    {
+        // 出力対象の営業所を取得
+        $base = Base::getSpecify($base_id)->first();
+        // 従業員区分を取得
+        $employee_categories = EmployeeCategory::getAll()->get();
+        // 勤怠提出テーブルから、ダウンロード条件のレコードを取得
+        $kintai_close = KintaiClose::where('base_id', $base_id)
+                        ->where('close_date', $date)
+                        ->first();
+        // nullだったら未提出なので、現状の営業所人数を取得
+        if(is_null($kintai_close)){
+            foreach($employee_categories as $employee_category){
+                $employee_count = Employee::where('base_id', $base_id)
+                                    ->where('employee_category_id', $employee_category->employee_category_id)
+                                    ->count();
+                $total_employee[$employee_category->employee_category_name] = $employee_count;
+            }
+        }
+        // nullではなかったら提出済みなので、履歴に残っている営業所人数を取得
+        if(!is_null($kintai_close)){
+            foreach($employee_categories as $employee_category){
+                $employee_count = $kintai_close->kintai_close_employees()
+                                    ->where('kintai_close_employees.is_available', 1)
+                                    ->where('employee_category_id', $employee_category->employee_category_id)
+                                    ->count();
+                $total_employee[$employee_category->employee_category_name] = $employee_count;
+            }
+        }
+        return compact('base', 'total_employee');
+    }
+
     public function getMonthDate($start_of_month, $end_of_month)
     {
         // 月の日数を取得
@@ -47,8 +79,9 @@ class KintaiReportDownloadService
             $employees = Employee::where('employees.base_id', $base_id)
                             ->where('is_available', 1)
                             ->join('bases', 'bases.base_id', 'employees.base_id')
-                            ->select('employee_id', 'employee_no', 'employee_last_name', 'employee_first_name', 'bases.base_id', 'base_name', 'employee_category_id', 'over_time_start')
-                            ->orderBy('employee_category_id', 'asc')
+                            ->join('employee_categories', 'employee_categories.employee_category_id', 'employees.employee_category_id')
+                            ->select('employee_id', 'employee_no', 'employee_last_name', 'employee_first_name', 'bases.base_id', 'base_name', 'employees.employee_category_id', 'over_time_start', 'employee_category_name')
+                            ->orderBy('employees.employee_category_id', 'asc')
                             ->orderBy('employee_no', 'asc');
         }
         // nullではなかったら提出済みなので、履歴に残っている営業所所属従業員を取得
@@ -57,14 +90,15 @@ class KintaiReportDownloadService
                             ->where('kintai_close_employees.is_available', 1)
                             ->join('employees', 'employees.employee_id', 'kintai_close_employees.employee_id')
                             ->join('bases', 'bases.base_id', 'employees.base_id')
-                            ->select('employees.employee_id', 'employee_no', 'employee_last_name', 'employee_first_name', 'bases.base_id', 'base_name', 'employee_category_id', 'over_time_start')
-                            ->orderBy('employee_category_id', 'asc')
+                            ->join('employee_categories', 'employee_categories.employee_category_id', 'employees.employee_category_id')
+                            ->select('employees.employee_id', 'employee_no', 'employee_last_name', 'employee_first_name', 'bases.base_id', 'base_name', 'employees.employee_category_id', 'over_time_start', 'employee_category_name')
+                            ->orderBy('employees.employee_category_id', 'asc')
                             ->orderBy('employee_no', 'asc');
         }
         return $employees;
     }
 
-    public function getDownloadKintai($month_date, $employees, $start_day, $end_day)
+    public function getDownloadKintai($base, $month_date, $employees, $start_day, $end_day)
     {
         // 従業員分だけループ処理
         $employees = $employees->get();
@@ -74,8 +108,8 @@ class KintaiReportDownloadService
             $kintais[$employee->employee_id]['employee_no'] = $employee->employee_no;
             $kintais[$employee->employee_id]['employee_name'] = $employee->employee_last_name.$employee->employee_first_name;
             $kintais[$employee->employee_id]['base_id'] = $employee->base_id;
-            $kintais[$employee->employee_id]['base_name'] = $employee->base_name;
-            $kintais[$employee->employee_id]['employee_category_name'] = $employee->employee_category->employee_category_name;
+            $kintais[$employee->employee_id]['base_name'] = $base['base_name'];
+            $kintais[$employee->employee_id]['employee_category_name'] = $employee->employee_category_name;
             // 月の日数分だけループ処理
             foreach($month_date as $date){
                 // 該当日の勤怠を取得
@@ -192,22 +226,6 @@ class KintaiReportDownloadService
             }
         }
         return isset($over40) ? $over40 : array();
-    }
-
-    public function getBase($base_id)
-    {
-        // 出力対象の営業所を取得
-        $base = Base::getSpecify($base_id)->first();
-        // 従業員区分を取得
-        $employee_categories = EmployeeCategory::getAll()->get();
-        // 従業員区分毎の人数を取得
-        foreach($employee_categories as $employee_category){
-            $employee_count = Employee::where('base_id', $base_id)
-                                ->where('employee_category_id', $employee_category->employee_category_id)
-                                ->count();
-            $total_employee[$employee_category->employee_category_name] = $employee_count;
-        }
-        return compact('base', 'total_employee');
     }
 
     public function getHolidays($start_day, $end_day)

@@ -15,6 +15,7 @@ return new class extends Migration
             $table->increments('kintai_close_employee_id');
             $table->unsignedInteger('kintai_close_id');
             $table->unsignedInteger('employee_id');
+            $table->unsignedInteger('employee_category_id');
             $table->boolean('is_available');
             $table->timestamps();
             // 外部キー制約

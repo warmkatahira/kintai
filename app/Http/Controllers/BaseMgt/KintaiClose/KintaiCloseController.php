@@ -40,7 +40,9 @@ class KintaiCloseController extends Controller
                     throw new \Exception($count.'件の拠点確認未実施の勤怠がある為、提出できません。');
                 }
                 // 勤怠提出テーブルを追加
-                $KintaiCloseService->createKintaiClose($request->close_date);
+                $kintai_close = $KintaiCloseService->createKintaiClose($request->close_date);
+                // 勤怠提出従業員テーブルを追加
+                $KintaiCloseService->createKintaiCloseEmployee($kintai_close);
                 // locked_atを更新
                 $KintaiCloseService->updateLockedAt($nowDate, $start_end_of_month);
             });

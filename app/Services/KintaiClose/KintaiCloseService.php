@@ -5,7 +5,9 @@ namespace App\Services\KintaiClose;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use App\Models\Kintai;
+use App\Models\Employee;
 use App\Models\KintaiClose;
+use App\Models\KintaiCloseEmployee;
 
 class KintaiCloseService
 {
@@ -37,10 +39,32 @@ class KintaiCloseService
     // 勤怠提出テーブルを追加
     public function createKintaiClose($close_date)
     {
-        KintaiClose::create([
+        $kintai_close = KintaiClose::create([
             'close_date' => $close_date,
             'base_id' => Auth::user()->base_id,
         ]);
+        return $kintai_close;
+    }
+
+    // 勤怠提出従業員テーブルを追加
+    public function createKintaiCloseEmployee($kintai_close)
+    {
+        // 自拠点の従業員を取得
+        $employees = Employee::getSpecifyBase(Auth::user()->base_id)->get();
+        // 配列をセット
+        $param = [];
+        // 従業員分だけループ
+        foreach($employees as $employee){
+            // 追加する情報を配列にセット
+            $param[] = [
+                'kintai_close_id' => $kintai_close->kintai_close_id,
+                'employee_id' => $employee->employee_id,
+                'employee_category_id' => $employee->employee_category_id,
+                'is_available' => $employee->is_available,
+            ];
+        }
+        // テーブルに追加
+        KintaiCloseEmployee::upsert($param, 'kintai_close_employee_id');
         return;
     }
 

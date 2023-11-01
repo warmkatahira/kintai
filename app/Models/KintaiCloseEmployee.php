@@ -14,6 +14,7 @@ class KintaiCloseEmployee extends Model
     protected $fillable = [
         'kintai_close_id',
         'employee_id',
+        'employee_category_id',
         'is_available',
     ];
 }
