@@ -33,6 +33,7 @@ class KintaiReportDownloadService
             foreach($employee_categories as $employee_category){
                 $employee_count = Employee::where('base_id', $base_id)
                                     ->where('employee_category_id', $employee_category->employee_category_id)
+                                    ->where('is_available', 1)
                                     ->count();
                 $total_employee[$employee_category->employee_category_name] = $employee_count;
             }
@@ -68,7 +69,7 @@ class KintaiReportDownloadService
         return $month_date;
     }
 
-    public function getDownloadEmployee($base_id, $date)
+    public function getDownloadEmployee($start_of_month, $end_of_month, $base_id, $date)
     {
         // 勤怠提出テーブルから、ダウンロード条件のレコードを取得
         $kintai_close = KintaiClose::where('base_id', $base_id)
