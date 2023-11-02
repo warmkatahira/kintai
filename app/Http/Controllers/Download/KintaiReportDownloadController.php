@@ -34,7 +34,7 @@ class KintaiReportDownloadController extends Controller
         // 出力対象の従業員を取得
         $employees = $KintaiReportDownloadService->getDownloadEmployee($request->base_id, $request->date);
         // 出力する勤怠情報を取得
-        $kintais = $KintaiReportDownloadService->getDownloadKintai($base['base'], $month_date, $employees, $start_end_of_month['start'], $start_end_of_month['end']);
+        $kintais = $KintaiReportDownloadService->getDownloadKintai($base['base']['base_name'], $month_date, $employees, $start_end_of_month['start'], $start_end_of_month['end']);
         // nullであれば、出力するデータがないので、処理を中断
         if(is_null($kintais)){
             return redirect()->back()->with([

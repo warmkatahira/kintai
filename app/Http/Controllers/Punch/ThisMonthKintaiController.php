@@ -46,7 +46,7 @@ class ThisMonthKintaiController extends Controller
         // 当月の情報を取得
         $month_date = $KintaiReportDownloadService->getMonthDate($start_end_of_month['start'], $start_end_of_month['end']);
         // 勤怠表に使用する情報を取得
-        $kintais = $KintaiReportDownloadService->getDownloadKintai($month_date, Employee::getSpecify($request->employee_id), $start_end_of_month['start'], $start_end_of_month['end']);
+        $kintais = $KintaiReportDownloadService->getDownloadKintai(Auth::user()->base->base_name, $month_date, Employee::getSpecify($request->employee_id), $start_end_of_month['start'], $start_end_of_month['end']);
         // 追加休憩取得時間が有効か判定
         $add_rest_available = $PunchFinishInputService->checkAddRestAvailable();
         return view('punch.this_month_kintai.detail')->with([

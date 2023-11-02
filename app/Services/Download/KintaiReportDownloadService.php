@@ -98,7 +98,7 @@ class KintaiReportDownloadService
         return $employees;
     }
 
-    public function getDownloadKintai($base, $month_date, $employees, $start_day, $end_day)
+    public function getDownloadKintai($base_name, $month_date, $employees, $start_day, $end_day)
     {
         // 従業員分だけループ処理
         $employees = $employees->get();
@@ -108,7 +108,7 @@ class KintaiReportDownloadService
             $kintais[$employee->employee_id]['employee_no'] = $employee->employee_no;
             $kintais[$employee->employee_id]['employee_name'] = $employee->employee_last_name.$employee->employee_first_name;
             $kintais[$employee->employee_id]['base_id'] = $employee->base_id;
-            $kintais[$employee->employee_id]['base_name'] = $base['base_name'];
+            $kintais[$employee->employee_id]['base_name'] = $base_name;
             $kintais[$employee->employee_id]['employee_category_name'] = $employee->employee_category_name;
             // 月の日数分だけループ処理
             foreach($month_date as $date){
