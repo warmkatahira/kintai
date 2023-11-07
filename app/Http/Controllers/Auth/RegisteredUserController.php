@@ -14,6 +14,8 @@ use Illuminate\Validation\Rules;
 use Illuminate\View\View;
 use App\Models\Base;
 use App\Http\Requests\UserCreateRequest;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\UserRegisterMail;
 
 class RegisteredUserController extends Controller
 {
@@ -50,6 +52,8 @@ class RegisteredUserController extends Controller
 
         // 自動ログインさせない
         //Auth::login($user);
+        // メールを送信
+        Mail::send(new UserRegisterMail($request->last_name.' '.$request->first_name));
         return redirect()->back()->with([
             'alert_type' => 'success',
             'alert_message' => 'ユーザー登録が完了しました。承認されるまでお待ち下さい。',

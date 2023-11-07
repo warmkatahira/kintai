@@ -9,16 +9,16 @@ use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
-class KintaiCheckMail extends Mailable
+class UserRegisterMail extends Mailable
 {
     use Queueable, SerializesModels;
 
     /**
      * Create a new message instance.
      */
-    public function __construct($data)
+    public function __construct($user_name)
     {
-        $this->data = $data;
+        $this->user_name = $user_name;
     }
 
     /**
@@ -27,13 +27,9 @@ class KintaiCheckMail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: '【KINTAI】勤怠確認通知',
+            subject: '【KINTAI】新規ユーザー登録通知',
         );
     }
-
-    /**
-     * Get the message content definition.
-     */
 
     /**
      * Get the attachments for the message.
@@ -48,9 +44,9 @@ class KintaiCheckMail extends Mailable
     public function build()
     {
         return $this->to('t.katahira@warm.co.jp')
-            ->view('mail.kintai_check')
+            ->view('mail.user_register')
             ->with([
-                'data' => $this->data,
+                'user_name' => $this->user_name,
             ]);
     }
 }
