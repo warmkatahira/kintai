@@ -85,7 +85,13 @@ class TemporaryUseService
         // 合計稼働時間
         $total_working_time = $temporary_uses->sum('working_time');
         // 合計金額
-        $total_amount = $temporary_uses->sum(fn ($item) => ($item->working_time / 60) * $item->hourly_rate);
+        $total_amount = $temporary_uses->sum(function ($item) {
+            if ($item->temporary_company->amount_calc_item === 'working_time') {
+                return ($item->working_time / 60) * $item->hourly_rate;
+            } elseif ($item->temporary_company->amount_calc_item === 'people') {
+                return $item->people * $item->hourly_rate;
+            }
+        });
         return compact('total_people', 'total_working_time', 'total_amount');
     }
 
