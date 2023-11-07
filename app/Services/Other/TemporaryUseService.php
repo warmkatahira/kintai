@@ -143,6 +143,13 @@ class TemporaryUseService
             // レコードをチャンクごとに書き込む
             $temporary_uses_download->chunk($chunkSize, function ($temporary_uses) use ($handle) {
                 foreach ($temporary_uses as $temporary_use) {
+                    // 合計金額を計算
+                    if($temporary_use->temporary_company->amount_calc_item == 'working_time'){
+                        $amount = ceil(($temporary_use->working_time / 60) * $temporary_use->hourly_rate);
+                    }
+                    if($temporary_use->temporary_company->amount_calc_item == 'people'){
+                        $amount = ceil($temporary_use->people * $temporary_use->hourly_rate);
+                    }
                     $row = [
                         CarbonImmutable::parse($temporary_use->date)->format('Y年m月d日'),
                         $temporary_use->base->base_name,
@@ -151,7 +158,7 @@ class TemporaryUseService
                         $temporary_use->people,
                         ($temporary_use->working_time / 60),
                         $temporary_use->hourly_rate,
-                        ceil(($temporary_use->working_time / 60) * $temporary_use->hourly_rate),
+                        $amount,
                         $temporary_use->user->last_name.' '.$temporary_use->user->first_name,
                         CarbonImmutable::parse($temporary_use->created_at)->format('Y年m月d日'),
                         CarbonImmutable::parse($temporary_use->created_at)->format('h時i分s秒'),

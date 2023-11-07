@@ -33,7 +33,14 @@
                         <td class="py-1 px-2 border text-right">{{ $temporary_use->people }}</td>
                         <td class="py-1 px-2 border text-right">{{ number_format(($temporary_use->working_time / 60), 2) }}</td>
                         <td class="py-1 px-2 border text-right"><i class="las la-yen-sign"></i>{{ number_format($temporary_use->hourly_rate) }}</td>
-                        <td class="py-1 px-2 border text-right"><i class="las la-yen-sign"></i>{{ number_format(($temporary_use->working_time / 60) * $temporary_use->hourly_rate) }}</td>
+                        <td class="py-1 px-2 border text-right"><i class="las la-yen-sign"></i>
+                            @if($temporary_use->temporary_company->amount_calc_item == 'working_time')
+                                {{ number_format(($temporary_use->working_time / 60) * $temporary_use->hourly_rate) }}
+                            @endif
+                            @if($temporary_use->temporary_company->amount_calc_item == 'people')
+                                {{ number_format($temporary_use->people * $temporary_use->hourly_rate) }}
+                            @endif
+                        </td>
                         <td class="py-1 px-2 border">{{ $temporary_use->user->last_name.' '.$temporary_use->user->first_name }}</td>
                         <td class="py-1 px-2 border">{{ \Carbon\Carbon::parse($temporary_use->created_at)->isoFormat('Y年MM月DD日 HH時mm分ss秒') }}</td>
                     </tr>

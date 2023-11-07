@@ -43,7 +43,6 @@ class PunchFinishInputService
     public function getFinishTimeAdj($nowDate)
     {
         // 現在の日時をインスタンス化
-        //$finish_time_adj = new CarbonImmutable('2023-06-01 17:00:00');
         $finish_time_adj = new CarbonImmutable($nowDate);
         // 15分単位で切り捨て
         $finish_time_adj = $finish_time_adj->subMinutes($finish_time_adj->minute % 15);

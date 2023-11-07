@@ -7,16 +7,19 @@ $(".temporary_company_select").on("click",function(){
         const element = document.getElementById(temporary_companies[i].id + '_label');
         if(temporary_companies[i].checked) {
             element.classList.add('bg-blue-200');
+            // 金額計算項目の値を取得し、要素を表示、非表示する
+            const amount_calc_item = temporary_companies[i].getAttribute('data-amount-calc-item');
+            if(amount_calc_item == 'working_time'){
+                $('#working_time_input_div').removeClass('hidden');
+            }else{
+                $('#working_time_input_div').addClass('hidden');
+            }
         }
         if(!temporary_companies[i].checked) {
             // 非選択要素のCSSを調整
             element.classList.remove('bg-blue-200');
         }
-        let aa = temporary_companies[i].getAttribute('data-is-working-time-input-available');
-        console.log(aa);
     }
-    // 稼働時間入力有効の値を取得し、有効であれば要素を表示、無効であれば非表示
-    
 });
 
 // 荷主選択が押下されたら
@@ -81,8 +84,8 @@ $("#create_enter").on("click",function(){
         if(Number($('#people_input').val()) < 1){
             throw new Error('人数が入力されていません。');
         }
-        // 稼働時間が入力されているかチェック
-        if(Number($('#working_time_input').val()) < 0.25){
+        // 稼働時間が入力されているかチェック（要素が表示されている場合のみ）
+        if(Number($('#working_time_input').val()) < 0.25 && $('#working_time_input_div').is(':visible')){
             throw new Error('稼働時間が入力されていません。');
         }
         // 0.25単位で稼働時間が入力されているかチェック

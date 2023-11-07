@@ -15,6 +15,7 @@ return new class extends Migration
             $table->increments('temporary_company_id');
             $table->string('temporary_company_name', 20);
             $table->unsignedInteger('hourly_rate');
+            $table->string('amount_calc_item', 20)->default('working_time');
             $table->timestamps();
         });
     }

@@ -14,6 +14,7 @@ class TemporaryCompany extends Model
     protected $fillable = [
         'temporary_company_name',
         'hourly_rate',
+        'amount_calc_item',
     ];
     // 全て取得
     public static function getAll()
