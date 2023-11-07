@@ -11,6 +11,7 @@ class TemporaryCompanyCreateService
         TemporaryCompany::create([
             'temporary_company_name' => $request->temporary_company_name,
             'hourly_rate' => $request->hourly_rate,
+            'amount_calc_item' => $request->amount_calc_item,
         ]);
         return;
     }

@@ -15,6 +15,7 @@
                 @csrf
                 <x-create-input label="派遣会社名" type="text" id="temporary_company_name" :db="null" required="1" tippy="0" />
                 <x-create-input label="時給単価" type="tel" id="hourly_rate" :db="null" required="1" tippy="0" />
+                <x-create-select-enum label="金額計算項目" id="amount_calc_item" :forValue="App\Enums\TemporaryCompanyEnum::AMOUNT_CALC_ITEM_LIST" :db="null" required="0" tippy="0" />
                 <button type="button" id="temporary_company_create_enter" class="border border-blue-500 text-blue-500 bg-blue-100 py-1 px-10 mt-5">追加</button>
             </form>
         </div>

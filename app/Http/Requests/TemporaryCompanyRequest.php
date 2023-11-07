@@ -27,6 +27,7 @@ class TemporaryCompanyRequest extends FormRequest
         return [
             'temporary_company_name' => 'required|max:20',
             'hourly_rate' => 'required|integer|min:1',
+            'amount_calc_item' => 'required|max:20',
         ];
     }
 
@@ -45,6 +46,7 @@ class TemporaryCompanyRequest extends FormRequest
         return [
             'temporary_company_name' => '派遣会社名',
             'hourly_rate' => '時給単価',
+            'amount_calc_item' => '金額計算項目',
         ];
     }
 }

@@ -6,6 +6,7 @@
                     <th class="font-thin py-3 px-2">更新</th>
                     <th class="font-thin py-3 px-2">派遣会社名</th>
                     <th class="font-thin py-3 px-2">時給単価</th>
+                    <th class="font-thin py-3 px-2">金額計算項目</th>
                     <th class="font-thin py-3 px-2">更新日時</th>
                 </tr>
             </thead>
@@ -17,6 +18,7 @@
                         </td>
                         <td class="py-1 px-2 border text-left">{{ $temporary_company->temporary_company_name }}</td>
                         <td class="py-1 px-2 border text-right"><i class="las la-yen-sign"></i>{{ number_format($temporary_company->hourly_rate) }}</td>
+                        <td class="py-1 px-2 border text-left">{{ App\Enums\TemporaryCompanyEnum::get_jp($temporary_company->amount_calc_item) }}</td>
                         <td class="py-1 px-2 border">{{ \Carbon\Carbon::parse($temporary_company->updated_at)->isoFormat('Y年MM月DD日 HH時mm分ss秒') }}</td>
                     </tr>
                 @endforeach
