@@ -77,6 +77,9 @@
                 text-align: center;
                 padding-left: 0.75rem; /* 12px */
                 padding-right: 0.75rem; /* 12px */
+                padding-top: 2px;
+                padding-bottom: 2px;
+                font-size: 10px;
             }
             .calc_field_parent_div {
                 margin-top: 6px;
@@ -175,7 +178,7 @@
                 <tbody>
                     @foreach($kintai['kintai'] as $work_day => $value)
                         <tr>
-                            <td style="{{ \Carbon\CarbonImmutable::parse($work_day)->dayOfWeekIso >= 6 || isset($holidays[$work_day]) ? 'background-color: #CCFFFF' : '' }}">{{ \Carbon\CarbonImmutable::parse($work_day)->isoFormat('MM月DD日(ddd)') }}</td>
+                            <td style="{{ \Carbon\CarbonImmutable::parse($work_day)->dayOfWeekIso >= 6 || isset($holidays[$work_day]) ? 'background-color: #CCFFFF' : '' }}">{{ \Carbon\CarbonImmutable::parse($work_day)->isoFormat('Y年MM月DD日(ddd)') }}</td>
                             <td style="{{ \Carbon\CarbonImmutable::parse($work_day)->dayOfWeekIso >= 6 || isset($holidays[$work_day]) ? 'background-color: #CCFFFF' : '' }}">{{ is_null($value) ? '' : substr($value->begin_time_adj, 0, 5) }}</td>
                             <td style="{{ \Carbon\CarbonImmutable::parse($work_day)->dayOfWeekIso >= 6 || isset($holidays[$work_day]) ? 'background-color: #CCFFFF' : '' }}">{{ is_null($value) ? '' : substr($value->finish_time_adj, 0, 5) }}</td>
                             <td style="{{ \Carbon\CarbonImmutable::parse($work_day)->dayOfWeekIso >= 6 || isset($holidays[$work_day]) ? 'background-color: #CCFFFF' : '' }}">{{ !isset($value->finish_time_adj) ? '' : number_format($value->rest_time / 60, 2) }}</td>
