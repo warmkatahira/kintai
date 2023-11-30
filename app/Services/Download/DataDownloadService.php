@@ -162,7 +162,7 @@ class DataDownloadService
                             });
         // 拠点が全拠点では無ければ、条件を追加
         if ($base_id != 'all') {
-            $employees->where('base_id', $base_id);
+            $employees->where('bases.base_id', $base_id);
         }
         // 日単位か月単位かで日付をフォーマットするか可変
         if($aggregate_unit == '日単位'){
