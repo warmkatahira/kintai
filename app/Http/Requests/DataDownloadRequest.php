@@ -26,7 +26,7 @@ class DataDownloadRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'base_id' => 'required|exists:bases,base_id',
+            'base_id' => 'required',
             'from_date' => 'required|date',
             'to_date' => 'required|date',
             'download_item' => ['required', new DownloadItemRule($this->download_item)],

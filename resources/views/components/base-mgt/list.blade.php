@@ -18,7 +18,7 @@
                             <a href="{{ route('base_update.index', ['base_id' => $base->base_id]) }}" class="text-center border border-blue-500 bg-blue-100 text-blue-500 text-xs px-2 py-1">更新</a>
                         </td>
                         <td class="py-1 px-2 border text-left">{{ $base->base_id }}</td>
-                        <td class="py-1 px-2 border text-center">{{ $base->base_name }}</td>
+                        <td class="py-1 px-2 border text-left">{{ $base->base_name }}</td>
                         <td class="py-1 px-2 border text-center">@if($base->is_add_rest_available == 1) ○ @endif</td>
                         <td class="py-1 px-2 border text-center">{{ $base->rest_related_select_mode == 'no_rest' ? '休憩未取得' : '休憩取得' }}</td>
                     </tr>
