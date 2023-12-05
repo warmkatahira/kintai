@@ -22,6 +22,7 @@ class CustomerRateCheckService
             'search_work_day_to',
             'search_base_id',
             'search_employee_category_id',
+            'search_employee_name',
         ]);
         return;
     }

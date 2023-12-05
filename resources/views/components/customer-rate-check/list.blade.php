@@ -8,8 +8,8 @@
                         <p class="flex-1 text-center bg-gray-300 py-1"><i class="las la-business-time la-lg mr-1"></i>{{ number_format(($customerWorkingTimes[$employee->employee_id]['total'] / 60), 2).' 時間' }}</p>
                     </div>
                     <div class="col-span-12 grid grid-cols-12">
-                        <!-- 3つまで表示させる -->
-                        @for($i = 0; $i < 3; $i++)
+                        <!-- 5つまで表示させる -->
+                        @for($i = 0; $i < 5; $i++)
                             @if(isset($customerWorkingTimes[$employee->employee_id]['rank'][$i]))
                                 <div class="col-span-12 bg-pink-200 py-2 border border-black -mb-px">
                                     <p class="text-center">{{ $customerWorkingTimes[$employee->employee_id]['rank'][$i]->customer_name }}</p>
