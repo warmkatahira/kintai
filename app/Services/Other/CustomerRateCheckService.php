@@ -31,10 +31,8 @@ class CustomerRateCheckService
         // 現在の日時を取得
         $nowDate = CarbonImmutable::now();
         // 初期条件をセット
-        /* session(['search_work_day_from' => $nowDate->toDateString()]);
-        session(['search_work_day_to' => $nowDate->toDateString()]); */
-        session(['search_work_day_from' => '2023-11-01']);
-        session(['search_work_day_to' => '2023-11-20']);
+        session(['search_work_day_from' => $nowDate->toDateString()]);
+        session(['search_work_day_to' => $nowDate->toDateString()]);
         session(['search_base_id' => Auth::user()->base_id]);
         return;
     }
