@@ -51,7 +51,7 @@ class CustomerRateCheckService
     public function getCustomerRateSearch()
     {
         // テーブルをセット
-        $employees = Employee::query();
+        $employees = Employee::where('is_available', 1);
         // 拠点条件がある場合
         if (session('search_base_id') != null) {
             $employees->where('base_id', session('search_base_id'));
