@@ -44,6 +44,9 @@
                 <ul class="drop">
                     <li><a href="{{ route('over_time_rank.index') }}">残業ランキング</a></li>
                     <li><a href="{{ route('customer_working_time_rank.index') }}">荷主稼働ランキング</a></li>
+                    @can('isSystemMgtFuncAvailable')
+                        <li><a href="{{ route('customer_rate_check.index') }}">荷主割合確認</a></li>
+                    @endcan
                     <li><a href="{{ route('temporary_use.index') }}">派遣利用</a></li>
                 </ul>
             </li>
