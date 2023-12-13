@@ -34,11 +34,6 @@ class BaseSeeder extends Seeder
             'is_add_rest_available' => 0,
         ]);
         Base::create([
-            'base_id' => '04_4th',
-            'base_name' => '第4営業所',
-            'is_add_rest_available' => 0,
-        ]);
-        Base::create([
             'base_id' => '05_LS',
             'base_name' => 'ロジステーション',
             'is_add_rest_available' => 0,
