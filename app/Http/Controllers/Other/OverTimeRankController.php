@@ -8,6 +8,7 @@ use App\Services\Other\OverTimeRankService;
 use App\Services\CommonService;
 use App\Models\Base;
 use App\Models\EmployeeCategory;
+use Carbon\CarbonImmutable;
 
 class OverTimeRankController extends Controller
 {
@@ -25,9 +26,10 @@ class OverTimeRankController extends Controller
         // 従業員区分情報を取得
         $employee_categories = EmployeeCategory::getAll()->get();
         // 月初・月末の日付を取得
-        $start_end_of_month = $CommonService->getStartEndOfMonth(session('search_date'));
+        $start_of_month = $CommonService->getStartOfMonth(session('search_work_day_from'));
+        $end_of_month = $CommonService->getEndOfMonth(session('search_work_day_to'));
         // 残業時間情報を取得
-        $employees = $OverTimeRankService->getOverTimeRankSearch($start_end_of_month['start'], $start_end_of_month['end']);
+        $employees = $OverTimeRankService->getOverTimeRankSearch($start_of_month, $end_of_month);
         return view('other.over_time_rank.index')->with([
             'bases' => $bases,
             'employee_categories' => $employee_categories,
@@ -49,13 +51,32 @@ class OverTimeRankController extends Controller
         // 従業員区分情報を取得
         $employee_categories = EmployeeCategory::getAll()->get();
         // 月初・月末の日付を取得
-        $start_end_of_month = $CommonService->getStartEndOfMonth(session('search_date'));
+        $start_of_month = $CommonService->getStartOfMonth(session('search_work_day_from'));
+        $end_of_month = $CommonService->getEndOfMonth(session('search_work_day_to'));
         // 残業時間情報を取得
-        $employees = $OverTimeRankService->getOverTimeRankSearch($start_end_of_month['start'], $start_end_of_month['end']);
+        $employees = $OverTimeRankService->getOverTimeRankSearch($start_of_month, $end_of_month);
         return view('other.over_time_rank.index')->with([
             'bases' => $bases,
             'employee_categories' => $employee_categories,
             'employees' => $employees,
         ]);
+    }
+
+    public function download()
+    {
+        // インスタンス化
+        $OverTimeRankService = new OverTimeRankService;
+        $CommonService = new CommonService;
+        // 月初・月末の日付を取得
+        $start_of_month = $CommonService->getStartOfMonth(session('search_work_day_from'));
+        $end_of_month = $CommonService->getEndOfMonth(session('search_work_day_to'));
+        // 残業時間情報を取得
+        $employees = $OverTimeRankService->getOverTimeRankSearch($start_of_month, $end_of_month);
+        // ダウンロードするデータを取得
+        $response = $OverTimeRankService->getDownloadOverTimeRank($employees);
+        // ダウンロード処理
+        $response->headers->set('Content-Type', 'text/csv');
+        $response->headers->set('Content-Disposition', 'attachment; filename=残業ランキング_' . CarbonImmutable::now()->isoFormat('Y年MM月DD日HH時mm分ss秒') . '.csv');
+        return $response;
     }
 }

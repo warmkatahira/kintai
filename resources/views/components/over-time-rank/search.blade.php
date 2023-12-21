@@ -2,7 +2,7 @@
     <p class="text-sm bg-gray-600 text-white py-3 text-center">検索条件</p>
     <form method="GET" action="{{ route($searchRoute) }}" class="m-0">
         <div class="flex flex-col px-3">
-            <x-search.date-YM id="search_date" label="年月" />
+            <x-search.date-period-YM idFrom="search_work_day_from" idTo="search_work_day_to" label="期間" />
             <x-search.select-1 id="search_base_id" label="拠点" :searchConditions="$bases" value="base_id" text="base_name" />
             <x-search.select-1 id="search_employee_category_id" label="従業員区分" :searchConditions="$employeeCategories" value="employee_category_id" text="employee_category_name" />
             <x-search.input id="search_employee_name" label="従業員名" />

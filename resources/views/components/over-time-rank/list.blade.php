@@ -5,7 +5,7 @@
             <thead>
                 <tr class="text-left text-white bg-gray-600 sticky top-0">
                     <th class="font-thin py-3 px-2 text-center">Rank</th>
-                    <th class="font-thin py-3 px-2 text-center">年月</th>
+                    <th class="font-thin py-3 px-2 text-center">期間</th>
                     <th class="font-thin py-3 px-2 text-center">拠点</th>
                     <th class="font-thin py-3 px-2 text-center">従業員区分</th>
                     <th class="font-thin py-3 px-2 text-center">従業員番号</th>
@@ -17,7 +17,7 @@
                 @foreach($employees as $employee)
                     <tr class="text-left hover:bg-theme-sub cursor-default">
                         <td class="py-1 px-2 border text-center">{{ sprintf('%03d', $employees->firstItem() + $loop->index) }}</td>
-                        <td class="py-1 px-2 border text-center">{{ \Carbon\CarbonImmutable::parse($employee->date)->isoFormat('YYYY年MM月') }}</td>
+                        <td class="py-1 px-2 border text-center">{{ \Carbon\CarbonImmutable::parse(session('search_work_day_from'))->isoFormat('YYYY年MM月').'～'.\Carbon\CarbonImmutable::parse(session('search_work_day_to'))->isoFormat('YYYY年MM月') }}</td>
                         <td class="py-1 px-2 border">{{ $employee->base->base_name }}</td>
                         <td class="py-1 px-2 border text-center">{{ $employee->employee_category->employee_category_name }}</td>
                         <td class="py-1 px-2 border text-center">{{ $employee->employee_no }}</td>

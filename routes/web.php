@@ -254,6 +254,7 @@ Route::middleware(['auth', 'userStatusCheck', 'OperationLogRecord', 'IPCheck'])-
         Route::controller(OverTimeRankController::class)->prefix('over_time_rank')->name('over_time_rank.')->group(function(){
             Route::get('', 'index')->name('index');
             Route::get('search', 'search')->name('search');
+            Route::get('download', 'download')->name('download');
         });
         // -+-+-+-+-+-+-+-+-+-+-+-+ 荷主稼働ランキング -+-+-+-+-+-+-+-+-+-+-+-+
         Route::controller(CustomerWorkingTimeRankController::class)->prefix('customer_working_time_rank')->name('customer_working_time_rank.')->group(function(){
