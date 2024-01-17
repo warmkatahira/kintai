@@ -12,6 +12,7 @@ use App\Models\EmployeeCategory;
 use App\Models\Kintai;
 use App\Models\KintaiDetail;
 use App\Services\CommonService;
+use App\Enums\EmployeeMgtEnum;
 
 class EmployeeMgtService
 {
@@ -22,7 +23,8 @@ class EmployeeMgtService
             'search_base_id',
             'search_available',
             'search_employee_category_id',
-            'search_employee_name'
+            'search_employee_name',
+            'search_sort_order',
         ]);
         return;
     }
@@ -32,6 +34,7 @@ class EmployeeMgtService
         // 初期条件をセット
         session(['search_base_id' => Auth::user()->base_id]);
         session(['search_available' => 1]);
+        session(['search_sort_order' => EmployeeMgtEnum::SORT_ORDER_BASE]);
         return;
     }
 
@@ -42,6 +45,7 @@ class EmployeeMgtService
         session(['search_available' => $request->search_available]);
         session(['search_employee_category_id' => $request->search_employee_category_id]);
         session(['search_employee_name' => $request->search_employee_name]);
+        session(['search_sort_order' => $request->search_sort_order]);
         return;
     }
 
@@ -81,8 +85,13 @@ class EmployeeMgtService
         if (session('search_employee_category_id') != null) {
             $employees->where('employee_category_id', session('search_employee_category_id'));
         }
-        // 従業員番号で並び替え
-        $employees = $employees->orderBy('base_id', 'asc')->orderBy('employee_category_id', 'asc')->orderBy('employee_no', 'asc')->paginate(50);
+        // 並び順条件を適用
+        if (session('search_sort_order') == EmployeeMgtEnum::SORT_ORDER_BASE) {
+            $employees = $employees->orderBy('base_id', 'asc')->orderBy('employee_category_id', 'asc')->orderBy('employee_no', 'asc')->paginate(50);
+        }
+        if (session('search_sort_order') == EmployeeMgtEnum::SORT_ORDER_EMPLOYEE_NO) {
+            $employees = $employees->orderBy('employee_no', 'asc')->paginate(50);
+        }
         return $employees;
     }
 

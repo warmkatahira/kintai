@@ -6,6 +6,7 @@
             <x-search.select-1 id="search_available" label="有効/無効" :searchConditions="$statuses" value="status" text="status_name" />
             <x-search.select-1 id="search_employee_category_id" label="従業員区分" :searchConditions="$employeeCategories" value="employee_category_id" text="employee_category_name" />
             <x-search.input id="search_employee_name" label="従業員名" />
+            <x-search.select-3 id="search_sort_order" label="並び順" :searchConditions="$sortOrderConditions" />
             <button type="submit" class="text-sm text-center border border-blue-500 text-blue-500 bg-blue-100 py-2 mt-2 shadow-md">
                 <i class="las la-search la-lg"></i>検索
             </button>

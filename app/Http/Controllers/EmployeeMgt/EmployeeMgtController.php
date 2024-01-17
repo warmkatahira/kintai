@@ -15,6 +15,7 @@ use App\Services\Punch\PunchFinishInputService;
 use App\Services\CommonService;
 use App\Enums\StatusEnum;
 use Illuminate\Support\Facades\Auth;
+use App\Enums\EmployeeMgtEnum;
 
 class EmployeeMgtController extends Controller
 {
@@ -42,11 +43,14 @@ class EmployeeMgtController extends Controller
         $statuses = collect(StatusEnum::PULLDOWN_LIST)->map(function ($item) {
             return (object) $item;
         });
+        // Enumに定義してある条件値を取得
+        $sort_order_conditions = EmployeeMgtEnum::SORT_ORDER_CONDITIONS;
         return view('employee_mgt.index')->with([
             'bases' => $bases,
             'employees' => $employees,
             'employee_categories' => $employee_categories,
             'statuses' => $statuses,
+            'sort_order_conditions' => $sort_order_conditions,
         ]);
     }
 
@@ -68,11 +72,14 @@ class EmployeeMgtController extends Controller
         $statuses = collect(StatusEnum::PULLDOWN_LIST)->map(function ($item) {
             return (object) $item;
         });
+        // Enumに定義してある条件値を取得
+        $sort_order_conditions = EmployeeMgtEnum::SORT_ORDER_CONDITIONS;
         return view('employee_mgt.index')->with([
             'bases' => $bases,
             'employees' => $employees,
             'employee_categories' => $employee_categories,
             'statuses' => $statuses,
+            'sort_order_conditions' => $sort_order_conditions,
         ]);
     }
 
