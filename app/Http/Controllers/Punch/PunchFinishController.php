@@ -111,6 +111,7 @@ class PunchFinishController extends Controller
         session()->flash('monthly_workable_time', $hours_data['monthly_workable_time']);
         session()->flash('workable_times', $hours_data['monthly_workable_time'] == 0 ? 0 : $hours_data['workable_times']);
         session()->flash('total_month_working_time', $hours_data['total_month_working_time']);
+        session()->flash('total_over_time', $hours_data['total_over_time']);
         return redirect()->route('punch_finish.index');
     }
 }

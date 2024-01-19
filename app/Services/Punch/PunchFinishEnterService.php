@@ -96,8 +96,12 @@ class PunchFinishEnterService
         $total_month_working_time = (Kintai::where('employee_id', $kintai->employee_id)
                                     ->whereBetween('work_day', [$start_day, $end_day])
                                     ->sum('working_time')) / 60;
+        // 当月の残業時間を算出(0.25単位に変換している)
+        $total_over_time = (Kintai::where('employee_id', $kintai->employee_id)
+                                    ->whereBetween('work_day', [$start_day, $end_day])
+                                    ->sum('over_time')) / 60;
         // 定総労働時間 - 当月の稼働時間で労働可能時間を算出
         $workable_times = $monthly_workable_time - $total_month_working_time;
-        return compact('monthly_workable_time', 'workable_times', 'total_month_working_time');
+        return compact('monthly_workable_time', 'workable_times', 'total_month_working_time', 'total_over_time');
     }
 }
