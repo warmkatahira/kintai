@@ -36,6 +36,26 @@ class KintaiCloseService
                     ->count();
     }
 
+    // 
+    public function getNotingKintaiEmployee($start_end_of_month)
+    {
+        // 提出しようとしている月内で勤怠がある従業員を取得
+        $employees = Kintai::whereDate('work_day', '>=', $start_end_of_month['start'])
+                            ->whereDate('work_day', '<=', $start_end_of_month['end'])
+                            ->whereHas('employee.base', function ($query) {
+                                $query->where('base_id', Auth::user()->base_id);
+                            })
+                            ->select('kintais.employee_id')
+                            ->groupBy('kintais.employee_id')
+                            ->get()
+                            ->toArray();
+        // ステータスが有効で勤怠がない従業員を取得
+        return Employee::where('base_id', Auth::user()->base_id)
+                                    ->where('is_available', 1)
+                                    ->whereNotIn('employee_id', $employees)
+                                    ->get();
+    }
+
     // 勤怠提出テーブルを追加
     public function createKintaiClose($close_date)
     {

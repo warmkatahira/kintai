@@ -30,4 +30,17 @@
         @csrf
         <input type="hidden" id="close_date" name="close_date">
     </form>
+    <!-- 勤怠なし従業員表示 -->
+    @if(session('kintai_nothing_employees'))
+        <div class="bg-red-500 text-white px-5 pb-5">
+            <p class="text-xl py-5"><i class="las la-exclamation-triangle la-lg mr-1"></i>勤怠なし従業員一覧</p>
+            @foreach(session('kintai_nothing_employees') as $employee)
+                <p class="py-1">{{ $employee->employee_last_name .' '. $employee->employee_first_name }}</p>
+            @endforeach
+            <div class="border-t border-white pt-3">
+                <i class="las la-info-circle la-lg mr-1"></i>退職者の場合は、従業員の「有効/無効」を「無効」に変更してから提出を行って下さい。<br>
+                <i class="las la-info-circle la-lg mr-1"></i>退職者ではない場合は、再度提出処理を行って下さい。<br>
+            </div>
+        </div>
+    @endif
 </x-app-layout>

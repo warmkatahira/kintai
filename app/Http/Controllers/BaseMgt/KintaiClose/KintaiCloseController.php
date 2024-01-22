@@ -39,6 +39,15 @@ class KintaiCloseController extends Controller
                 if($count > 0){
                     throw new \Exception($count.'件の拠点確認未実施の勤怠がある為、提出できません。');
                 }
+                // ステータスが有効で勤怠が1つもない従業員を取得
+                $kintai_nothing_employees = $KintaiCloseService->getNotingKintaiEmployee($start_end_of_month);
+                // 対象の方がいるかつ、セッションが空であれば初めての提出処理なので、処理を中断して警告を表示する
+                if(count($kintai_nothing_employees) > 0 && empty(session('kintai_nothing_employees'))){
+                    session(['kintai_nothing_employees' => $kintai_nothing_employees]);
+                    throw new \Exception('勤怠がない従業員の方がいます。<br>退職者でないか確認して下さい。');
+                }
+                // セッションを削除
+                session()->forget(['kintai_nothing_employees']);
                 // 勤怠提出テーブルを追加
                 $kintai_close = $KintaiCloseService->createKintaiClose($request->close_date);
                 // 勤怠提出従業員テーブルを追加

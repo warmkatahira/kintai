@@ -14,16 +14,16 @@
                     sessionStorage.setItem('messageId', messageIdValue);
                     // typeによって表示するアラートを可変
                     if("{{ session('alert_type') }}" == 'success'){
-                        toastr.success("{{ session('alert_message') }}");
+                        toastr.success("{!! session('alert_message') !!}");
                     }
                     if("{{ session('alert_type') }}" == 'info'){
-                        toastr.info("{{ session('alert_message') }}");
+                        toastr.info("{!! session('alert_message') !!}");
                     }
                     if("{{ session('alert_type') }}" == 'warning'){
-                        toastr.warning("{{ session('alert_message') }}");
+                        toastr.warning("{!! session('alert_message') !!}");
                     }
                     if("{{ session('alert_type') }}" == 'error'){
-                        toastr.error("{{ session('alert_message') }}");
+                        toastr.error("{!! session('alert_message') !!}");
                     }
                 }
             }
