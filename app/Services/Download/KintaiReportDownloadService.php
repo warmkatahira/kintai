@@ -87,14 +87,17 @@ class KintaiReportDownloadService
         }
         // nullではなかったら提出済みなので、履歴に残っている営業所所属従業員を取得
         if(!is_null($kintai_close)){
-            $employees = $kintai_close->kintai_close_employees()
+
+            $employees = KintaiClose::where('kintai_closes.base_id', $base_id)
+                            ->where('close_date', $date)
+                            ->join('kintai_close_employees', 'kintai_closes.kintai_close_id', 'kintai_close_employees.kintai_close_id')
                             ->where('kintai_close_employees.is_available', 1)
+                            ->join('bases', 'bases.base_id', 'kintai_closes.base_id')
+                            ->join('employee_categories', 'employee_categories.employee_category_id', 'kintai_close_employees.employee_category_id')
                             ->join('employees', 'employees.employee_id', 'kintai_close_employees.employee_id')
-                            ->join('bases', 'bases.base_id', 'employees.base_id')
-                            ->join('employee_categories', 'employee_categories.employee_category_id', 'employees.employee_category_id')
-                            ->select('employees.employee_id', 'employee_no', 'employee_last_name', 'employee_first_name', 'bases.base_id', 'base_name', 'employees.employee_category_id', 'over_time_start', 'employee_category_name')
-                            ->orderBy('employees.employee_category_id', 'asc')
-                            ->orderBy('employee_no', 'asc');
+                            ->select('kintai_close_employees.employee_id', 'employees.employee_no', 'employees.employee_last_name', 'employees.employee_first_name', 'bases.base_id', 'bases.base_name', 'kintai_close_employees.employee_category_id', 'employees.over_time_start', 'employee_categories.employee_category_name')
+                            ->orderBy('kintai_close_employees.employee_category_id', 'asc')
+                            ->orderBy('employees.employee_no', 'asc');
         }
         return $employees;
     }
