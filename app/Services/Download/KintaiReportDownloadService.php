@@ -87,7 +87,6 @@ class KintaiReportDownloadService
         }
         // nullではなかったら提出済みなので、履歴に残っている営業所所属従業員を取得
         if(!is_null($kintai_close)){
-
             $employees = KintaiClose::where('kintai_closes.base_id', $base_id)
                             ->where('close_date', $date)
                             ->join('kintai_close_employees', 'kintai_closes.kintai_close_id', 'kintai_close_employees.kintai_close_id')
@@ -113,6 +112,7 @@ class KintaiReportDownloadService
             $kintais[$employee->employee_id]['employee_name'] = $employee->employee_last_name.$employee->employee_first_name;
             $kintais[$employee->employee_id]['base_id'] = $employee->base_id;
             $kintais[$employee->employee_id]['base_name'] = $base_name;
+            $kintais[$employee->employee_id]['employee_category_id'] = $employee->employee_category_id;
             $kintais[$employee->employee_id]['employee_category_name'] = $employee->employee_category_name;
             // 月の日数分だけループ処理
             foreach($month_date as $date){

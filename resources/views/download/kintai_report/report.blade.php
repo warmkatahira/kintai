@@ -173,9 +173,13 @@
                         <th>残業</th>
                         <th>早出</th>
                         <th>コメント</th>
-                        <th>超過</th>
+                        @if($kintai['employee_category_id'] == App\Enums\EmployeeCategoryEnum::PART_TIME_EMPLOYEE)
+                            <th>超過</th>
+                        @else
+                            <th>マーク</th>
+                        @endif
                         <!-- 第1営業所のみ表示 -->
-                        @if($kintai['base_id'] == '01_1st')
+                        @if($kintai['base_id'] == '01_1st' && $kintai['employee_category_id'] == App\Enums\EmployeeCategoryEnum::PART_TIME_EMPLOYEE)
                             <th>大洋</th>
                         @endif
                     </tr>
@@ -196,9 +200,16 @@
                             <td style="{{ \Carbon\CarbonImmutable::parse($work_day)->dayOfWeekIso >= 6 || isset($holidays[$work_day]) ? 'background-color: #CCFFFF' : '' }}" class="center">{{ !isset($value->finish_time_adj) ? '' : number_format($value->over_time / 60, 2) }}</td>
                             <td style="{{ \Carbon\CarbonImmutable::parse($work_day)->dayOfWeekIso >= 6 || isset($holidays[$work_day]) ? 'background-color: #CCFFFF' : '' }}" class="center">{{ is_null($value) ? '' : ($value->is_early_worked == 1 ? '○' : '') }}</td>
                             <td style="{{ \Carbon\CarbonImmutable::parse($work_day)->dayOfWeekIso >= 6 || isset($holidays[$work_day]) ? 'background-color: #CCFFFF' : '' }}" class="left">{{ is_null($value) ? '' : $value->comment }}</td>
-                            <td style="{{ \Carbon\CarbonImmutable::parse($work_day)->dayOfWeekIso >= 6 || isset($holidays[$work_day]) ? 'background-color: #CCFFFF' : '' }}" class="center">{{ \Carbon\CarbonImmutable::parse($work_day)->isSunday() && isset($over40[$employee_id]) ? (isset($over40[$employee_id][$work_day]) ? ($over40[$employee_id][$work_day]->over40 > 0 ? number_format($over40[$employee_id][$work_day]->over40 / 60, 2) : '0.00') : '0.00') : '' }}</td>
+                            @if($kintai['employee_category_id'] == App\Enums\EmployeeCategoryEnum::PART_TIME_EMPLOYEE)
+                                <td style="{{ \Carbon\CarbonImmutable::parse($work_day)->dayOfWeekIso >= 6 || isset($holidays[$work_day]) ? 'background-color: #CCFFFF' : '' }}" class="center">{{ \Carbon\CarbonImmutable::parse($work_day)->isSunday() && isset($over40[$employee_id]) ? (isset($over40[$employee_id][$work_day]) ? ($over40[$employee_id][$work_day]->over40 > 0 ? number_format($over40[$employee_id][$work_day]->over40 / 60, 2) : '0.00') : '0.00') : '' }}</td>
+                            @else
+                                <td style="{{ \Carbon\CarbonImmutable::parse($work_day)->dayOfWeekIso >= 6 || isset($holidays[$work_day]) ? 'background-color: #CCFFFF' : '' }}" class="center">
+                                    {{ is_null($value) ? '' : (substr($value->finish_time_adj, 0, 2) >= 22 ? '深' : '') }}
+                                    {{ !isset($value->finish_time_adj) ? '' : (number_format($value->working_time / 60, 2) <= 6.25 ? '少' : '') }}
+                                </td>
+                            @endif
                             <!-- 第1営業所のみ表示 -->
-                            @if($kintai['base_id'] == '01_1st')
+                            @if($kintai['base_id'] == '01_1st' && $kintai['employee_category_id'] == App\Enums\EmployeeCategoryEnum::PART_TIME_EMPLOYEE)
                                 <td style="{{ \Carbon\CarbonImmutable::parse($work_day)->dayOfWeekIso >= 6 || isset($holidays[$work_day]) ? 'background-color: #CCFFFF' : '' }}" class="center">{{ isset($taiyo_working_times[$employee_id][$work_day]) ? '○' : '' }}</td>
                             @endif
                         </tr>
