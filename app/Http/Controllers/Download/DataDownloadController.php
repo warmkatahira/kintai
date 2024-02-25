@@ -34,6 +34,13 @@ class DataDownloadController extends Controller
         $end_day = new CarbonImmutable($request->to_date);
         // ダウンロードデータを取得
         $data = $DataDownloadService->getDownloadData($request, $start_day, $end_day);
+        // emptyであれば、出力するデータがないので、処理を中断
+        if(empty($data['download_data'])){
+            return redirect()->back()->with([
+                'alert_type' => 'error',
+                'alert_message' => 'ダウンロードできるデータがありません。',
+            ]);
+        }
         return (new FastExcel($data['download_data']))->download($data['file_name']);
     }
 }

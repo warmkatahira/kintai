@@ -58,5 +58,10 @@ class BaseSeeder extends Seeder
             'base_name' => 'ロジステーションプラス',
             'is_add_rest_available' => 0,
         ]);
+        Base::create([
+            'base_id' => '10_SOUKO',
+            'base_name' => '倉庫管理',
+            'is_add_rest_available' => 0,
+        ]);
     }
 }
