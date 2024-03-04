@@ -26,7 +26,7 @@ class HolidayDownloadService
         foreach($holidays as $holiday){
             $param = [
                 '休日' => $holiday->holiday,
-                '備考' => $holiday->note,
+                '備考' => $holiday->holiday_note,
                 '国民の祝日' => $holiday->is_national_holiday,
             ];
             $download_data[] = $param;
