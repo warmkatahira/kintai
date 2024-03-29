@@ -2,7 +2,7 @@
     <x-page-header content="ユーザー管理"/>
     <div class="flex flex-row mb-2">
         <!-- ページネーション -->
-        <x-pagenation :pages="$users" />
+        <x-pagination :pages="$users" />
     </div>
     <div class="flex flex-row items-start mb-2">
         <!-- 検索条件 -->

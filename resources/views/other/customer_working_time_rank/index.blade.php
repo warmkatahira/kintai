@@ -2,7 +2,7 @@
     <x-page-header content="荷主稼働ランキング"/>
     <div class="flex flex-row mb-2">
         <!-- ページネーション -->
-        <x-pagenation :pages="$customers" />
+        <x-pagination :pages="$customers" />
     </div>
     <div class="flex flex-row items-start mb-2">
         <!-- 検索条件 -->

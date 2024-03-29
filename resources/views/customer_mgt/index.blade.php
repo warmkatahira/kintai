@@ -4,7 +4,7 @@
         <!-- 操作ボタン -->
         <x-customer-mgt.operation-div />
         <!-- ページネーション -->
-        <x-pagenation :pages="$customers" />
+        <x-pagination :pages="$customers" />
     </div>
     <div class="flex flex-row items-start mb-2">
         <!-- 検索条件 -->

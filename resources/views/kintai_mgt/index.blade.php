@@ -6,7 +6,7 @@
         <!-- 操作ボタン -->
         <x-kintai-mgt.operation-div />
         <!-- ページネーション -->
-        <x-pagenation :pages="$kintais" />
+        <x-pagination :pages="$kintais" />
     </div>
     <div class="flex flex-row items-start mb-2">
         <!-- 検索条件 -->

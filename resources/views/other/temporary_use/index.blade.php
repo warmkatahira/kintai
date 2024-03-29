@@ -6,7 +6,7 @@
         <!-- 操作ボタン -->
         <x-temporary-use.operation-div :temporaryUseTotal="$temporary_use_total" />
         <!-- ページネーション -->
-        <x-pagenation :pages="$temporary_uses" />
+        <x-pagination :pages="$temporary_uses" />
     </div>
     <div class="flex flex-row items-start mb-2">
         <!-- 検索条件 -->
