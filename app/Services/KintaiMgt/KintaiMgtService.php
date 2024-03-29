@@ -92,7 +92,7 @@ class KintaiMgtService
         }
         // 従業員名条件がある場合
         if (!empty(session('search_employee_name'))) {
-            $kintais->orwhere('employee_last_name', 'LIKE', '%'.session('search_employee_name').'%')
+            $kintais->where('employee_last_name', 'LIKE', '%'.session('search_employee_name').'%')
                     ->orWhere('employee_first_name', 'LIKE', '%'.session('search_employee_name').'%');
         }
         // 対象条件がある場合
