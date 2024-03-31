@@ -38,7 +38,7 @@ class KintaiCloseCheckService
         // 指定された年月の勤怠提出情報を取得
         $kintai_closes = KintaiClose::where('close_date', session('search_date'));
         // 拠点と勤怠提出情報を結合
-        $kintai_closes = Base::where('base_id', '!=', '10_SOUKO')
+        $kintai_closes = Base::where('bases.base_id', '!=', '10_SOUKO')
             ->leftJoinSub($kintai_closes, 'SUB', function ($join) {
                 $join->on('bases.base_id', '=', 'SUB.base_id');
             })
