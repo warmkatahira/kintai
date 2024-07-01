@@ -30,6 +30,8 @@
     </head>
     <body>
         <div class="flex mt-3">
+            <!-- アラート表示 -->
+            <x-alert/>
             @auth
                 <a href="{{ route('top.index') }}" class="ml-auto mr-10">ホーム</a>
             @else

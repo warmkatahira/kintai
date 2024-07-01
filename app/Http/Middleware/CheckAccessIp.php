@@ -32,10 +32,12 @@ class CheckAccessIp
         $allowedIp = IpLimit::where('ip', $ip)->where('is_available', 1)->first();
         // IPがアクセス可能な設定としてテーブルに存在していない場合
         if(!$allowedIp){
+            // ログインユーザーの拠点を取得
+            $base_name = Auth::user()->base->base_name;
             // ログアウトさせる
             auth()->logout();
             // 403ページを表示
-            abort( 403, $ip);
+            abort(403, $base_name.'/'.$ip);
         }
         return $next($request);
     }
