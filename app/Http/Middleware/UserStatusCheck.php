@@ -18,7 +18,6 @@ class UserStatusCheck
     {
         // ステータスが1以外のユーザーはログインさせない
         if (Auth::user()->status == 0) {
-            dd('aaa');
             // ログアウトさせる
             Auth::logout();
             // welcomeページへ遷移
