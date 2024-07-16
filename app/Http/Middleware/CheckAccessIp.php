@@ -34,10 +34,12 @@ class CheckAccessIp
         if(!$allowedIp){
             // ログインユーザーの拠点を取得
             $base_name = Auth::user()->base->base_name;
+            // ユーザーを取得
+            $user = Auth::user()->last_name.Auth::user()->first_name;
             // ログアウトさせる
             auth()->logout();
             // 403ページを表示
-            abort(403, $base_name.'/'.$ip);
+            abort(403, $user.'/'.$base_name.'/'.$ip);
         }
         return $next($request);
     }
