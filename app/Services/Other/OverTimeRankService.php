@@ -49,7 +49,7 @@ class OverTimeRankService
     }
 
     // 残業時間情報を取得
-    public function getOverTimeRankSearch($start_day, $end_day)
+    public function getOverTimeRankSearch($start_day, $end_day, $same_month_flg, $first_day_of_previous_month, $last_day_of_previous_month)
     {
         // 現在のURLを取得
         session(['back_url_1' => url()->full()]);
@@ -59,12 +59,32 @@ class OverTimeRankService
                         ->select(DB::raw("sum(over_time) as total_over_time, employee_id"))
                         ->groupBy('employee_id');
         // 残業時間と従業員を結合(残業時間がない人は表示させないようにしている)
-        $employees = Employee::
-            rightJoinSub($kintais, 'KINTAIS', function ($join) {
-                $join->on('employees.employee_id', '=', 'KINTAIS.employee_id');
-            })
-            ->where('total_over_time', '!=', 0)
-            ->select('employees.employee_id', 'employee_last_name', 'employee_first_name', 'total_over_time', 'base_id', 'employee_no', 'employee_category_id', 'over_time_start');
+        // 前月分の結果を表示させるかどうかで処理を分岐
+        if($same_month_flg){
+            // 前月の残業時間を集計
+            $previous_month_kintais = Kintai::whereDate('work_day', '>=', $first_day_of_previous_month)
+                                            ->whereDate('work_day', '<=', $last_day_of_previous_month)
+                                            ->select(DB::raw("sum(over_time) as pre_total_over_time, employee_id"))
+                                            ->groupBy('employee_id');
+            $employees = Employee::
+                            rightJoinSub($kintais, 'KINTAIS', function ($join) {
+                                $join->on('employees.employee_id', '=', 'KINTAIS.employee_id');
+                            })
+                            ->rightJoinSub($previous_month_kintais, 'PRE_KINTAIS', function ($join) {
+                                $join->on('employees.employee_id', '=', 'PRE_KINTAIS.employee_id');
+                            })
+                            ->where('KINTAIS.total_over_time', '!=', 0)
+                            ->select('employees.employee_id', 'employee_last_name', 'employee_first_name', 'total_over_time', 'base_id', 'employee_no', 'employee_category_id', 'over_time_start', 'pre_total_over_time');
+        }else{
+            $employees = Employee::
+                            rightJoinSub($kintais, 'KINTAIS', function ($join) {
+                                $join->on('employees.employee_id', '=', 'KINTAIS.employee_id');
+                            })
+                            ->where('total_over_time', '!=', 0)
+                            ->select('employees.employee_id', 'employee_last_name', 'employee_first_name', 'total_over_time', 'base_id', 'employee_no', 'employee_category_id', 'over_time_start');
+        }
+        
+        
         // 時短情報が無効な場合、時短勤務者以外を対象とする
         if (!Gate::allows('isShortTimeInfoAvailable')) {
             $employees->where('over_time_start', 0);
@@ -86,9 +106,9 @@ class OverTimeRankService
         return $employees->orderBy('total_over_time', 'desc')->orderBy('base_id', 'asc')->orderBy('employee_category_id', 'asc')->orderBy('employee_no', 'asc')->paginate(500);
     }
 
-    public function getDownloadOverTimeRank($employees)
+    public function getDownloadOverTimeRank($employees, $same_month_flg)
     {
-        $response = new StreamedResponse(function () use ($employees) {
+        $response = new StreamedResponse(function () use ($employees, $same_month_flg) {
             // ハンドルを取得
             $handle = fopen('php://output', 'wb');
             // BOMを書き込む
@@ -101,8 +121,15 @@ class OverTimeRankService
                 '従業員区分',
                 '従業員番号',
                 '従業員名',
-                '残業時間',
             ];
+            // 同じ月である場合の追加項目
+            if ($same_month_flg) {
+                $headerRow[] = '残業時間(当月)';
+                $headerRow[] = '残業時間(前月)';
+                $headerRow[] = '前月比';
+            }else{
+                $headerRow[] = '残業時間';
+            }
             fputcsv($handle, $headerRow);
             // 従業員の分だけループ
             foreach($employees as $key => $employee){
@@ -115,6 +142,11 @@ class OverTimeRankService
                     $employee->employee_last_name.' '.$employee->employee_first_name,
                     number_format(($employee->total_over_time / 60), 2),
                 ];
+                // 同じ月である場合の追加項目
+                if ($same_month_flg) {
+                    $row[] = number_format(($employee->pre_total_over_time / 60), 2);
+                    $row[] = number_format((($employee->total_over_time - $employee->pre_total_over_time) / 60), 2);
+                }
                 fputcsv($handle, $row);
             };
             // ファイルを閉じる

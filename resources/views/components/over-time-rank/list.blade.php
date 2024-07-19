@@ -10,7 +10,13 @@
                     <th class="font-thin py-3 px-2 text-center">従業員区分</th>
                     <th class="font-thin py-3 px-2 text-center">従業員番号</th>
                     <th class="font-thin py-3 px-2 text-center">従業員名</th>
-                    <th class="font-thin py-3 px-2 text-center">残業時間</th>
+                    @if($sameMonthFlg)
+                        <th class="font-thin py-3 px-2 text-center">残業時間(当月)</th>
+                        <th class="font-thin py-3 px-2 text-center">残業時間(前月)</th>
+                        <th class="font-thin py-3 px-2 text-center">前月比</th>
+                    @else
+                        <th class="font-thin py-3 px-2 text-center">残業時間</th>
+                    @endif
                 </tr>
             </thead>
             <tbody class="bg-white">
@@ -23,6 +29,15 @@
                         <td class="py-1 px-2 border text-center">{{ $employee->employee_no }}</td>
                         <td class="py-1 px-2 border text-left">{{ $employee->employee_last_name.' '.$employee->employee_first_name }}</td>
                         <td class="py-1 px-2 border text-right">{{ number_format($employee->total_over_time / 60, 2) }}</td>
+                        @if($sameMonthFlg)
+                            <td class="py-1 px-2 border text-right">{{ number_format($employee->pre_total_over_time / 60, 2) }}</td>
+                            <td class="py-1 px-2 border text-right">
+                                @php
+                                    $overtime_difference = ($employee->total_over_time - $employee->pre_total_over_time) / 60;
+                                @endphp
+                                {{ $overtime_difference > 0 ? '+' . number_format($overtime_difference, 2) : number_format($overtime_difference, 2) }}
+                            </td>
+                        @endif
                     </tr>
                 @endforeach
             </tbody>

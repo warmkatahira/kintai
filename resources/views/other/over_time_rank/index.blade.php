@@ -8,6 +8,6 @@
         <!-- 検索条件 -->
         <x-over-time-rank.search :bases="$bases" :employeeCategories="$employee_categories" searchRoute="over_time_rank.search" resetRoute="over_time_rank.index" />
         <!-- 残業ランキング一覧 -->
-        <x-over-time-rank.list :employees="$employees" />
+        <x-over-time-rank.list :employees="$employees" :sameMonthFlg="$same_month_flg" />
     </div>
 </x-app-layout>
