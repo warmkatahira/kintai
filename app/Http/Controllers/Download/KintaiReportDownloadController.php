@@ -53,6 +53,6 @@ class KintaiReportDownloadController extends Controller
         // PDF出力ビューに情報を渡す
         $pdf = $KintaiReportDownloadService->passDownloadInfo($kintais, $request->date, $base, $over40, $holidays, $taiyo_working_times);
         // ファイル名を設定してPDFをダウンロード
-        return $pdf->stream($filename);
+        return $pdf->download($filename);
     }
 }
