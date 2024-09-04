@@ -92,8 +92,11 @@ class PunchBeginService
         if($begin_time_adj->format('H:i:00') <= "09:00:00" && $is_early_worked == 0){
             $begin_time_adj = "09:00:00";
         }else{
-            // 15分単位で切り上げ
-            $begin_time_adj = $begin_time_adj->addMinutes(15 - $begin_time_adj->minute % 15);
+            // 早出以外の場合は切り上げ（早出も切り上げると、選択した時刻よりも15分増えてしまうので）
+            if($is_early_worked == 0){
+                // 15分単位で切り上げ
+                $begin_time_adj = $begin_time_adj->addMinutes(15 - $begin_time_adj->minute % 15);
+            }
             $begin_time_adj = $begin_time_adj->format('H:i:00');
         }
         return $begin_time_adj;
