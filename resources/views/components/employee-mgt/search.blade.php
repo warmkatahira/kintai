@@ -3,7 +3,7 @@
     <form method="GET" action="{{ route($searchRoute) }}" class="m-0">
         <div class="flex flex-col px-3">
             <x-search.select-1 id="search_base_id" label="拠点" :searchConditions="$bases" value="base_id" text="base_name" />
-            <x-search.select-1 id="search_available" label="有効/無効" :searchConditions="$statuses" value="status" text="status_name" />
+            <x-search.select-4 id="search_available" label="有効/無効" :searchConditions="$statuses" value="status" text="status_name" />
             <x-search.select-1 id="search_employee_category_id" label="従業員区分" :searchConditions="$employeeCategories" value="employee_category_id" text="employee_category_name" />
             <x-search.input id="search_employee_name" label="従業員名" />
             <x-search.select-3 id="search_sort_order" label="並び順" :searchConditions="$sortOrderConditions" />

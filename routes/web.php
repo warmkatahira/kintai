@@ -166,6 +166,7 @@ Route::middleware(['auth', 'userStatusCheck', 'OperationLogRecord', 'IPCheck'])-
             Route::get('', 'index')->name('index');
             Route::get('search', 'search')->name('search');
             Route::get('detail', 'detail')->name('detail');
+            Route::get('download', 'download')->name('download');
         });
         Route::middleware(['EmployeeOperationAvailable'])->group(function () {
             // -+-+-+-+-+-+-+-+-+-+-+-+ 従業員追加 -+-+-+-+-+-+-+-+-+-+-+-+

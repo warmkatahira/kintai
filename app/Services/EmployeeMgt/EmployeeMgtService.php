@@ -13,6 +13,7 @@ use App\Models\Kintai;
 use App\Models\KintaiDetail;
 use App\Services\CommonService;
 use App\Enums\EmployeeMgtEnum;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class EmployeeMgtService
 {
@@ -42,7 +43,7 @@ class EmployeeMgtService
     {
         // セッションに検索条件をセット
         session(['search_base_id' => $request->search_base_id]);
-        session(['search_available' => $request->search_available]);
+        session(['search_available' =>  is_null($request->search_available) ? null : (int)$request->search_available]);
         session(['search_employee_category_id' => $request->search_employee_category_id]);
         session(['search_employee_name' => $request->search_employee_name]);
         session(['search_sort_order' => $request->search_sort_order]);
@@ -73,7 +74,7 @@ class EmployeeMgtService
             $employees->where('base_id', session('search_base_id'));
         }
         // 有効/無効条件がある場合
-        if (session('search_available') != null) {
+        if (session('search_available') !== null) {
             $employees->where('is_available', session('search_available'));
         }
         // 従業員名条件がある場合
@@ -87,12 +88,18 @@ class EmployeeMgtService
         }
         // 並び順条件を適用
         if (session('search_sort_order') == EmployeeMgtEnum::SORT_ORDER_BASE) {
-            $employees = $employees->orderBy('base_id', 'asc')->orderBy('employee_category_id', 'asc')->orderBy('employee_no', 'asc')->paginate(50);
+            $employees = $employees->orderBy('base_id', 'asc')->orderBy('employee_category_id', 'asc')->orderBy('employee_no', 'asc');
         }
         if (session('search_sort_order') == EmployeeMgtEnum::SORT_ORDER_EMPLOYEE_NO) {
-            $employees = $employees->orderBy('employee_no', 'asc')->paginate(50);
+            $employees = $employees->orderBy('employee_no', 'asc');
         }
         return $employees;
+    }
+
+    // ページネーションを実施
+    public function setPaginate($employees)
+    {
+        return $employees->paginate(50);
     }
 
     public function getThisMonthData($start_day, $end_day, $employee_id){
@@ -128,5 +135,38 @@ class EmployeeMgtService
             ->take(3)
             ->get();
         return $customer_working_time;
+    }
+
+    public function getDownloadEmployee($employees)
+    {
+        $response = new StreamedResponse(function () use ($employees) {
+            // ハンドルを取得
+            $handle = fopen('php://output', 'wb');
+            // BOMを書き込む
+            fwrite($handle, "\xEF\xBB\xBF");
+            // ヘッダー行を書き込む
+            $headerRow = [
+                '有効/無効',
+                '拠点',
+                '従業員区分',
+                '従業員番号',
+                '従業員名',
+            ];
+            fputcsv($handle, $headerRow);
+            // 従業員の分だけループ
+            foreach($employees->get() as $employee){
+                $row = [
+                    $employee->is_available ? '有効' : '無効',
+                    $employee->base->base_name,
+                    $employee->employee_category->employee_category_name,
+                    $employee->employee_no,
+                    $employee->employee_last_name.' '.$employee->employee_first_name,
+                ];
+                fputcsv($handle, $row);
+            };
+            // ファイルを閉じる
+            fclose($handle);
+        });
+        return $response;
     }
 }

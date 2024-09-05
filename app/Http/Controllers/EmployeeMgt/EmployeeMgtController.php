@@ -39,6 +39,8 @@ class EmployeeMgtController extends Controller
         $employee_categories = EmployeeCategory::getAll()->get();
         // 従業員を取得
         $employees = $EmployeeMgtService->getEmployeeSearch();
+        // ページネーションを実施
+        $employees = $EmployeeMgtService->setPaginate($employees);
         // ステータス情報を取得($xx->aaの形式でアクセスできるようにしている)
         $statuses = collect(StatusEnum::PULLDOWN_LIST)->map(function ($item) {
             return (object) $item;
@@ -68,6 +70,8 @@ class EmployeeMgtController extends Controller
         $employee_categories = EmployeeCategory::getAll()->get();
         // 従業員を取得
         $employees = $EmployeeMgtService->getEmployeeSearch();
+        // ページネーションを実施
+        $employees = $EmployeeMgtService->setPaginate($employees);
         // ステータス情報を取得($xx->aaの形式でアクセスできるようにしている)
         $statuses = collect(StatusEnum::PULLDOWN_LIST)->map(function ($item) {
             return (object) $item;
@@ -119,4 +123,18 @@ class EmployeeMgtController extends Controller
             'add_rest_available' => $add_rest_available,
         ]);
     }
+
+    public function download(Request $request)
+    {
+        // インスタンス化
+        $EmployeeMgtService = new EmployeeMgtService;
+        // 従業員を取得
+        $employees = $EmployeeMgtService->getEmployeeSearch();
+        // ダウンロードするデータを取得
+        $response = $EmployeeMgtService->getDownloadEmployee($employees);
+        // ダウンロード処理
+        $response->headers->set('Content-Type', 'text/csv');
+        $response->headers->set('Content-Disposition', 'attachment; filename=従業員情報_' . CarbonImmutable::now()->isoFormat('Y年MM月DD日HH時mm分ss秒') . '.csv');
+        return $response;
+    }    
 }
