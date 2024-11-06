@@ -49,7 +49,7 @@ class PunchUpdateController extends Controller
         // 外出戻り関連の時間を取得
         $out_return_time = $PunchUpdateService->getOutReturnTime($request);
         // 出勤・退勤勤時間を取得
-        $begin_finish_time = $PunchUpdateService->getBeginFinishTime($request);
+        $begin_finish_time = $PunchUpdateService->getBeginFinishTime($request, true);
         // 出退勤時間から、取得可能な休憩時間を算出
         $rest_time = $PunchFinishInputService->getRestTimeForBeginFinish($begin_finish_time['begin_time_adj'], $begin_finish_time['finish_time_adj']);
         // 外出戻り時間から、取得可能な休憩時間を算出(外出戻り時間がある場合のみ)

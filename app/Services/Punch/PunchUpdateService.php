@@ -64,13 +64,13 @@ class PunchUpdateService
         ]);
     }
 
-    public function getBeginFinishTime($request)
+    public function getBeginFinishTime($request, $is_manual_operation)
     {
         // サービスクラスを定義
         $PunchBeginService = new PunchBeginService;
         $PunchFinishInputService = new PunchFinishInputService;
         // 出勤時間調整を取得
-        $begin_time_adj = $PunchBeginService->getBeginTimeAdj($request->begin_time, $request->punch_begin_type);
+        $begin_time_adj = $PunchBeginService->getBeginTimeAdj($request->begin_time, $request->punch_begin_type, $is_manual_operation);
         // 退勤時間調整を取得
         $finish_time_adj = $PunchFinishInputService->getFinishTimeAdj($request->finish_time);
         return with([

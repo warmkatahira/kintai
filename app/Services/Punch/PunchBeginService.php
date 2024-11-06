@@ -70,7 +70,7 @@ class PunchBeginService
             $nowDate = new CarbonImmutable($request->early_work_select_info);
         }
         // 出勤時間調整を算出・取得
-        $begin_time_adj = $this->getBeginTimeAdj($nowDate, $is_early_worked);
+        $begin_time_adj = $this->getBeginTimeAdj($nowDate, $is_early_worked, false);
         // レコードを追加
         $kintai = Kintai::create([
             'kintai_id' => $request->punch_id.'-'.$nowDate->format('Ymd'),
@@ -84,7 +84,7 @@ class PunchBeginService
     }
 
     // 出勤時間調整を算出・取得
-    public function getBeginTimeAdj($nowDate, $is_early_worked)
+    public function getBeginTimeAdj($nowDate, $is_early_worked, $is_manual_operation)
     {
         // パラメータの日時をインスタンス化
         $begin_time_adj = new CarbonImmutable($nowDate);
@@ -92,8 +92,8 @@ class PunchBeginService
         if($begin_time_adj->format('H:i:00') <= "09:00:00" && $is_early_worked == 0){
             $begin_time_adj = "09:00:00";
         }else{
-            // 早出以外の場合は切り上げ（早出も切り上げると、選択した時刻よりも15分増えてしまうので）
-            if($is_early_worked == 0){
+            // 打刻→出勤からの早出以外の場合は切り上げ（打刻→出勤からの早出も切り上げると、選択した時刻よりも15分増えてしまうので）
+            if($is_early_worked == 0 || $is_manual_operation){
                 // 15分単位で切り上げ
                 $begin_time_adj = $begin_time_adj->addMinutes(15 - $begin_time_adj->minute % 15);
             }
