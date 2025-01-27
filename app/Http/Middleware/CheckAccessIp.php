@@ -41,8 +41,6 @@ class CheckAccessIp
             $this->createAccessIp($ip, $base_id);
             // チャットワークへ通知
             $this->postChatwork($user.'/'.$base_name.'/'.$ip);
-            
-            
             /* // ログアウトさせる
             auth()->logout();
             // 403ページを表示
