@@ -23,7 +23,7 @@
                 @foreach($employees as $employee)
                     <tr class="text-left hover:bg-theme-sub cursor-default">
                         <td class="py-1 px-2 border text-center">{{ sprintf('%03d', $employees->firstItem() + $loop->index) }}</td>
-                        <td class="py-1 px-2 border text-center">{{ \Carbon\CarbonImmutable::parse(session('search_work_day_from'))->isoFormat('YYYY年MM月').'～'.\Carbon\CarbonImmutable::parse(session('search_work_day_to'))->isoFormat('YYYY年MM月') }}</td>
+                        <td class="py-1 px-2 border text-center">{{ CarbonImmutable::parse(session('search_work_day_from'))->isoFormat('YYYY年MM月').'～'.CarbonImmutable::parse(session('search_work_day_to'))->isoFormat('YYYY年MM月') }}</td>
                         <td class="py-1 px-2 border">{{ $employee->base->base_name }}</td>
                         <td class="py-1 px-2 border text-center">{{ $employee->employee_category->employee_category_name }}</td>
                         <td class="py-1 px-2 border text-center">{{ $employee->employee_no }}</td>

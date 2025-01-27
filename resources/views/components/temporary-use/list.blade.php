@@ -26,7 +26,7 @@
                                 <button type="button" id="temporary_use_id_{{ $temporary_use->temporary_use_id }}" class="temporary_use_delete_enter text-center border border-red-500 bg-red-100 text-red-500 text-xs px-2 py-1">削除</button>
                             </form>
                         </td>
-                        <td class="py-1 px-2 border text-center">{{ \Carbon\CarbonImmutable::parse($temporary_use->date)->isoFormat('YYYY年MM月DD日(ddd)') }}</td>
+                        <td class="py-1 px-2 border text-center">{{ CarbonImmutable::parse($temporary_use->date)->isoFormat('YYYY年MM月DD日(ddd)') }}</td>
                         <td class="py-1 px-2 border">{{ $temporary_use->base->base_name }}</td>
                         <td class="py-1 px-2 border">{{ $temporary_use->temporary_company->temporary_company_name }}</td>
                         <td class="py-1 px-2 border">{{ $temporary_use->customer->customer_name }}</td>

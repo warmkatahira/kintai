@@ -32,7 +32,7 @@
         </div>
         <div class="flex flex-col">
             <p class="border-l-8 border-theme-sub text-xl pl-3 my-3">勤怠概要</p>
-            <x-detail-div label="出勤日" :value="\Carbon\CarbonImmutable::parse($kintai->work_day)->isoFormat('YYYY年MM月DD日(ddd)')" class="w-40 text-center" />
+            <x-detail-div label="出勤日" :value="CarbonImmutable::parse($kintai->work_day)->isoFormat('YYYY年MM月DD日(ddd)')" class="w-40 text-center" />
             <x-detail-div label="拠点" :value="$kintai->employee->base->base_name" class="w-40 text-center" />
             <div class="flex flex-row">
                 <x-detail-div label="従業員区分" :value="$kintai->employee->employee_category->employee_category_name" class="w-40 text-center" />

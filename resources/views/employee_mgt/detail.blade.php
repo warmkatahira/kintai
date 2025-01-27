@@ -82,7 +82,7 @@
                     <tbody>
                         @foreach($kintais[$employee->employee_id]['kintai'] as $work_day => $value)
                             <tr class="hover:bg-theme-sub text-center">
-                                <td class="p-1 px-2 border">{{ \Carbon\CarbonImmutable::parse($work_day)->isoFormat('YYYY年MM月DD日(ddd)') }}</td>
+                                <td class="p-1 px-2 border">{{ CarbonImmutable::parse($work_day)->isoFormat('YYYY年MM月DD日(ddd)') }}</td>
                                 <td class="p-1 px-2 border">{{ is_null($value) ? '' : substr($value->begin_time_adj, 0, 5) }}</td>
                                 <td class="p-1 px-2 border">{{ is_null($value) ? '' : substr($value->finish_time_adj, 0, 5) }}</td>
                                 <td class="p-1 px-2 border">{{ !isset($value->finish_time_adj) ? '' : number_format($value->rest_time / 60, 2) }}</td>

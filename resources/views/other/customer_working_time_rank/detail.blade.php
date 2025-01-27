@@ -9,7 +9,7 @@
         <div class="flex flex-col">
             <p class="border-l-8 border-theme-sub text-xl pl-3 my-3">概要</p>
             <div class="flex flex-row">
-                <x-detail-div label="年月" :value="\Carbon\CarbonImmutable::parse($date)->isoFormat('YYYY年MM月')" class="w-40 text-left pl-3" />
+                <x-detail-div label="年月" :value="CarbonImmutable::parse($date)->isoFormat('YYYY年MM月')" class="w-40 text-left pl-3" />
             </div>
             <div class="flex flex-row">
                 <x-detail-div label="拠点" :value="$customer->base->base_name" class="w-40 text-left pl-3" />

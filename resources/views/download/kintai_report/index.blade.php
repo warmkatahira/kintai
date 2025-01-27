@@ -13,7 +13,7 @@
         </div>
         <div class="flex flex-row mb-2">
             <p class="w-40 bg-black text-white text-center py-2 text-sm">ダウンロード年月</p>
-            <input type="month" name="date" class="w-60 text-sm" value="{{ \Carbon\CarbonImmutable::now()->isoFormat('YYYY-MM') }}">
+            <input type="month" name="date" class="w-60 text-sm" value="{{ CarbonImmutable::now()->isoFormat('YYYY-MM') }}">
         </div>
     </form>
     <button type="button" id="download_enter" class="w-40 bg-blue-200 text-center rounded-lg mt-5 py-3">ダウンロード</button>

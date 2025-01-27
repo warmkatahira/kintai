@@ -15,9 +15,9 @@
         </div>
         <div class="flex flex-row mb-2">
             <p class="w-40 bg-black text-white text-center py-2 text-sm">ダウンロード期間</p>
-            <input type="date" name="from_date" class="w-40 text-sm" value="{{ \Carbon\CarbonImmutable::now()->isoFormat('YYYY-MM-DD') }}">
+            <input type="date" name="from_date" class="w-40 text-sm" value="{{ CarbonImmutable::now()->isoFormat('YYYY-MM-DD') }}">
             <p class="w-10 text-center py-2 text-sm">～</p>
-            <input type="date" name="to_date" class="w-40 text-sm" value="{{ \Carbon\CarbonImmutable::now()->isoFormat('YYYY-MM-DD') }}">
+            <input type="date" name="to_date" class="w-40 text-sm" value="{{ CarbonImmutable::now()->isoFormat('YYYY-MM-DD') }}">
         </div>
         <div class="flex flex-row mb-2">
             <p class="w-40 bg-black text-white text-center py-2 text-sm">ダウンロード項目</p>
