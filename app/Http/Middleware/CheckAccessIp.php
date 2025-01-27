@@ -19,9 +19,9 @@ class CheckAccessIp
     public function handle(Request $request, Closure $next): Response
     {
         // 開発環境ではチェックしないようにしている
-        /* if(env('APP_ENV') == 'local'){
+        if(env('APP_ENV') == 'local'){
             return $next($request);
-        } */
+        }
         // userのno_ip_checkがtrueならチェックをしない
         if(Auth::user()->no_ip_check){
             return $next($request);
