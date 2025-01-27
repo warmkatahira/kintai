@@ -19,7 +19,7 @@
                             <a href="{{ route('ip_limit_update.index', ['ip_limit_id' => $ip_limit->ip_limit_id]) }}" class="text-center border border-blue-500 bg-blue-100 text-blue-500 text-xs px-2 py-1">更新</a>
                             <a class="ip_limit_delete_enter cursor-pointer text-center border border-red-500 bg-red-100 text-red-500 text-xs px-2 py-1 ml-3" data-ip-limit-id="{{ $ip_limit->ip_limit_id }}">削除</a>
                         </td>
-                        <td class="py-1 px-2 border">{{ CarbonImmutable::parse($ip_limit->updated_at)->isoFormat('Y年MM月DD日(ddd) HH:mm:ss') }}</td>
+                        <td class="py-1 px-2 border">{{ CarbonImmutable::parse($ip_limit->updated_at)->isoFormat('Y年MM月DD日(ddd) HH:mm:ss').'('.CarbonImmutable::parse($ip_limit->updated_at)->diffForHumans().')' }}</td>
                         <td class="py-1 px-2 border">{{ $ip_limit->ip }}</td>
                         <td class="py-1 px-2 border">{{ $ip_limit->base->base_name }}</td>
                         <td class="py-1 px-2 border">{{ $ip_limit->note }}</td>
