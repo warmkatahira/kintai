@@ -11,7 +11,8 @@ class IpShareController extends Controller
     public function share(Request $request)
     {
         $access_token = '4a5298afe510a3cd79ef2b683e1e2287';
-        $url = 'https://api.chatwork.com/v2/rooms/354903263/messages';
+        //$url = 'https://api.chatwork.com/v2/rooms/354903263/messages';
+        $url = 'https://api.chatwork.com/v2/rooms/383516897/messages';
         $message = "[info][title]IP変更連絡[/title]".$request->info."[/info]";
         // メッセージを投稿
         $data = array('body' => $message);

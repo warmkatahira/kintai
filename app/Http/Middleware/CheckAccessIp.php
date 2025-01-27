@@ -34,7 +34,7 @@ class CheckAccessIp
         if(!$allowedIp){
             // ログインユーザーの拠点を取得
             $base_name = Auth::user()->base->base_name;
-            // ユーザーを取得
+            // ログインユーザーのユーザー名を取得
             $user = Auth::user()->last_name.Auth::user()->first_name;
             // ログアウトさせる
             auth()->logout();
