@@ -5,7 +5,7 @@ namespace App\Http\Requests;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
-class IpLimitCreateRequest extends FormRequest
+class IpLimitDeleteRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,10 +25,7 @@ class IpLimitCreateRequest extends FormRequest
     public function rules()
     {
         return [
-            'ip' => 'required|max:15',
-            'base_id' => 'required|exists:bases,base_id',
-            'note' => 'nullable|max:20',
-            'is_available' => 'required|boolean',
+            'ip_limit_id' => 'required|exists:ip_limits,ip_limit_id',
         ];
     }
 
@@ -36,9 +33,6 @@ class IpLimitCreateRequest extends FormRequest
     {
         return [
             'required' => ':attributeは必須です。',
-            'max' => ":attributeは:max文字以内で入力して下さい。",
-            'unique' => ':attributeは既に使用されています。',
-            'boolean' => ':attributeが正しくありません。',
             'exists' => ':attributeが存在しません。',
         ];
     }
@@ -46,10 +40,7 @@ class IpLimitCreateRequest extends FormRequest
     public function attributes()
     {
         return [
-            'ip' => 'IP',
-            'base_id' => '拠点',
-            'note' => '備考',
-            'is_available' => '有効/無効',
+            'ip_limit_id' => 'IP',
         ];
     }
 }

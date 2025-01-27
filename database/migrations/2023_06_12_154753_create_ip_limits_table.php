@@ -13,10 +13,13 @@ return new class extends Migration
     {
         Schema::create('ip_limits', function (Blueprint $table) {
             $table->increments('ip_limit_id');
-            $table->string('ip', 15)->unique();
+            $table->string('ip', 15);
             $table->string('note', 20);
             $table->boolean('is_available')->default(0);
+            $table->string('base_id', 20);
             $table->timestamps();
+            // 外部キー制約
+            $table->foreign('base_id')->references('base_id')->on('bases')->onDelete('cascade');
         });
     }
 

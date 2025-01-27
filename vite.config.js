@@ -44,6 +44,7 @@ export default defineConfig({
             'resources/css/kintai_report_output.css',
             'resources/js/access_mgt/ip_limit_create.js',
             'resources/js/access_mgt/ip_limit_update.js',
+            'resources/js/access_mgt/ip_limit_delete.js',
             'resources/js/base_mgt/base_create.js',
             'resources/js/base_mgt/base_update.js',
             'resources/js/other/temporary_use.js',

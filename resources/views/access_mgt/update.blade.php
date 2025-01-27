@@ -14,6 +14,7 @@
             <form method="POST" action="{{ route('ip_limit_update.update') }}" class="m-0" id="ip_limit_update_form">
                 @csrf
                 <x-create-input label="IP" type="text" id="ip" :db="$ip_limit->ip" required="1" tippy="0" />
+                <x-create-select label="拠点" id="base_id" :forValue="$bases" text="base_name" :db="$ip_limit->base_id" required="1" tippy="0" />
                 <x-create-input label="備考" type="text" id="note" :db="$ip_limit->note" required="1" tippy="0" />
                 <x-access-mgt.create-select label="有効/無効" id="is_available" :db="$ip_limit->is_available" required="1" tippy="0" />
                 <input type="hidden" name="ip_limit_id" value="{{ $ip_limit->ip_limit_id }}">

@@ -70,6 +70,7 @@ use Illuminate\Support\Facades\Route;
     use App\Http\Controllers\SystemMgt\AccessMgt\AccessMgtController;
     use App\Http\Controllers\SystemMgt\AccessMgt\IpLimitCreateController;
     use App\Http\Controllers\SystemMgt\AccessMgt\IpLimitUpdateController;
+    use App\Http\Controllers\SystemMgt\AccessMgt\IpLimitDeleteController;
     // +-+-+-+-+-+-+-+- 拠点管理 +-+-+-+-+-+-+-+-
     use App\Http\Controllers\SystemMgt\BaseMgt\BaseMgtController;
     use App\Http\Controllers\SystemMgt\BaseMgt\BaseCreateController;
@@ -337,14 +338,18 @@ Route::middleware(['auth', 'userStatusCheck', 'OperationLogRecord', 'IPCheck'])-
                 Route::get('', 'index')->name('index');
             });
             // -+-+-+-+-+-+-+-+-+-+-+-+ IP追加 -+-+-+-+-+-+-+-+-+-+-+-+
-            Route::controller(IPLimitCreateController::class)->prefix('ip_limit_create')->name('ip_limit_create.')->group(function(){
+            Route::controller(IpLimitCreateController::class)->prefix('ip_limit_create')->name('ip_limit_create.')->group(function(){
                 Route::get('', 'index')->name('index');
                 Route::post('create', 'create')->name('create');
             });
             // -+-+-+-+-+-+-+-+-+-+-+-+ IP更新 -+-+-+-+-+-+-+-+-+-+-+-+
-            Route::controller(IPLimitUpdateController::class)->prefix('ip_limit_update')->name('ip_limit_update.')->group(function(){
+            Route::controller(IpLimitUpdateController::class)->prefix('ip_limit_update')->name('ip_limit_update.')->group(function(){
                 Route::get('', 'index')->name('index');
                 Route::post('update', 'update')->name('update');
+            });
+            // -+-+-+-+-+-+-+-+-+-+-+-+ IP削除 -+-+-+-+-+-+-+-+-+-+-+-+
+            Route::controller(IpLimitDeleteController::class)->prefix('ip_limit_delete')->name('ip_limit_delete.')->group(function(){
+                Route::post('delete', 'delete')->name('delete');
             });
         });
         Route::middleware(['BaseMgtAvailable'])->group(function () {

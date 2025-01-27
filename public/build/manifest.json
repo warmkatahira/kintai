@@ -1,6 +1,6 @@
 {
   "resources/css/app.css": {
-    "file": "assets/app-c5fb11ca.css",
+    "file": "assets/app-4aafd240.css",
     "isEntry": true,
     "src": "resources/css/app.css"
   },
@@ -28,6 +28,11 @@
     "file": "assets/ip_limit_create-1004e6dc.js",
     "isEntry": true,
     "src": "resources/js/access_mgt/ip_limit_create.js"
+  },
+  "resources/js/access_mgt/ip_limit_delete.js": {
+    "file": "assets/ip_limit_delete-234b7cb2.js",
+    "isEntry": true,
+    "src": "resources/js/access_mgt/ip_limit_delete.js"
   },
   "resources/js/access_mgt/ip_limit_update.js": {
     "file": "assets/ip_limit_update-e5dfed42.js",

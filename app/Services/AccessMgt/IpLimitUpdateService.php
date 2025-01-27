@@ -6,13 +6,13 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use App\Models\IpLimit;
 
-
-class IPLimitCreateService
+class IpLimitUpdateService
 {
-    public function createIpLimit($request)
+    public function updateIpLimit($request)
     {
-        IpLimit::create([
+        IpLimit::getSpecify($request->ip_limit_id)->update([
             'ip' => $request->ip,
+            'base_id' => $request->base_id,
             'note' => $request->note,
             'is_available' => $request->is_available,
         ]);

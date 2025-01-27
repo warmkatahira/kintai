@@ -15,15 +15,29 @@ class IpLimit extends Model
         'ip',
         'note',
         'is_available',
+        'base_id',
     ];
     // 全て取得
     public static function getAll()
     {
-        return self::orderBy('ip_limit_id', 'asc');
+        return self::orderBy('updated_at', 'desc');
     }
     // 指定されたレコードを取得
     public static function getSpecify($ip_limit_id)
     {
         return self::where('ip_limit_id', $ip_limit_id);
+    }
+    // basesとのリレーション
+    public function base()
+    {
+        return $this->belongsTo(Base::class, 'base_id', 'base_id');
+    }
+    // 拠点毎の登録数を取得
+    public static function getRegisterByBase()
+    {
+        return self::where('is_available', 1)
+                ->selectRaw('base_id, COUNT(*) as register_count')
+                ->groupBy('base_id')
+                ->orderBy('base_id', 'asc');
     }
 }
