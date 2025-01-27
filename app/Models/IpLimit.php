@@ -20,7 +20,8 @@ class IpLimit extends Model
     // 全て取得
     public static function getAll()
     {
-        return self::orderBy('updated_at', 'desc');
+        return self::orderBy('base_id', 'asc')
+                ->orderBy('updated_at', 'desc');
     }
     // 指定されたレコードを取得
     public static function getSpecify($ip_limit_id)
