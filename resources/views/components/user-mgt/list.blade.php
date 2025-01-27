@@ -27,8 +27,8 @@
                         <td class="py-1 px-2 border text-left">{{ $user->email }}</td>
                         <td class="py-1 px-2 border text-left">@if(!is_null($user->role)) {{ $user->role->role_name }}@endif</td>
                         <td class="py-1 px-2 border text-center @if($user->no_ip_check) text-red-500 bg-pink-100 @endif">{{ App\Enums\StatusEnum::get_jp($user->no_ip_check) }}</td>
-                        <td class="py-1 px-2 border text-center">{{ App\Enums\StatusEnum::get_jp($user->status) }}</td>
-                        <td class="py-1 px-2 border text-center">{{ CarbonImmutable::parse($user->last_login_at)->isoFormat('Y年MM月DD日 HH時mm分ss秒') }}</td>
+                        <td class="py-1 px-2 border text-center @if(!$user->status) text-red-500 bg-pink-100 @endif">{{ App\Enums\StatusEnum::get_jp($user->status) }}</td>
+                        <td class="py-1 px-2 border">{{ CarbonImmutable::parse($user->last_login_at)->isoFormat('Y年MM月DD日 HH時mm分ss秒').'('.CarbonImmutable::parse($user->last_login_at)->diffForHumans().')' }}</td>
                     </tr>
                 @endforeach
             </tbody>
