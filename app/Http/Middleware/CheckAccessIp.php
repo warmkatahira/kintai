@@ -37,14 +37,14 @@ class CheckAccessIp
             $base_name = Auth::user()->base->base_name;
             // ログインユーザーのユーザー名を取得
             $user = Auth::user()->last_name.Auth::user()->first_name;
-            // アクセス管理のレコードを追加
+            /* // アクセス管理のレコードを追加
             $this->createAccessIp($ip, $base_id);
             // チャットワークへ通知
-            $this->postChatwork($user.'/'.$base_name.'/'.$ip);
-            /* // ログアウトさせる
+            $this->postChatwork($user.'/'.$base_name.'/'.$ip); */
+            // ログアウトさせる
             auth()->logout();
             // 403ページを表示
-            abort(403, $user.'/'.$base_name.'/'.$ip); */
+            abort(403, $user.'/'.$base_name.'/'.$ip);
         }
         return $next($request);
     }
