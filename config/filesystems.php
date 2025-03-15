@@ -66,6 +66,12 @@ return [
             ],
         ],
 
+        // 操作ログ用
+        'operation_logs' => [
+            'driver' => 'local',
+            'root' => storage_path('logs/operation'),
+        ],
+
     ],
 
     /*
