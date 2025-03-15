@@ -25,9 +25,6 @@ class KintaiMgtController extends Controller
 
     public function index()
     {
-        // クエリログを有効にする
-        DB::enableQueryLog();
-        
         // インスタンス化
         $KintaiMgtService = new KintaiMgtService;
         $PunchFinishInputService = new PunchFinishInputService;
@@ -46,11 +43,6 @@ class KintaiMgtController extends Controller
         $base_check_conditions = KintaiMgtEnum::BASE_CHECK_CONDITIONS;
         // 追加休憩取得時間が有効か判定
         $add_rest_available = $PunchFinishInputService->checkAddRestAvailable();
-
-        // クエリログを取得
-        $queries = DB::getQueryLog();
-        \Log::info('Executed Queries:', $queries); // ログに記録
-
         return view('kintai_mgt.index')->with([
             'kintais' => $kintais,
             'bases' => $bases,
