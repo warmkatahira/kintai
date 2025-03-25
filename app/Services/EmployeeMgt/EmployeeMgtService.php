@@ -63,12 +63,17 @@ class EmployeeMgtService
                                     ->whereDate('work_day', '<=', $start_end_of_month['end'])
                                     ->select(DB::raw("sum(over_time) as total_over_time, sum(working_time) as total_working_time, employee_id"))
                                     ->groupBy('employee_id');
+        // 当日の勤怠情報を取得
+        $today_kintais = Kintai::whereDate('work_day', CarbonImmutable::today());
         // 集計した勤怠を従業員テーブルと結合
         $employees = Employee::
             leftJoinSub($this_month_time, 'TIME', function ($join) {
                 $join->on('employees.employee_id', '=', 'TIME.employee_id');
             })
-            ->select('employees.*', 'TIME.total_over_time', 'TIME.total_working_time');
+            ->leftJoinSub($today_kintais, 'TODAY', function ($join) {
+                $join->on('employees.employee_id', '=', 'TODAY.employee_id');
+            })
+            ->select('employees.*', 'TIME.total_over_time', 'TIME.total_working_time', DB::raw('CASE WHEN TODAY.begin_time_adj IS NULL THEN "" ELSE "出勤" END as today_working_status'));
         // 拠点条件がある場合
         if (session('search_base_id') != null) {
             $employees->where('base_id', session('search_base_id'));

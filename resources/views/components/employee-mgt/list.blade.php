@@ -16,6 +16,7 @@
                     @endcan
                     <th class="font-thin py-3 px-2 text-center">当月総稼働時間</th>
                     <th class="font-thin py-3 px-2 text-center">当月総残業時間</th>
+                    <th class="font-thin py-3 px-2 text-center">本日の出勤状況</th>
                 </tr>
             </thead>
             <tbody class="bg-white">
@@ -39,6 +40,7 @@
                         @else
                             <td class="py-1 px-2 border text-right">{{ number_format(0 / 60, 2) }}</td>
                         @endif
+                        <td class="py-1 px-2 border text-center">{{ $employee->today_working_status }}</td>
                     </tr>
                 @endforeach
             </tbody>
