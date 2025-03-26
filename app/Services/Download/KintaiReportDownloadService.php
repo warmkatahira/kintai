@@ -137,6 +137,16 @@ class KintaiReportDownloadService
                                                                         ->whereDate('work_day', '>=', $start_day)
                                                                         ->whereDate('work_day', '<=', $end_day)
                                                                         ->sum('over_time');
+            // 総深夜残業時間を取得
+            $kintais[$employee->employee_id]['total_late_night_over_time'] = Kintai::where('employee_id', $employee->employee_id)
+                                                                        ->whereDate('work_day', '>=', $start_day)
+                                                                        ->whereDate('work_day', '<=', $end_day)
+                                                                        ->sum('late_night_over_time');
+            // 総深夜稼働時間を取得
+            $kintais[$employee->employee_id]['total_late_night_working_time'] = Kintai::where('employee_id', $employee->employee_id)
+                                                                        ->whereDate('work_day', '>=', $start_day)
+                                                                        ->whereDate('work_day', '<=', $end_day)
+                                                                        ->sum('late_night_working_time');
             // 時短勤務者であり、時短情報が無効の場合、総残業時間を0にする
             if($employee->over_time_start != 0 && !Gate::allows('isShortTimeInfoAvailable')){
                 $kintais[$employee->employee_id]['total_over_time'] = 0;

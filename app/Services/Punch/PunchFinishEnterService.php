@@ -16,19 +16,20 @@ class PunchFinishEnterService
     // 残業時間を算出・取得
     public function getOverTime($kintai, $working_time)
     {
-        // この稼働時間を超えたら残業時間が付き始めるという値と稼働時間から引く時間を取得
+        // この稼働時間を超えたら残業時間がつき始めるという値と稼働時間から引く時間を取得
         $setting = $this->getOverTimeStart($kintai->employee->employee_category->employee_category_id, $kintai->employee->over_time_start);
         // 初期値として0を設定
         $over_time = 0;
-        // 稼働時間が残業開始時間を超えていたら残業発生
+        // 稼働時間が残業開始時間を超えている場合
         if($working_time >= $setting['over_time_start']){
+            // 残業時間を取得
             $over_time = $working_time - $setting['over_time_calc'];
         }
         return $over_time;
     }
 
-    // この稼働時間を超えたら残業時間が付き始めるという値と稼働時間から引く時間を取得
-    // over_time_start  => この時間を超えたら残業が付き始める値
+    // この稼働時間を超えたら残業時間がつき始めるという値と稼働時間から引く時間を取得
+    // over_time_start  => この時間を超えたら残業がつき始める値
     // over_time_calc   => 稼働時間から引いて残業時間を算出する際に使用する値
     public function getOverTimeStart($employee_category_id, $over_time_start)
     {
@@ -52,8 +53,30 @@ class PunchFinishEnterService
         return compact('over_time_start', 'over_time_calc');
     }
 
+    // 深夜関連の時間を算出・取得
+    public function getLateNight($finish_time_adj, $working_time, $over_time)
+    {
+        // 初期値として0を設定
+        $late_night_over_time = 0;
+        $late_night_working_time = 0;
+        // 退勤時間が22:15以降の場合
+        if($finish_time_adj >= '22:15'){
+            // 残業が発生している場合
+            if($over_time > 0){
+                // 深夜残業時間を取得(22:00から退勤時間までの差分が深夜残業時間になる)
+                $late_night_over_time = CarbonImmutable::createFromFormat('H:i:s', '22:00:00')->diffInMinutes(CarbonImmutable::createFromFormat('H:i:s', $finish_time_adj)) / 60;
+            }
+            // 残業が発生していない場合
+            if($over_time == 0){
+                // 深夜稼働時間を取得(22:00から退勤時間までの差分が深夜稼働時間になる)
+                $late_night_working_time = CarbonImmutable::createFromFormat('H:i:s', '22:00:00')->diffInMinutes(CarbonImmutable::createFromFormat('H:i:s', $finish_time_adj)) / 60;
+            }
+        }
+        return compact('late_night_over_time', 'late_night_working_time');
+    }
+
     // 退勤情報を勤怠テーブルに更新
-    public function updatePunchFinishForKintai($request, $over_time)
+    public function updatePunchFinishForKintai($request, $over_time, $late_night)
     {
         Kintai::where('kintai_id', $request->kintai_id)->update([
             'finish_time' => $request->finish_time,
@@ -63,6 +86,8 @@ class PunchFinishEnterService
             'add_rest_time' => isset($request->add_rest_time) ? $request->add_rest_time : 0,
             'working_time' => $request->working_time * 60, // 0.25単位から分単位に変換
             'over_time' => $over_time * 60, // 0.25単位から分単位に変換
+            'late_night_over_time' => $late_night['late_night_over_time'] * 60,
+            'late_night_working_time' => $late_night['late_night_working_time'] * 60,
         ]);
         return;
     }

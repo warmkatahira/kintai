@@ -23,6 +23,8 @@
                     @endif
                     <th class="font-thin py-3 px-2 text-center">稼働時間</th>
                     <th class="font-thin py-3 px-2 text-center">残業時間</th>
+                    <th class="font-thin py-3 px-2 text-center">深夜残業時間</th>
+                    <th class="font-thin py-3 px-2 text-center">深夜稼働時間</th>
                     <th class="font-thin py-3 px-2 text-center">拠点確認者</th>
                     <th class="font-thin py-3 px-2 text-center">拠点確認日時</th>
                     <th class="font-thin py-3 px-2 text-center">コメント</th>
@@ -60,6 +62,8 @@
                         @else
                             <td class="py-1 px-2 border text-center">@if(!is_null($kintai->finish_time)){{ number_format(0 / 60, 2) }}@endif</td>
                         @endif
+                        <td class="py-1 px-2 border text-center {{ $kintai->late_night_over_time == 0 ? '' : 'bg-pink-200' }}">@if(!is_null($kintai->finish_time)){{ number_format($kintai->late_night_over_time / 60, 2) }}@endif</td>
+                        <td class="py-1 px-2 border text-center {{ $kintai->late_night_working_time == 0 ? '' : 'bg-pink-200' }}">@if(!is_null($kintai->finish_time)){{ number_format($kintai->late_night_working_time / 60, 2) }}@endif</td>
                         <td class="py-1 px-2 border text-center">@if(!is_null($kintai->base_checked_at)) {{ $kintai->user->last_name.' '.$kintai->user->first_name }} @endif</td>
                         <td class="py-1 px-2 border text-center">@if(!is_null($kintai->base_checked_at)){{ CarbonImmutable::parse($kintai->base_checked_at)->isoFormat('Y年MM月DD日 HH時mm分ss秒') }}@endif</td>
                         <td class="py-1 px-2 border text-left">{{ $kintai->comment }}</td>

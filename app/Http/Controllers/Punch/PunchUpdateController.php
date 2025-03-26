@@ -97,10 +97,12 @@ class PunchUpdateController extends Controller
         $PunchFinishEnterService = new PunchFinishEnterService;
         // 勤怠情報を取得
         $kintai = Kintai::getSpecify(session('kintai_id'))->first();
-        // 残業時間を算出
+        // 残業時間を算出・取得
         $over_time = $PunchFinishEnterService->getOverTime($kintai, $request->working_time);
+        // 深夜関連の時間を算出・取得
+        $late_night = $PunchFinishEnterService->getLateNight(session('finish_time_adj'), $request->working_time, $over_time);
         // 勤怠概要を更新
-        $PunchUpdateService->updatePunchModifyKintai($request, $over_time);
+        $PunchUpdateService->updatePunchModifyKintai($request, $over_time, $late_night);
         // 荷主稼働時間を削除して追加
         $PunchUpdateService->addPunchModifyForKintaiDetail($request->working_time_input);
         // セッションをクリア

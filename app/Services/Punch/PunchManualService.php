@@ -45,4 +45,15 @@ class PunchManualService
         ]);
         return;
     }
+
+    // 深夜関連の時間を更新
+    public function updateLateNight($kintai_id, $late_night)
+    {
+        // 残業時間を更新
+        Kintai::where('kintai_id', $kintai_id)->update([
+            'late_night_over_time' => $late_night['late_night_over_time'] * 60,
+            'late_night_working_time' => $late_night['late_night_working_time'] * 60,
+        ]);
+        return;
+    }
 }

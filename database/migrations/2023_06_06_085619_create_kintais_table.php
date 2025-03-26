@@ -31,6 +31,8 @@ return new class extends Migration
             $table->unsignedInteger('out_return_time')->default(0);
             $table->unsignedInteger('working_time')->nullable();
             $table->unsignedInteger('over_time')->nullable();
+            $table->unsignedInteger('late_night_over_time')->nullable();
+            $table->unsignedInteger('late_night_working_time')->nullable();
             $table->boolean('is_early_worked');
             $table->boolean('is_modified')->default(0);
             $table->boolean('is_manual_punched')->default(0);

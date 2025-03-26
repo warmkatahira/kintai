@@ -99,8 +99,10 @@ class PunchFinishController extends Controller
         }
         // 残業時間を算出
         $over_time = $PunchFinishEnterService->getOverTime($kintai, $request->working_time);
+        // 深夜関連の時間を算出・取得
+        $late_night = $PunchFinishEnterService->getLateNight($request->finish_time_adj, $request->working_time, $over_time);
         // 勤怠概要を更新
-        $PunchFinishEnterService->updatePunchFinishForKintai($request, $over_time);
+        $PunchFinishEnterService->updatePunchFinishForKintai($request, $over_time, $late_night);
         // 勤怠詳細を追加
         $PunchFinishEnterService->createPunchFinishForKintaiDetail($request->kintai_id, $request->working_time_input);
         // 労働可能時間を算出

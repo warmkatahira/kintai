@@ -99,10 +99,14 @@ class PunchManualController extends Controller
         $PunchManualService = new PunchManualService;
         // 概要を追加
         $kintai = $PunchManualService->createKintai($request);
-        // 残業時間を算出
+        // 残業時間を算出・取得
         $over_time = $PunchFinishEnterService->getOverTime($kintai, $request->working_time);
         // 残業時間を更新
         $PunchManualService->updateOverTime($kintai->kintai_id, $over_time);
+        // 深夜関連の時間を算出・取得
+        $late_night = $PunchFinishEnterService->getLateNight($kintai->finish_time_adj, $request->working_time, $over_time);
+        // 深夜関連の時間を更新
+        $PunchManualService->updateLateNight($kintai->kintai_id, $late_night);
         // 勤怠詳細を追加
         $PunchFinishEnterService->createPunchFinishForKintaiDetail($kintai->kintai_id, $request->working_time_input);
         // セッションをクリア

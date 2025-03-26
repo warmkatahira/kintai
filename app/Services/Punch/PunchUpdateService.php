@@ -111,7 +111,7 @@ class PunchUpdateService
     }
 
     // 修正情報を勤怠テーブルに更新
-    public function updatePunchModifyKintai($request, $over_time)
+    public function updatePunchModifyKintai($request, $over_time, $late_night)
     {
         // 早出フラグを取得(リクエストパラメータがある = 早出となる) ※早出は1
         $is_early_worked = is_null(session('punch_begin_type')) ? 0 : 1;
@@ -130,6 +130,8 @@ class PunchUpdateService
             'out_return_time' => session('out_return_time'),
             'working_time' => $request->working_time * 60, // 0.25単位から分単位に変換
             'over_time' => $over_time * 60, // 0.25単位から分単位に変換
+            'late_night_over_time' => $late_night['late_night_over_time'] * 60,
+            'late_night_working_time' => $late_night['late_night_working_time'] * 60,
             'is_early_worked' => $is_early_worked,
             'is_modified' => 1,
         ]);

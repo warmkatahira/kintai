@@ -33,6 +33,8 @@ class Kintai extends Model
         'out_return_time',
         'working_time',
         'over_time',
+        'late_night_over_time',
+        'late_night_working_time',
         'is_early_worked',
         'is_modified',
         'is_manual_punched',
