@@ -166,9 +166,9 @@ class DataDownloadService
         }
         // 日単位か月単位かで日付をフォーマットするか可変
         if($aggregate_unit == '日単位'){
-            $employees->select(DB::raw("work_day as date, employees.employee_category_id, employee_category_name, employee_no, employee_last_name, employee_first_name, sum(working_time) as total_working_time, sum(over_time) as total_over_time, bases.base_name"));
+            $employees->select(DB::raw("work_day as date, employees.employee_category_id, employee_category_name, employee_no, employee_last_name, employee_first_name, sum(working_time) as total_working_time, sum(over_time) as total_over_time, sum(rest_time + add_rest_time) as total_rest_time, bases.base_name"));
         }else{
-            $employees->select(DB::raw("DATE_FORMAT(work_day, '%Y-%m') as date, employees.employee_category_id, employee_category_name, employee_no, employee_last_name, employee_first_name, sum(working_time) as total_working_time, sum(over_time) as total_over_time, bases.base_name"));
+            $employees->select(DB::raw("DATE_FORMAT(work_day, '%Y-%m') as date, employees.employee_category_id, employee_category_name, employee_no, employee_last_name, employee_first_name, sum(working_time) as total_working_time, sum(over_time) as total_over_time, sum(rest_time + add_rest_time) as total_rest_time, bases.base_name"));
         }
         $employees = $employees->groupBy('date', 'employee_no', 'employee_category_id')
                     ->orderBy('employee_category_id')
@@ -187,6 +187,7 @@ class DataDownloadService
                 '従業員名' => $employee->employee_last_name.' '.$employee->employee_first_name,
                 '稼働時間' => $employee->total_working_time / 60,
                 '残業時間' => $employee->total_over_time / 60,
+                '休憩取得時間' => $employee->total_rest_time / 60,
             ];
             $download_data[] = $param;
         }
