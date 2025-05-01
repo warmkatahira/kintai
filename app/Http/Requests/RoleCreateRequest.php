@@ -52,6 +52,7 @@ class RoleCreateRequest extends FormRequest
             'is_short_time_info_available' => 'required|boolean',
             'is_all_base_operation_available' => 'required|boolean',
             'is_add_rest_time_disp_available' => 'required|boolean',
+            'is_special_woriking_time_disp_available' => 'required|boolean',
         ];
     }
 
@@ -94,6 +95,7 @@ class RoleCreateRequest extends FormRequest
             'is_short_time_info_available' => '時短情報',
             'is_all_base_operation_available' => '全拠点操作',
             'is_add_rest_time_disp_available' => '追加休憩時間表示',
+            'is_special_woriking_time_disp_available' => '特別稼働時間表示',
         ];
     }
 }

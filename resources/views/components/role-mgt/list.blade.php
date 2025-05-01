@@ -34,6 +34,7 @@
                     <th class="font-thin py-3 px-2 text-center">全拠点操作</th>
                     <th class="font-thin py-3 px-2 text-center">追加休憩時間表示</th>
                     <th class="font-thin py-3 px-2 text-center">派遣会社管理</th>
+                    <th class="font-thin py-3 px-2 text-center">特別稼働時間表示<th>
                 </tr>
             </thead>
             <tbody class="bg-white">
@@ -71,6 +72,7 @@
                         <td class="py-1 px-2 border text-center {{ App\Enums\RoleEnum::get_class($role->is_all_base_operation_available) }}">{{ App\Enums\RoleEnum::get_jp($role->is_all_base_operation_available) }}</td>
                         <td class="py-1 px-2 border text-center {{ App\Enums\RoleEnum::get_class($role->is_add_rest_time_disp_available) }}">{{ App\Enums\RoleEnum::get_jp($role->is_add_rest_time_disp_available) }}</td>
                         <td class="py-1 px-2 border text-center {{ App\Enums\RoleEnum::get_class($role->is_temporary_company_mgt_available) }}">{{ App\Enums\RoleEnum::get_jp($role->is_temporary_company_mgt_available) }}</td>
+                        <td class="py-1 px-2 border text-center {{ App\Enums\RoleEnum::get_class($role->is_special_woriking_time_disp_available) }}">{{ App\Enums\RoleEnum::get_jp($role->is_special_woriking_time_disp_available) }}</td>
                     </tr>
                 @endforeach
             </tbody>

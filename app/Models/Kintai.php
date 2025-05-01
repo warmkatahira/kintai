@@ -32,6 +32,7 @@ class Kintai extends Model
         'comment',
         'out_return_time',
         'working_time',
+        'special_working_time',
         'over_time',
         'late_night_over_time',
         'late_night_working_time',

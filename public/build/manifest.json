@@ -110,7 +110,7 @@
     "src": "resources/js/kintai_close/kintai_close.js"
   },
   "resources/js/kintai_mgt/kintai_detail.js": {
-    "file": "assets/kintai_detail-fddf3f2e.js",
+    "file": "assets/kintai_detail-215a7257.js",
     "isEntry": true,
     "src": "resources/js/kintai_mgt/kintai_detail.js"
   },

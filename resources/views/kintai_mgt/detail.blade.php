@@ -30,6 +30,22 @@
                 @endcan
             </form>
         </div>
+        @if($kintai->employee->base->is_special_working_time_available && !is_null($kintai->finish_time))
+            @if(Auth::user()->base_id === $kintai->employee->base_id || Auth::user()->can('isSpecialWorkingTimeDispAvailable'))
+                <div class="flex flex-col">
+                    <p class="border-l-8 border-theme-sub text-xl pl-3 my-3">特別稼働時間(分単位)</p>
+                    <form method="POST" action="{{ route('kintai_update.special_working_time_update') }}" id="special_working_time_update_form" class="m-0 flex flex-row">
+                        @csrf
+                        <input type="text" name="special_working_time" class="text-sm w-96" value="{{ old('special_working_time', $kintai->special_working_time) }}" autocomplete="off">
+                        <input type="hidden" name="kintai_id" value="{{ $kintai->kintai_id }}">
+                        <!-- 拠点やロック有無などを全て考慮して操作できるか -->
+                        @can('isCommentOperationAllAvailable', [$kintai->employee->base_id, $kintai->locked_at])
+                            <button type="button" id="special_working_time_update" class="bg-blue-600 text-white text-sm text-center px-5">更新</button>
+                        @endcan
+                    </form>
+                </div>
+            @endif
+        @endif
         <div class="flex flex-col">
             <p class="border-l-8 border-theme-sub text-xl pl-3 my-3">勤怠概要</p>
             <x-detail-div label="出勤日" :value="CarbonImmutable::parse($kintai->work_day)->isoFormat('YYYY年MM月DD日(ddd)')" class="w-40 text-center" />

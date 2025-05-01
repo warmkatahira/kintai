@@ -16,4 +16,13 @@ class KintaiUpdateService
         ]);
         return;
     }
+
+    // 特別稼働時間を更新
+    public function updateSpecialWorkingTime($kintai_id, $special_working_time)
+    {
+        Kintai::getSpecify($kintai_id)->update([
+            'special_working_time' => $special_working_time,
+        ]);
+        return;
+    }
 }

@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use App\Services\KintaiMgt\KintaiUpdateService;
 use App\Http\Requests\KintaiCommentUpdateRequest;
+use App\Http\Requests\SpecialWorkingTimeUpdateRequest;
 
 class KintaiUpdateController extends Controller
 {
@@ -26,6 +27,18 @@ class KintaiUpdateController extends Controller
         return redirect()->back()->with([
             'alert_type' => 'success',
             'alert_message' => 'コメントを更新しました。',
+        ]);
+    }
+
+    public function special_working_time_update(SpecialWorkingTimeUpdateRequest $request)
+    {
+        // インスタンス化
+        $KintaiUpdateService = new KintaiUpdateService;
+        // 特別稼働時間を更新
+        $KintaiUpdateService->updateSpecialWorkingTime($request->kintai_id, $request->special_working_time);
+        return redirect()->back()->with([
+            'alert_type' => 'success',
+            'alert_message' => '特別稼働時間を更新しました。',
         ]);
     }
 }

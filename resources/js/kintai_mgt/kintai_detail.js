@@ -17,3 +17,13 @@ $('#comment_update').on("click",function(){
         $("#comment_update_form").submit();
     }
 });
+
+// 特別稼働時間更新ボタンが押下されたら
+$('#special_working_time_update').on("click",function(){
+    // 処理を実行するか確認
+    const result = window.confirm("特別稼働時間を更新しますか？");
+    // 「はい」が押下されたらsubmit、「いいえ」が押下されたら処理キャンセル
+    if(result == true) {
+        $("#special_working_time_update_form").submit();
+    }
+});

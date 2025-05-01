@@ -1,1 +1,0 @@
-$("#kintai_delete").on("click",function(){window.confirm("勤怠を削除しますか？")==!0&&$("#kintai_delete_form").submit()});$("#comment_update").on("click",function(){window.confirm("コメントを更新しますか？")==!0&&$("#comment_update_form").submit()});

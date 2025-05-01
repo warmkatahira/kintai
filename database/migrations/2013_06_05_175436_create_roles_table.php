@@ -41,6 +41,7 @@ return new class extends Migration
             $table->boolean('is_all_base_operation_available')->default(0);
             $table->boolean('is_add_rest_time_disp_available')->default(0);
             $table->boolean('is_temporary_company_mgt_available')->default(0);
+            $table->boolean('is_special_woriking_time_disp_available')->default(0);
             $table->timestamps();
         });
     }

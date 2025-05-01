@@ -39,6 +39,7 @@ class RoleCreateService
             'is_all_base_operation_available' => $request->is_all_base_operation_available,
             'is_add_rest_time_disp_available' => $request->is_add_rest_time_disp_available,
             'is_temporary_company_mgt_available' => $request->is_system_mgt_func_available == 0 ? 0 : $request->is_temporary_company_mgt_available,
+            'is_special_woriking_time_disp_available' => $request->is_special_woriking_time_disp_available == 0 ? 0 : $request->is_special_woriking_time_disp_available,
         ]);
         return;
     }

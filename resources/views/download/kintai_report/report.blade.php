@@ -54,7 +54,7 @@
                 padding-left: 0.75rem; /* 12px */
                 padding-right: 0.75rem; /* 12px */
                 display : inline-block;
-                width: 100px;
+                width: 110px;
             }
             .title {
                 font-size: 30px;
@@ -153,23 +153,29 @@
                 <span class="info_label">稼働日数</span>
                 <span class="info_text">{{ $kintai['working_days'].'日' }}</span>
             </div>
-            <div class="info_parent">
-                <span class="info_label">総稼働時間</span>
-                <span class="info_text">{{ number_format($kintai['total_working_time'] / 60, 2).'時間' }}</span>
-            </div>
-            <div class="info_parent">
-                <span class="info_label">祝日総稼働時間</span>
-                <span class="info_text">{{ number_format($kintai['national_holiday_total_working_time'] / 60, 2).'時間' }}</span>
+            <div class="div-flex-row">
+                <div class="info_parent" style="display: inline-block; ">
+                    <span class="info_label">総稼働時間</span>
+                    <span class="info_text">{{ number_format($kintai['total_working_time'] / 60, 2).'時間' }}</span>
+                </div>
+                <div class="info_parent" style="display: inline-block; ">
+                    <span class="info_label">総祝日稼働時間</span>
+                    <span class="info_text">{{ number_format($kintai['national_holiday_total_working_time'] / 60, 2).'時間' }}</span>
+                </div>
+                <div class="info_parent" style="display: inline-block; ">
+                    <span class="info_label">総特別稼働時間</span>
+                    <span class="info_text">{{ number_format($over40[$employee_id]['total_special_working_time'] / 60, 2).'時間' }}</span>
+                </div>
             </div>
             <div class="div-flex-row">
                 <div class="info_parent" style="display: inline-block; ">
                     <span class="info_label">総残業時間</span>
-                    <span class="info_text">{{ number_format((($kintai['total_over_time'] + (!isset($over40[$employee_id]) ? 0 : $over40[$employee_id]['total'])) + $kintai['total_late_night_working_time']) / 60, 2).'時間' }}</span>
+                    <span class="info_text">{{ number_format((($kintai['total_over_time'] + (!isset($over40[$employee_id]) ? 0 : $over40[$employee_id]['total_over40'])) + $kintai['total_late_night_working_time']) / 60, 2).'時間' }}</span>
                 </div>
                 <!-- 総残業時間 - 深夜残業時間 + 深夜稼働時間 -->
                 <div class="info_parent" style="display: inline-block;">
                     <span class="info_label">通常残業時間</span>
-                    <span class="info_text">{{ number_format(((($kintai['total_over_time'] + (!isset($over40[$employee_id]) ? 0 : $over40[$employee_id]['total'])) + $kintai['total_late_night_working_time']) - $kintai['total_late_night_over_time']) / 60, 2).'時間' }}</span>
+                    <span class="info_text">{{ number_format(((($kintai['total_over_time'] + (!isset($over40[$employee_id]) ? 0 : $over40[$employee_id]['total_over40'])) + $kintai['total_late_night_working_time']) - $kintai['total_late_night_over_time']) / 60, 2).'時間' }}</span>
                 </div>
                 <div class="info_parent" style="display: inline-block;">
                     <span class="info_label">深夜残業時間</span>
@@ -189,6 +195,7 @@
                         <th>外出</th>
                         <th>戻り</th>
                         <th>稼働</th>
+                        <th>特別</th>
                         <th>残業</th>
                         <th>早出</th>
                         <th>コメント</th>
@@ -214,6 +221,7 @@
                             <td style="{{ CarbonImmutable::parse($work_day)->dayOfWeekIso >= 6 || isset($holidays[$work_day]) ? 'background-color: #CCFFFF' : '' }}" class="center">{{ is_null($value) ? '' : substr($value->out_time_adj, 0, 5) }}</td>
                             <td style="{{ CarbonImmutable::parse($work_day)->dayOfWeekIso >= 6 || isset($holidays[$work_day]) ? 'background-color: #CCFFFF' : '' }}" class="center">{{ is_null($value) ? '' : substr($value->return_time_adj, 0, 5) }}</td>
                             <td style="{{ CarbonImmutable::parse($work_day)->dayOfWeekIso >= 6 || isset($holidays[$work_day]) ? 'background-color: #CCFFFF' : '' }}" class="center">{{ !isset($value->finish_time_adj) ? '' : number_format($value->working_time / 60, 2) }}{{ !isset($value->finish_time_adj) ? '' : (number_format($value->working_time / 60, 2) <= 6.25 && $kintai['employee_category_id'] == App\Enums\EmployeeCategoryEnum::FULL_TIME_EMPLOYEE ? ' 少' : '') }}</td>
+                            <td style="{{ CarbonImmutable::parse($work_day)->dayOfWeekIso >= 6 || isset($holidays[$work_day]) ? 'background-color: #CCFFFF' : '' }}" class="center">{{ !isset($value->finish_time_adj) ? '' : number_format($value->special_working_time / 60, 2) }}</td>
                             <td style="{{ CarbonImmutable::parse($work_day)->dayOfWeekIso >= 6 || isset($holidays[$work_day]) ? 'background-color: #CCFFFF' : '' }}" class="center">{{ !isset($value->finish_time_adj) ? '' : number_format(($value->over_time + $value->late_night_working_time) / 60, 2) }}</td>
                             <td style="{{ CarbonImmutable::parse($work_day)->dayOfWeekIso >= 6 || isset($holidays[$work_day]) ? 'background-color: #CCFFFF' : '' }}" class="center">{{ is_null($value) ? '' : ($value->is_early_worked == 1 ? '○' : '') }}</td>
                             <td style="{{ CarbonImmutable::parse($work_day)->dayOfWeekIso >= 6 || isset($holidays[$work_day]) ? 'background-color: #CCFFFF' : '' }}" class="left">{{ is_null($value) ? '' : $value->comment }}</td>

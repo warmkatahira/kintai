@@ -210,6 +210,7 @@ class KintaiReportDownloadService
             if($employee->employee_category_id == EmployeeCategoryEnum::PART_TIME_EMPLOYEE){
                 // 合計時間を格納する変数をセット
                 $total_over40 = 0;
+                $total_special_working_time = 0;
                 // 情報を格納する配列をセット
                 $over40[$employee->employee_id] = [];
                 // 月の日数分だけループ処理
@@ -228,15 +229,29 @@ class KintaiReportDownloadService
                         $over40[$employee->employee_id][$date] = Kintai::where('employee_id', $employee->employee_id)
                                                                     ->whereDate('work_day', '>=', $from_day)
                                                                     ->whereDate('work_day', '<=', $to_day)
-                                                                    ->select(DB::raw("sum(working_time) as total_working_time, sum(over_time) as total_over_time, (sum(working_time) - sum(over_time) - 2400) as over40, DATE_FORMAT(work_day, '%v') as date"))
+                                                                    ->select(DB::raw("
+                                                                        sum(special_working_time) as total_special_working_time,
+                                                                        sum(working_time) as total_working_time,
+                                                                        sum(over_time) as total_over_time,
+                                                                        GREATEST((sum(working_time) - sum(over_time) - 2400), 0) as over40,
+                                                                        IF(
+                                                                            (sum(special_working_time) - GREATEST((sum(working_time) - sum(over_time) - 2400), 0)) < 0 
+                                                                            OR (sum(special_working_time) IS NULL), 
+                                                                            0, 
+                                                                            (sum(special_working_time) - GREATEST((sum(working_time) - sum(over_time) - 2400), 0))
+                                                                        ) as special_minus_over40,
+                                                                        DATE_FORMAT(work_day, '%v') as date"))
                                                                     ->groupBy('employee_id', 'date')
                                                                     ->first();
                         // 0より大きいかつnullでなければ合計時間に足す
                         $total_over40 += !is_null($over40[$employee->employee_id][$date]) && $over40[$employee->employee_id][$date]->over40 > 0 ? $over40[$employee->employee_id][$date]->over40 : 0;
+                        // nullでなければ合計時間に足す
+                        $total_special_working_time += !is_null($over40[$employee->employee_id][$date]) ? $over40[$employee->employee_id][$date]->special_minus_over40 : 0;
                     }
                 }
                 // 合計時間を配列にセット
-                $over40[$employee->employee_id]['total'] = $total_over40;
+                $over40[$employee->employee_id]['total_over40'] = $total_over40;
+                $over40[$employee->employee_id]['total_special_working_time'] = $total_special_working_time;
             }
         }
         return isset($over40) ? $over40 : array();

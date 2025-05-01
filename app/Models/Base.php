@@ -18,6 +18,7 @@ class Base extends Model
         'base_name',
         'is_add_rest_available',
         'rest_related_select_mode',
+        'is_special_working_time_available',
     ];
     // 全て取得
     public static function getAll()

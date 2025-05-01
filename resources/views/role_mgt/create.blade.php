@@ -41,6 +41,7 @@
                 <x-role-mgt.create-select label="全拠点操作" id="is_all_base_operation_available" :forValue="$roles" :db="null" required="1" tippy="0" />
                 <x-role-mgt.create-select label="追加休憩時間表示" id="is_add_rest_time_disp_available" :forValue="$roles" :db="null" required="1" tippy="0" />
                 <x-role-mgt.create-select label="派遣会社管理" id="is_temporary_company_mgt_available" :forValue="$roles" :db="null" required="1" tippy="0" />
+                <x-role-mgt.create-select label="特別稼働時間表示" id="is_special_woriking_time_disp_available" :forValue="$roles" :db="null" required="1" tippy="0" />
                 <button type="button" id="role_create_enter" class="border border-blue-500 text-blue-500 bg-blue-100 py-1 px-10 mt-5">追加</button>
             </form>
         </div>

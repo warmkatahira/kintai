@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('base_name', 20);
             $table->boolean('is_add_rest_available')->default(0);
             $table->string('rest_related_select_mode', '7')->default('no_rest');
+            $table->boolean('is_special_working_time_available')->default(0);
             $table->timestamps();
         });
     }

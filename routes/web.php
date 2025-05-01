@@ -148,6 +148,7 @@ Route::middleware(['auth', 'userStatusCheck', 'OperationLogRecord', 'IPCheck'])-
         // -+-+-+-+-+-+-+-+-+-+-+-+ 勤怠修正 -+-+-+-+-+-+-+-+-+-+-+-+
         Route::controller(KintaiUpdateController::class)->prefix('kintai_update')->name('kintai_update.')->group(function(){
             Route::post('comment_update', 'comment_update')->name('comment_update');
+            Route::post('special_working_time_update', 'special_working_time_update')->name('special_working_time_update');
         });
         // -+-+-+-+-+-+-+-+-+-+-+-+ 修正打刻 -+-+-+-+-+-+-+-+-+-+-+-+
         Route::controller(PunchUpdateController::class)->prefix('punch_update')->name('punch_update.')->group(function(){
