@@ -164,7 +164,13 @@
                 </div>
                 <div class="info_parent" style="display: inline-block; ">
                     <span class="info_label">総特別稼働時間</span>
-                    <span class="info_text">{{ number_format($over40[$employee_id]['total_special_working_time'] / 60, 2).'時間' }}</span>
+                    <span class="info_text">
+                        @if(isset($over40[$employee_id]['total_special_working_time']))
+                            {{ number_format($over40[$employee_id]['total_special_working_time'] / 60, 2).'時間' }} 
+                        @else
+                            0.00時間
+                        @endif
+                    </span>
                 </div>
             </div>
             <div class="div-flex-row">
