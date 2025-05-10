@@ -86,6 +86,22 @@ class PunchFinishInputService
         return $rest_time;
     }
 
+    // デフォルト休憩取得時間の計算で使用する調整時間を取得（2025/06/01からの件で追加）
+    public function getDefaultRestTimeAdjustmentTime($begin_time_adj, $finish_time_adj)
+    {
+        // デフォルト休憩取得時間調整用時間を初期化
+        $default_rest_time_adjustment_time = 0;
+        // 出勤時間調整が10:00～10:30の間かつ、退勤時間調整が10:45よりも遅い場合であれば午前の休憩を取らないように、15分プラスする
+        if($begin_time_adj >= "10:00:00" && $begin_time_adj <= "10:30:00" && $finish_time_adj >= "10:45:00"){
+            $default_rest_time_adjustment_time += 15;
+        }
+        // 退勤時間調整が13:00であればお昼の休憩は取らないように、60分プラスする
+        if($finish_time_adj == "13:00:00"){
+            $default_rest_time_adjustment_time += 60;
+        }
+        return $default_rest_time_adjustment_time;
+    }
+
     // 外出戻り時間から、取得可能な休憩時間を算出
     public function getRestTimeForOutReturn($rest_time, $out_time_adj, $return_time_adj)
     {
@@ -97,8 +113,8 @@ class PunchFinishInputService
         if($out_time_adj <= "15:00:00" && $return_time_adj >= "15:15:00"){
             $rest_time -= 15;
         }
-        // 外出時間調整が12:00よりも早く、戻り時間が12:15より遅ければ昼の休憩は取れないので、休憩時間から60分マイナスする
-        if($out_time_adj <= "12:00:00" && $return_time_adj >= "12:15:00"){
+        // 戻り時間が12:15より遅ければ昼の休憩は取れないので、休憩時間から60分マイナスする
+        if($return_time_adj >= "12:15:00"){
             $rest_time -= 60;
         }
         return $rest_time;
@@ -159,17 +175,28 @@ class PunchFinishInputService
                 array_push($rest_times, ['minute' => 15, 'text1' => '15分']);
                 array_push($rest_times, ['minute' => 0, 'text1' => '0分']);
             }
+            if($rest_time == 45){
+                array_push($rest_times, ['minute' => 30, 'text1' => '30分']);
+                array_push($rest_times, ['minute' => 15, 'text1' => '15分']);
+                array_push($rest_times, ['minute' => 0, 'text1' => '0分']);
+            }
             if($rest_time == 60){
+                array_push($rest_times, ['minute' => 45, 'text1' => '45分']);
+                array_push($rest_times, ['minute' => 30, 'text1' => '30分']);
+                array_push($rest_times, ['minute' => 15, 'text1' => '15分']);
                 array_push($rest_times, ['minute' => 0, 'text1' => '0分']);
             }
             if($rest_time == 75){
                 array_push($rest_times, ['minute' => 60, 'text1' => '60分']);
+                array_push($rest_times, ['minute' => 45, 'text1' => '45分']);
+                array_push($rest_times, ['minute' => 30, 'text1' => '30分']);
                 array_push($rest_times, ['minute' => 15, 'text1' => '15分']);
                 array_push($rest_times, ['minute' => 0, 'text1' => '0分']);
             }
             if($rest_time == 90){
                 array_push($rest_times, ['minute' => 75, 'text1' => '75分']);
                 array_push($rest_times, ['minute' => 60, 'text1' => '60分']);
+                array_push($rest_times, ['minute' => 45, 'text1' => '45分']);
                 array_push($rest_times, ['minute' => 30, 'text1' => '30分']);
                 array_push($rest_times, ['minute' => 15, 'text1' => '15分']);
                 array_push($rest_times, ['minute' => 0, 'text1' => '0分']);
@@ -179,7 +206,7 @@ class PunchFinishInputService
     }
 
     // 稼働時間を算出
-    public function getWorkingTime($begin_time_adj, $finish_time_adj, $rest_time, $out_return_time, $add_rest_time)
+    public function getWorkingTime($begin_time_adj, $finish_time_adj, $out_return_time, $add_rest_time)
     {
         // 退勤時間調整を分数に変換
         $finish_time_adj_split = explode(":", $finish_time_adj);
@@ -225,6 +252,25 @@ class PunchFinishInputService
     public function checkAddRestAvailable()
     {
         return Auth::user()->base->is_add_rest_available == 1 ? true : false;
+    }
+
+    // 稼働時間から法令で取得するべき休憩時間を取得
+    public function getLawRestTime($working_time)
+    {
+        // A = 6.25(375分)～8.00(480分)時間の間 =>  45分
+        // B = 8.25(495分)時間以上              =>  60分
+
+        // 法令休憩取得時間を初期化
+        $law_rest_time = 0;
+        // 稼働時間がAに該当する場合
+        if($working_time >= 375 && $working_time <= 480){
+            $law_rest_time = 45;
+        }
+        // 稼働時間がBに該当する場合
+        if($working_time >= 495){
+            $law_rest_time = 60;
+        }
+        return $law_rest_time;
     }
 
 }

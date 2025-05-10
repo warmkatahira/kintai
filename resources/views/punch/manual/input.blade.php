@@ -30,41 +30,21 @@
                         @endif
                         <p class="col-span-1 text-xl text-center pt-1">稼働(時)</p>
                         <input id="working_time" name="working_time" class="col-span-2 text-2xl text-left bg-transparent" readonly>
-                        <input type="hidden" id="org_rest_time" name="org_rest_time" value="{{ session('rest_time') }}">
+                        <input type="hidden" id="org_rest_time" name="org_rest_time" value="{{ $default_rest_time }}">
                         <input type="hidden" id="org_working_time" value="{{ session('working_time') }}">
                         <input type="hidden" name="work_day" value="{{ $work_day }}">
                         <input type="hidden" name="employee_id" value="{{ $employee->employee_id }}">
                         <input type="hidden" id="rest_related_select_mode" value="{{ $base->rest_related_select_mode }}">
+                        <input type="hidden" id="law_rest_time" value="{{ $law_rest_time }}">
                     </div>
                 </div>
-                @if($base->rest_related_select_mode == 'no_rest')
-                    <!-- 休憩未取得時間を表示 -->
-                    <p class="col-start-1 col-span-12 text-4xl py-3 pl-3 bg-theme-sub">休憩未取得時間</p>
-                    <div class="col-start-1 col-span-12 border-2 border-theme-sub bg-white">
-                        <div class="p-5 grid grid-cols-12 gap-4">
-                            @foreach(session('no_rest_times') as $no_rest_time)
-                                <div class="col-span-2">
-                                    <input type="radio" name="no_rest_time" id="{{ $no_rest_time['minute'] }}" value="{{ $no_rest_time['minute'] }}" class="no_rest_time_select hidden" {{ $no_rest_time['minute'] == 0 ? 'checked' : '' }}>
-                                    <label id="{{ $no_rest_time['minute'].'_label' }}" for="{{ $no_rest_time['minute'] }}" class="cursor-pointer flex flex-col w-full max-w-lg mx-auto text-center border-2 rounded-lg border-gray-900 p-2 text-2xl">{{ $no_rest_time['text1'] }}</label>
-                                </div>
-                            @endforeach
-                        </div>
+                <!-- 休憩取得時間を表示 -->
+                <p class="col-start-1 col-span-12 text-4xl py-3 pl-3 bg-theme-sub">休憩取得時間</p>
+                <div class="col-start-1 col-span-12 border-2 border-theme-sub bg-white">
+                    <div class="p-5 grid grid-cols-12 gap-4">
+                        <div id="rest_time_div" class="col-span-2"></div>
                     </div>
-                @endif
-                @if($base->rest_related_select_mode == 'rest')
-                    <!-- 休憩取得時間を表示 -->
-                    <p class="col-start-1 col-span-12 text-4xl py-3 pl-3 bg-theme-sub">休憩取得時間</p>
-                    <div class="col-start-1 col-span-12 border-2 border-theme-sub bg-white">
-                        <div class="p-5 grid grid-cols-12 gap-4">
-                            @foreach(session('rest_times') as $time)
-                                <div class="col-span-2">
-                                    <input type="radio" name="rest_time_select" id="{{ $time['minute'] }}" value="{{ $time['minute'] }}" class="rest_time_select hidden" {{ $time['minute'] == session('rest_time') ? 'checked' : '' }}>
-                                    <label id="{{ $time['minute'].'_label' }}" for="{{ $time['minute'] }}" class="cursor-pointer flex flex-col w-full max-w-lg mx-auto text-center border-2 rounded-lg border-gray-900 p-2 text-2xl">{{ $time['text1'] }}</label>
-                                </div>
-                            @endforeach
-                        </div>
-                    </div>
-                @endif
+                </div>
                 <!-- 追加休憩取得時間を表示(追加休憩時間が有効かつパートのみ) -->
                 @if($add_rest_available && $employee->employee_category_id == App\Enums\EmployeeCategoryEnum::PART_TIME_EMPLOYEE)
                     <p class="col-start-1 col-span-12 text-4xl py-3 pl-3 bg-theme-sub">追加休憩取得時間</p>
@@ -91,10 +71,16 @@
             <!-- 荷主情報のタブを表示 -->
             <x-punch.customer-tab :customers="$customers" :customergroups="$customer_groups" :supportbases="$support_bases"></x-customer-tab>
             <button type="button" id="punch_finish_enter" class="punch_enter w-full text-center bg-blue-200 py-8 text-4xl rounded-lg mt-3">入力完了</button>
+            <input type="hidden" id="is_chief_approvaled" name="is_chief_approvaled" value="0">
+            <input type="hidden" id="is_law_violated" name="is_law_violated" value="0">
         </form>
         <!-- 時間入力モーダル -->
-        <x-punch.working_time_input_modal/>
+        <x-punch.working_time_input_modal />
         <!-- 打刻確認モーダル -->
-        <x-punch.punch-confirm-modal proc="手動" :earlyWorkSelectInfo="null" :earlyWorkAvailable="0"/>
+        <x-punch.punch-confirm-modal proc="手動" :earlyWorkSelectInfo="null" :earlyWorkAvailable="0" />
+        <!-- 休憩取得時間確認モーダル -->
+        <x-punch.rest-time-check-modal :employeeFullName="$employee->employee_last_name.$employee->employee_first_name" :defaultRestTime="$default_rest_time" />
+        <!-- 休憩取得時間変更モーダル -->
+        <x-punch.rest-time-change-modal :employeeFullName="$employee->employee_last_name.$employee->employee_first_name" :defaultRestTime="$default_rest_time" :restTimes="session('rest_times')" />
     </div>
 </x-app-layout>
