@@ -17,7 +17,8 @@
             <!-- 従業員名ボタンを表示 -->
             <x-punch.punch-employee-btn :employees="$employees" key="employee_id" />
             <!-- 打刻確認モーダル -->
-            <x-punch.punch-confirm-modal proc="出勤" :earlyWorkSelectInfo="$early_work_select_info" :earlyWorkAvailable="$early_work_available"/>
+            <x-punch.punch-confirm-modal proc="出勤" :earlyWorkSelectInfo="$early_work_select_info" :earlyWorkAvailable="$early_work_available" message="null" />
+            <input type="hidden" id="lunch_break_check_message" value="none">
         </form>
     </div>
     <!-- 打刻完了ポップアップ画面 -->

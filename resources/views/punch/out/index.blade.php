@@ -13,7 +13,8 @@
             <!-- 従業員名ボタンを表示 -->
             <x-punch.punch-employee-btn :employees="$employees" key="kintai_id" />
             <!-- 打刻確認モーダル -->
-            <x-punch.punch-confirm-modal proc="外出" :earlyWorkSelectInfo="null" :earlyWorkAvailable="0"/>
+            <x-punch.punch-confirm-modal proc="外出" :earlyWorkSelectInfo="null" :earlyWorkAvailable="0" :message="$message" />
+            <input type="hidden" id="lunch_break_check_message" value="{{ $message }}">
         </form>
     </div>
 </x-app-layout>

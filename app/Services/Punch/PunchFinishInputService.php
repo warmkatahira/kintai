@@ -97,8 +97,8 @@ class PunchFinishInputService
         if($out_time_adj <= "15:00:00" && $return_time_adj >= "15:15:00"){
             $rest_time -= 15;
         }
-        // 外出時間調整が12:00よりも早く、戻り時間が12:15より遅ければ昼の休憩は取れないので、休憩時間から60分マイナスする
-        if($out_time_adj <= "12:00:00" && $return_time_adj >= "12:15:00"){
+        // 戻り時間が12:15より遅ければ昼の休憩は取れないので、休憩時間から60分マイナスする
+        if($return_time_adj >= "12:15:00"){
             $rest_time -= 60;
         }
         return $rest_time;

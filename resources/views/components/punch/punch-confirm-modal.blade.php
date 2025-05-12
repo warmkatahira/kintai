@@ -24,6 +24,23 @@
                         </div>
                     </div>
                 @endif
+                @if(!is_null($message))
+                    <div id="lunch_break_check_select_div" class="col-span-12 grid grid-cols-12 gap-4 mt-5 mb-10 hidden">
+                        <p class="col-span-12 text-4xl">{{ $message }}</p>
+                        <div class="col-span-12">
+                            <div class="col-span-12 grid grid-cols-12 mt-5">
+                                <div class="col-span-3">
+                                    <input type="radio" name="lunch_break_check_select" value="yes" id="yes" class="lunch_break_check_select hidden">
+                                    <label id="yes_label" for="yes" class="cursor-pointer flex flex-col w-full max-w-lg mx-auto text-center border-2 rounded-lg border-gray-900 p-2 text-2xl">はい</label>
+                                </div>
+                                <div class="col-start-5 col-span-3">
+                                    <input type="radio" name="lunch_break_check_select" value="no" id="no" class="lunch_break_check_select hidden">
+                                    <label id="no_label" for="no" class="cursor-pointer flex flex-col w-full max-w-lg mx-auto text-center border-2 rounded-lg border-gray-900 p-2 text-2xl">いいえ</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                @endif
                 <a id="punch_confirm_enter" class="cursor-pointer rounded-lg text-white bg-black text-center p-4 col-span-5 text-4xl">{{ $proc }}</a>
                 <a id="punch_confirm_cancel" class="cursor-pointer rounded-lg text-white bg-red-400 text-center p-4 col-start-8 col-span-5 text-4xl">キャンセル</a>
             </div>

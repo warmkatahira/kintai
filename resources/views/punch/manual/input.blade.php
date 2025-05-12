@@ -93,8 +93,9 @@
             <button type="button" id="punch_finish_enter" class="punch_enter w-full text-center bg-blue-200 py-8 text-4xl rounded-lg mt-3">入力完了</button>
         </form>
         <!-- 時間入力モーダル -->
-        <x-punch.working_time_input_modal/>
+        <x-punch.working_time_input_modal />
         <!-- 打刻確認モーダル -->
-        <x-punch.punch-confirm-modal proc="手動" :earlyWorkSelectInfo="null" :earlyWorkAvailable="0"/>
+        <x-punch.punch-confirm-modal proc="手動" :earlyWorkSelectInfo="null" :earlyWorkAvailable="0" message="null" />
+        <input type="hidden" id="lunch_break_check_message" value="none">
     </div>
 </x-app-layout>

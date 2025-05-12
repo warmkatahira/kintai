@@ -57,7 +57,7 @@
                         <div class="p-5 grid grid-cols-12 gap-4">
                             @foreach(session('rest_times') as $time)
                                 <div class="col-span-2">
-                                    <input type="radio" name="rest_time_select" id="{{ $time['minute'] }}" value="{{ $time['minute'] }}" class="rest_time_select hidden" {{ $time['minute'] == $kintai->rest_time ? 'checked' : '' }}>
+                                    <input type="radio" name="rest_time_select" id="{{ $time['minute'] }}" value="{{ $time['minute'] }}" class="rest_time_select hidden" {{ $time['minute'] == session('rest_time') ? 'checked' : '' }}>
                                     <label id="{{ $time['minute'].'_label' }}" for="{{ $time['minute'] }}" class="cursor-pointer flex flex-col w-full max-w-lg mx-auto text-center border-2 rounded-lg border-gray-900 p-2 text-2xl">{{ $time['text1'] }}</label>
                                 </div>
                             @endforeach
@@ -99,8 +99,9 @@
             <button type="button" id="punch_finish_enter" class="punch_enter w-full text-center bg-blue-200 py-8 text-4xl rounded-lg mt-3">入力完了</button>
         </form>
         <!-- 時間入力モーダル -->
-        <x-punch.working_time_input_modal/>
+        <x-punch.working_time_input_modal />
         <!-- 打刻確認モーダル -->
-        <x-punch.punch-confirm-modal proc="修正" :earlyWorkSelectInfo="null" :earlyWorkAvailable="0"/>
+        <x-punch.punch-confirm-modal proc="修正" :earlyWorkSelectInfo="null" :earlyWorkAvailable="0" message="null" />
+        <input type="hidden" id="lunch_break_check_message" value="none">
     </div>
 </x-app-layout>

@@ -31,6 +31,32 @@ class PunchOutService
         return $employees;
     }
 
+    // 時間が12:15 - 12:59の間であれば、メッセージを格納
+    public function setMessage($nowDate)
+    {
+        // メッセージ変数の初期化
+        $message = null;
+        // 時間が12:15:00〜12:29:00の間かどうかを判定
+        $start = $nowDate->copy()->setTime(12, 15, 0);
+        $end = $nowDate->copy()->setTime(12, 29, 0);
+        if($nowDate->between($start, $end)){
+            $message = '12：00～12：15までの間、働いていましたか？';
+        }
+        // 時間が12:30:00〜12:44:00の間かどうかを判定
+        $start = $nowDate->copy()->setTime(12, 30, 0);
+        $end = $nowDate->copy()->setTime(12, 44, 0);
+        if($nowDate->between($start, $end)){
+            $message = '12：00～12：30までの間、働いていましたか？';
+        }
+        // 時間が12:45:00〜12:59:00の間かどうかを判定
+        $start = $nowDate->copy()->setTime(12, 45, 0);
+        $end = $nowDate->copy()->setTime(12, 59, 0);
+        if($nowDate->between($start, $end)){
+            $message = '12：00～12：45までの間、働いていましたか？';
+        }
+        return $message;
+    }
+
     // 勤怠テーブルに外出情報を更新
     public function updatePunchOutForKintai($kintai_id, $nowDate)
     {

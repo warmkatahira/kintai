@@ -31,6 +31,20 @@ class PunchReturnService
         return $employees;
     }
 
+    // 時間が12:00 - 12:44の間であれば、メッセージを格納
+    public function setMessage($nowDate)
+    {
+        // メッセージ変数の初期化
+        $message = null;
+        // 時間が12:00:00〜12:44:00の間かどうかを判定
+        $start = $nowDate->copy()->setTime(12, 00, 0);
+        $end = $nowDate->copy()->setTime(12, 44, 0);
+        if($nowDate->between($start, $end)){
+            $message = '13:00までお昼休憩をとらずに、すぐに働きますか？';
+        }
+        return $message;
+    }
+
     // 勤怠テーブルに戻り情報を更新
     public function updatePunchReturnForKintai($kintai_id, $nowDate, $out_time_adj)
     {
