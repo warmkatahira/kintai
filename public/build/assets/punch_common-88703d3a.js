@@ -1,1 +1,0 @@
-$(".punch_enter").on("click",function(){$("#punch_confirm_modal").removeClass("hidden"),$("#punch_id").val($(this).val()),$("#punch_target_employee_name").html($(this).html()+" さん")});$("#punch_confirm_cancel").on("click",function(){$("#punch_confirm_modal").addClass("hidden")});$("#punch_confirm_enter").on("click",function(){$("#punch_enter_form").submit()});

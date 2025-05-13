@@ -80,7 +80,6 @@ use Illuminate\Support\Facades\Route;
     use App\Http\Controllers\SystemMgt\TemporaryCompanyMgt\TemporaryCompanyCreateController;
     use App\Http\Controllers\SystemMgt\TemporaryCompanyMgt\TemporaryCompanyUpdateController;
 
-
 // ★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆ Welcome ★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆
     // -+-+-+-+-+-+-+-+-+-+-+-+ Welcome -+-+-+-+-+-+-+-+-+-+-+-+
     Route::controller(WelcomeController::class)->prefix('')->name('welcome.')->group(function(){
