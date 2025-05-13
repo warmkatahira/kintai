@@ -96,6 +96,7 @@
         <!-- 時間入力モーダル -->
         <x-punch.working_time_input_modal/>
         <!-- 打刻確認モーダル -->
-        <x-punch.punch-confirm-modal proc="退勤" :earlyWorkSelectInfo="null" :earlyWorkAvailable="0"/>
+        <x-punch.punch-confirm-modal proc="退勤" :earlyWorkSelectInfo="null" :earlyWorkAvailable="0"  message="null" />
+        <input type="hidden" id="lunch_break_check_message" value="none">
     </div>
 </x-app-layout>
