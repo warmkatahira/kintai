@@ -39,6 +39,8 @@ class Kintai extends Model
         'is_early_worked',
         'is_modified',
         'is_manual_punched',
+        'is_chief_approvaled',
+        'is_law_violated',
         'base_checked_id',
         'base_checked_at',
         'locked_at',

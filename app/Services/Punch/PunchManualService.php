@@ -33,6 +33,8 @@ class PunchManualService
             'working_time' => $request->working_time * 60,
             'is_early_worked' => $is_early_worked,
             'is_manual_punched' => 1,
+            'is_chief_approvaled' => $request->is_chief_approvaled,
+            'is_law_violated' => $request->is_law_violated,
         ]);
         return $kintai;
     }

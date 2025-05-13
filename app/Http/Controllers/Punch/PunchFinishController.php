@@ -43,16 +43,20 @@ class PunchFinishController extends Controller
         $finish_time_adj = $PunchFinishInputService->getFinishTimeAdj($nowDate);
         // 出退勤時間から、取得可能な休憩時間を算出
         $rest_time = $PunchFinishInputService->getRestTimeForBeginFinish($kintai->begin_time_adj, $finish_time_adj);
+        // デフォルト休憩取得時間の計算で使用する調整時間を取得（2025/06/01からの件で追加）
+        $default_rest_time_adjustment_time = $PunchFinishInputService->getDefaultRestTimeAdjustmentTime($kintai->begin_time_adj, $finish_time_adj);
         // 外出戻り時間から、取得可能な休憩時間を算出(外出戻り時間がある場合のみ)
         if($kintai->out_return_time != 0){
             $rest_time = $PunchFinishInputService->getRestTimeForOutReturn($rest_time, $kintai->out_time_adj, $kintai->return_time_adj);
         }
+        // 稼働時間を算出
+        $working_time = $PunchFinishInputService->getWorkingTime($kintai->begin_time_adj, $finish_time_adj, $kintai->out_return_time, $request->add_rest_time);
+        // 稼働時間から法令で取得するべき休憩時間を取得
+        $law_rest_time = $PunchFinishInputService->getLawRestTime($working_time);
         // 休憩未取得回数の情報を取得
         $no_rest_times = $PunchFinishInputService->getNoRestTime($kintai->employee_id, $rest_time);
         // 休憩取得回数の情報を取得
-        $rest_times = $PunchFinishInputService->getRestTime($kintai->employee_id, $rest_time);
-        // 稼働時間を算出
-        $working_time = $PunchFinishInputService->getWorkingTime($kintai->begin_time_adj, $finish_time_adj, $rest_time, $kintai->out_return_time, $request->add_rest_time);
+        $rest_times = $PunchFinishInputService->getRestTime($kintai->employee_id, max($rest_time, $law_rest_time));
         // 自拠点の荷主情報を取得
         $customers = Customer::getSpecifyBase(Auth::user()->base_id)->get();
         $customer_groups = CustomerGroup::getSpecifyBase(Auth::user()->base_id)->has('customers')->get();
@@ -66,6 +70,8 @@ class PunchFinishController extends Controller
         $employee = Employee::getSpecify($kintai->employee_id)->first();
         // 拠点情報を取得（休憩関連選択モードを取得するため）
         $base = Base::getSpecify(Auth::user()->base_id)->first();
+        // デフォルト休憩取得時間を取得（通常の休憩時間と法令の休憩時間で大きい方を適用）
+        $default_rest_time = max($rest_time - $default_rest_time_adjustment_time, $law_rest_time);
         return view('punch.finish.input')->with([
             'kintai' => $kintai,
             'finish_time' => $finish_time,
@@ -81,6 +87,8 @@ class PunchFinishController extends Controller
             'add_rest_available' => $add_rest_available,
             'employee' => $employee,
             'base' => $base,
+            'default_rest_time' => $default_rest_time,
+            'law_rest_time' => $law_rest_time,
         ]);
     }
 
