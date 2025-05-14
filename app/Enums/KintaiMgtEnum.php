@@ -18,4 +18,14 @@ class KintaiMgtEnum
         self::BASE_CHECK_NO_CHECK => '未確認',
         self::BASE_CHECK_CHECKED => '確認済',
     ];
+    // 所長承認条件の値を定義
+    const CHIEF_APPROVALED_TRUE = 'CHIEF_APPROVALED_TRUE';
+    const CHIEF_APPROVALED_CONDITIONS = [
+        self::CHIEF_APPROVALED_TRUE => '○',
+    ];
+    // 所長承認条件の値を定義
+    const LAW_VIOLATED_TRUE = 'LAW_VIOLATED_TRUE';
+    const LAW_VIOLATED_CONDITIONS = [
+        self::LAW_VIOLATED_TRUE => '○',
+    ];
 }

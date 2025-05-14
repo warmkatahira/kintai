@@ -8,6 +8,8 @@
             <x-search.input id="search_employee_name" label="従業員名" />
             <x-search.select-2 id="search_target" label="対象" :searchConditions="$targetConditions" />
             <x-search.select-2 id="search_base_check" label="拠点確認" :searchConditions="$baseCheckConditions" />
+            <x-search.select-2 id="search_chief_approvaled" label="所長承認" :searchConditions="$chiefApprovaledConditions" />
+            <x-search.select-2 id="search_law_violated" label="法令違反" :searchConditions="$lawViolatedConditions" />
             <button type="submit" class="text-sm text-center border border-blue-500 text-blue-500 bg-blue-100 py-2 mt-2 shadow-md">
                 <i class="las la-search la-lg"></i>検索
             </button>

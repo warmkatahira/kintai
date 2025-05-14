@@ -25,6 +25,8 @@ class KintaiMgtService
             'search_employee_name',
             'search_target',
             'search_base_check',
+            'search_chief_approvaled',
+            'search_law_violated',
         ]);
         return;
     }
@@ -50,6 +52,8 @@ class KintaiMgtService
         session(['search_employee_name' => $request->search_employee_name]);
         session(['search_target' => $request->search_target]);
         session(['search_base_check' => $request->search_base_check]);
+        session(['search_chief_approvaled' => $request->search_chief_approvaled]);
+        session(['search_law_violated' => $request->search_law_violated]);
         return;
     }
 
@@ -117,6 +121,20 @@ class KintaiMgtService
             // 確認済
             if (session('search_base_check') == KintaiMgtEnum::BASE_CHECK_CHECKED) {
                 $kintais->whereNotNull('base_checked_at');
+            }
+        }
+        // 所長承認条件がある場合
+        if (!empty(session('search_chief_approvaled'))) {
+            // ○（1が立っている）
+            if (session('search_chief_approvaled') == KintaiMgtEnum::CHIEF_APPROVALED_TRUE) {
+                $kintais->where('is_chief_approvaled', 1);
+            }
+        }
+        // 法令違反条件がある場合
+        if (!empty(session('search_law_violated'))) {
+            // ○（1が立っている）
+            if (session('search_law_violated') == KintaiMgtEnum::LAW_VIOLATED_TRUE) {
+                $kintais->where('is_law_violated', 1);
             }
         }
         // 出勤日と従業員番号で並び替え

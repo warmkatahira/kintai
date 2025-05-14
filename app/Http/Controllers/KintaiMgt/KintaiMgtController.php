@@ -41,6 +41,8 @@ class KintaiMgtController extends Controller
         // Enumに定義してある条件値を取得
         $target_conditions = KintaiMgtEnum::TARGET_CONDITIONS;
         $base_check_conditions = KintaiMgtEnum::BASE_CHECK_CONDITIONS;
+        $chief_approvaled_conditions = KintaiMgtEnum::CHIEF_APPROVALED_CONDITIONS;
+        $law_violated_conditions = KintaiMgtEnum::LAW_VIOLATED_CONDITIONS;
         // 追加休憩取得時間が有効か判定
         $add_rest_available = $PunchFinishInputService->checkAddRestAvailable();
         return view('kintai_mgt.index')->with([
@@ -49,6 +51,8 @@ class KintaiMgtController extends Controller
             'employee_categories' => $employee_categories,
             'target_conditions' => $target_conditions,
             'base_check_conditions' => $base_check_conditions,
+            'chief_approvaled_conditions' => $chief_approvaled_conditions,
+            'law_violated_conditions' => $law_violated_conditions,
             'add_rest_available' => $add_rest_available,
         ]);
     }
@@ -80,6 +84,8 @@ class KintaiMgtController extends Controller
         // Enumに定義してある条件値を取得
         $target_conditions = KintaiMgtEnum::TARGET_CONDITIONS;
         $base_check_conditions = KintaiMgtEnum::BASE_CHECK_CONDITIONS;
+        $chief_approvaled_conditions = KintaiMgtEnum::CHIEF_APPROVALED_CONDITIONS;
+        $law_violated_conditions = KintaiMgtEnum::LAW_VIOLATED_CONDITIONS;
         // 追加休憩取得時間が有効か判定
         $add_rest_available = $PunchFinishInputService->checkAddRestAvailable();
         return view('kintai_mgt.index')->with([
@@ -88,6 +94,8 @@ class KintaiMgtController extends Controller
             'employee_categories' => $employee_categories,
             'target_conditions' => $target_conditions,
             'base_check_conditions' => $base_check_conditions,
+            'chief_approvaled_conditions' => $chief_approvaled_conditions,
+            'law_violated_conditions' => $law_violated_conditions,
             'add_rest_available' => $add_rest_available,
         ]);
     }
