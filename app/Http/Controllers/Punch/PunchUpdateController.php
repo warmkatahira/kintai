@@ -53,7 +53,7 @@ class PunchUpdateController extends Controller
         // 出退勤時間から、取得可能な休憩時間を算出
         $rest_time = $PunchFinishInputService->getRestTimeForBeginFinish($begin_finish_time['begin_time_adj'], $begin_finish_time['finish_time_adj']);
         // デフォルト休憩取得時間の計算で使用する調整時間を取得（2025/06/01からの件で追加）
-        $default_rest_time_adjustment_time = $PunchFinishInputService->getDefaultRestTimeAdjustmentTime($begin_finish_time['begin_time_adj'], $begin_finish_time['finish_time_adj']);
+        $default_rest_time_adjustment_time = $PunchFinishInputService->getDefaultRestTimeAdjustmentTime($kintai->employee_id, $begin_finish_time['begin_time_adj'], $begin_finish_time['finish_time_adj']);
         // 外出戻り時間から、取得可能な休憩時間を算出(外出戻り時間がある場合のみ)
         if($out_return_time['out_return_time'] != 0){
             $rest_time = $PunchFinishInputService->getRestTimeForOutReturn($rest_time, $out_return_time['out_time_adj'], $out_return_time['return_time_adj']);
@@ -61,7 +61,7 @@ class PunchUpdateController extends Controller
         // 稼働時間を算出
         $working_time = $PunchFinishInputService->getWorkingTime($begin_finish_time['begin_time_adj'], $begin_finish_time['finish_time_adj'], $out_return_time['out_return_time'], $kintai->add_rest_time);
         // 稼働時間から法令で取得するべき休憩時間を取得
-        $law_rest_time = $PunchFinishInputService->getLawRestTime($working_time);
+        $law_rest_time = $PunchFinishInputService->getLawRestTime($working_time, $out_return_time['out_return_time']);
         // 休憩未取得回数の情報を取得
         $no_rest_times = $PunchFinishInputService->getNoRestTime($kintai->employee_id, $rest_time);
         // 休憩取得回数の情報を取得

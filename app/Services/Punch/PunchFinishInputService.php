@@ -8,6 +8,7 @@ use Carbon\CarbonImmutable;
 use App\Models\Kintai;
 use App\Models\Base;
 use App\Models\Employee;
+use App\Enums\EmployeeCategoryEnum;
 
 class PunchFinishInputService
 {
@@ -87,10 +88,16 @@ class PunchFinishInputService
     }
 
     // デフォルト休憩取得時間の計算で使用する調整時間を取得（2025/06/01からの件で追加）
-    public function getDefaultRestTimeAdjustmentTime($begin_time_adj, $finish_time_adj)
+    public function getDefaultRestTimeAdjustmentTime($employee_id, $begin_time_adj, $finish_time_adj)
     {
+        // 従業員情報を取得
+        $employee = Employee::getSpecify($employee_id)->first();
         // デフォルト休憩取得時間調整用時間を初期化
         $default_rest_time_adjustment_time = 0;
+        // 社員の場合は適用しないので、0を返す
+        if($employee->employee_category_id <= EmployeeCategoryEnum::CONTRACT_EMPLOYEE){
+            return $default_rest_time_adjustment_time;
+        }
         // 出勤時間調整が10:00～10:30の間かつ、退勤時間調整が10:45よりも遅い場合であれば午前の休憩を取らないように、15分プラスする
         if($begin_time_adj >= "10:00:00" && $begin_time_adj <= "10:30:00" && $finish_time_adj >= "10:45:00"){
             $default_rest_time_adjustment_time += 15;
@@ -255,7 +262,7 @@ class PunchFinishInputService
     }
 
     // 稼働時間から法令で取得するべき休憩時間を取得
-    public function getLawRestTime($working_time)
+    public function getLawRestTime($working_time, $out_return_time)
     {
         // A = 6.25(375分)～8.00(480分)時間の間 =>  45分
         // B = 8.25(495分)時間以上              =>  60分
@@ -269,6 +276,11 @@ class PunchFinishInputService
         // 稼働時間がBに該当する場合
         if($working_time >= 495){
             $law_rest_time = 60;
+        }
+        // 外出戻り時間の方が算出した法令休憩取得時間よりも大きければ0にする
+        // 外出戻り時間は強制的に休憩時間に加算されるので、これを取ることにより法令休憩取得時間をクリアしていることになるので
+        if($out_return_time >= $law_rest_time){
+            $law_rest_time = 0;
         }
         return $law_rest_time;
     }
