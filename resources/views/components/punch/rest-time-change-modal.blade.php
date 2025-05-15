@@ -7,8 +7,7 @@
         <!-- モーダルボディー -->
         <div class="p-10">
             <div class="grid grid-cols-12">
-                <p class="col-span-7 text-4xl">{{ $employeeFullName }}<span class="text-xl ml-3">さん</span></p>
-                <p id="law_violated_warning" class="col-span-5 text-4xl text-red-500 bg-yellow-200 text-center"><i class="las la-exclamation-triangle mr-1"></i>休憩時間が法令に違反しています</p>
+                <p class="col-span-12 text-4xl">{{ $employeeFullName }}<span class="text-xl ml-3">さん</span></p>
                 <div class="col-start-1 col-span-12 my-10">
                     <div class="grid grid-cols-12 gap-4">
                         @foreach($restTimes as $time)
@@ -18,7 +17,10 @@
                             </div>
                         @endforeach
                     </div>
-                    <p class="col-span-12 text-4xl mt-5 text-red-500 u">変更は必ず所長の許可が必要です</p>
+                    <div class="col-span-12 grid grid-cols-12 mt-5">
+                        <p class="col-span-6 text-4xl text-red-500 py-2">変更は所長の許可が必要です</p>
+                        <p id="law_violated_warning" class="col-span-6 text-4xl text-red-500 bg-yellow-200 text-center py-2"><i class="las la-exclamation-triangle mr-1"></i>休憩時間が法令に違反しています</p>
+                    </div>
                 </div>
                 <div class="col-span-12 grid grid-cols-12">
                     <a id="rest_time_change_yes" class="cursor-pointer rounded-lg text-white bg-blue-400 text-center p-4 col-span-5 text-4xl">確定</a>
