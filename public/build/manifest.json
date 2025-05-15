@@ -1,6 +1,6 @@
 {
   "resources/css/app.css": {
-    "file": "assets/app-a6dc6e37.css",
+    "file": "assets/app-bd4bb321.css",
     "isEntry": true,
     "src": "resources/css/app.css"
   },
@@ -203,7 +203,7 @@
     "src": "resources/sass/scroll.scss"
   },
   "resources/sass/theme.scss": {
-    "file": "assets/theme-2613840d.css",
+    "file": "assets/theme-4c73c031.css",
     "isEntry": true,
     "src": "resources/sass/theme.scss"
   }
