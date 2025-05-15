@@ -7,7 +7,8 @@
         <!-- モーダルボディー -->
         <div class="p-10">
             <div class="grid grid-cols-12">
-                <p class="col-span-12 text-4xl">{{ $employeeFullName }}<span class="text-xl ml-3">さん</span></p>
+                <p class="col-span-7 text-4xl">{{ $employeeFullName }}<span class="text-xl ml-3">さん</span></p>
+                <p id="law_violated_warning" class="col-span-5 text-4xl text-red-500 bg-yellow-200 text-center"><i class="las la-exclamation-triangle mr-1"></i>休憩時間が法令に違反しています</p>
                 <div class="col-start-1 col-span-12 my-10">
                     <div class="grid grid-cols-12 gap-4">
                         @foreach($restTimes as $time)

@@ -225,9 +225,9 @@ $('.rest_time_select').on("click",function(){
 
 // 休憩取得時間の更新
 function rest_time_select_update(){
+    // 注意喚起の文言を非表示
+    $('#law_violated_warning').addClass('hidden');
     let rest_times = document.getElementsByName("rest_time_select");
-    // 選択された休憩取得時間を格納する変数を初期化
-    let select_rest_time_value = 0;
     // 休憩取得時間の処理
     for(var i = 0; i < rest_times.length; i++){
         const element = document.getElementById(rest_times[i].id + '_label');
@@ -235,7 +235,11 @@ function rest_time_select_update(){
             element.classList.add('bg-blue-200');
             // 選択している休憩時間を取得
             var select_rest_time = document.getElementById(rest_times[i].id);
-            select_rest_time_value = select_rest_time.value;
+            // 法令休憩取得時間よりも変更後の休憩取得時間が小さい場合
+            if($('#law_rest_time').val() > select_rest_time.value){
+                // 注意喚起の文言を表示
+                $('#law_violated_warning').removeClass('hidden');
+            }
         }
         if(!rest_times[i].checked) {
             // 非選択要素のCSSを調整
