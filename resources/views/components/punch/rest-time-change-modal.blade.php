@@ -19,7 +19,7 @@
                     </div>
                     <div class="col-span-12 grid grid-cols-12 mt-5">
                         <p class="col-span-12 text-4xl text-red-500 py-2">雇用契約上の基本休憩時間よりも短い休憩の取得の場合には、<br>所長の許可が必要になります。許可を得ていますか？</p>
-                        <p id="law_violated_warning" class="col-span-12 text-4xl text-red-500 bg-yellow-200 text-center py-2">休憩時間が法令に違反しているので、本日の打刻について所長へ相談してください</p>
+                        <p id="law_violated_warning" class="col-span-12 text-4xl text-red-500 bg-yellow-200 py-2">休憩時間が法令に違反しているので、本日の打刻について所長へ相談してください</p>
                     </div>
                 </div>
                 <div class="col-span-12 grid grid-cols-12">
