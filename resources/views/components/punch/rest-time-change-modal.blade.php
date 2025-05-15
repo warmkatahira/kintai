@@ -19,7 +19,7 @@
                     </div>
                     <div class="col-span-12 grid grid-cols-12 mt-5">
                         <p class="col-span-6 text-4xl text-red-500 py-2">変更は所長の許可が必要です</p>
-                        <p id="law_violated_warning" class="col-span-6 text-4xl text-red-500 bg-yellow-200 text-center py-2"><i class="las la-exclamation-triangle mr-1"></i>休憩時間が法令に違反しています</p>
+                        <p id="law_violated_warning" class="col-span-6 text-4xl text-red-500 bg-yellow-200 text-center py-2">休憩時間が法令に違反しています</p>
                     </div>
                 </div>
                 <div class="col-span-12 grid grid-cols-12">
