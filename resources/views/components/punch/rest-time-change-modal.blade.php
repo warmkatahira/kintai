@@ -23,7 +23,7 @@
                     </div>
                 </div>
                 <div class="col-span-12 grid grid-cols-12">
-                    <a id="rest_time_change_yes" class="cursor-pointer rounded-lg text-white bg-blue-400 text-center p-4 col-span-5 text-4xl">確定</a>
+                    <a id="rest_time_change_yes" class="cursor-pointer rounded-lg text-white bg-blue-400 text-center p-4 col-span-5 text-4xl">許可を得ているので確定</a>
                     <a id="rest_time_change_no" class="cursor-pointer rounded-lg text-white bg-red-400 text-center p-4 col-start-8 col-span-5 text-4xl">退勤画面に戻る</a>
                 </div>
             </div>
