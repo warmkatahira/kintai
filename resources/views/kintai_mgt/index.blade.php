@@ -10,7 +10,7 @@
     </div>
     <div class="flex flex-row items-start mb-2">
         <!-- 検索条件 -->
-        <x-kintai-mgt.search :targetConditions="$target_conditions" :baseCheckConditions="$base_check_conditions" :bases="$bases" :employeeCategories="$employee_categories" searchRoute="kintai_mgt.search" resetRoute="kintai_mgt.index" />
+        <x-kintai-mgt.search :targetConditions="$target_conditions" :baseCheckConditions="$base_check_conditions" :chiefApprovaledConditions="$chief_approvaled_conditions" :lawViolatedConditions="$law_violated_conditions" :bases="$bases" :employeeCategories="$employee_categories" searchRoute="kintai_mgt.search" resetRoute="kintai_mgt.index" />
         <!-- 勤怠一覧 -->
         <x-kintai-mgt.list :kintais="$kintais" :addRestAvailable="$add_rest_available" />
     </div>

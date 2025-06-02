@@ -88,6 +88,8 @@ class PunchFinishEnterService
             'over_time' => $over_time * 60, // 0.25単位から分単位に変換
             'late_night_over_time' => $late_night['late_night_over_time'] * 60,
             'late_night_working_time' => $late_night['late_night_working_time'] * 60,
+            'is_chief_approvaled' => $request->is_chief_approvaled,
+            'is_law_violated' => $request->is_law_violated,
         ]);
         return;
     }

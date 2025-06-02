@@ -1,6 +1,6 @@
 <!-- 勤怠一覧 -->
 <div class="scroll_wrap flex flex-grow overflow-scroll">
-    <div class="table_parent_div bg-white overflow-x-auto overflow-y-auto border border-gray-600">
+    <div class="kintai_mgt_list bg-white overflow-x-auto overflow-y-auto border border-gray-600">
         <table class="text-sm block whitespace-nowrap">
             <thead>
                 <tr class="text-left text-white bg-gray-600 sticky top-0">
@@ -25,6 +25,8 @@
                     <th class="font-thin py-3 px-2 text-center">残業時間</th>
                     <th class="font-thin py-3 px-2 text-center">深夜残業時間</th>
                     <th class="font-thin py-3 px-2 text-center">深夜稼働時間</th>
+                    <th class="font-thin py-3 px-2 text-center">所長承認</th>
+                    <th class="font-thin py-3 px-2 text-center">法令違反</th>
                     <th class="font-thin py-3 px-2 text-center">拠点確認者</th>
                     <th class="font-thin py-3 px-2 text-center">拠点確認日時</th>
                     <th class="font-thin py-3 px-2 text-center">コメント</th>
@@ -64,6 +66,10 @@
                         @endif
                         <td class="py-1 px-2 border text-center {{ $kintai->late_night_over_time == 0 ? '' : 'bg-pink-200' }}">@if(!is_null($kintai->finish_time)){{ number_format($kintai->late_night_over_time / 60, 2) }}@endif</td>
                         <td class="py-1 px-2 border text-center {{ $kintai->late_night_working_time == 0 ? '' : 'bg-pink-200' }}">@if(!is_null($kintai->finish_time)){{ number_format($kintai->late_night_working_time / 60, 2) }}@endif</td>
+                        <td class="py-1 px-2 border text-center {{ $kintai->is_chief_approvaled == 0 ? '' : 'bg-pink-200' }}">{{ $kintai->is_chief_approvaled ? '○' : '' }}</td>
+                        <td class="py-1 px-2 border text-center {{ $kintai->is_law_violated == 0 ? '' : 'bg-pink-200' }}">{{ $kintai->is_law_violated ? '○' : '' }}</td>
+                        
+                        
                         <td class="py-1 px-2 border text-center">@if(!is_null($kintai->base_checked_at)) {{ $kintai->user->last_name.' '.$kintai->user->first_name }} @endif</td>
                         <td class="py-1 px-2 border text-center">@if(!is_null($kintai->base_checked_at)){{ CarbonImmutable::parse($kintai->base_checked_at)->isoFormat('Y年MM月DD日 HH時mm分ss秒') }}@endif</td>
                         <td class="py-1 px-2 border text-left">{{ $kintai->comment }}</td>

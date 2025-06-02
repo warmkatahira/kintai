@@ -1,6 +1,6 @@
 <!-- 従業員一覧 -->
 <div class="scroll_wrap flex flex-grow overflow-scroll">
-    <div class="table_parent_div bg-white overflow-x-auto overflow-y-auto border border-gray-600">
+    <div class="employee_mgt_list bg-white overflow-x-auto overflow-y-auto border border-gray-600">
         <table class="text-sm block whitespace-nowrap">
             <thead>
                 <tr class="text-left text-white bg-gray-600 sticky top-0">

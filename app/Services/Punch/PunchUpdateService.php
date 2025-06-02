@@ -134,6 +134,8 @@ class PunchUpdateService
             'late_night_working_time' => $late_night['late_night_working_time'] * 60,
             'is_early_worked' => $is_early_worked,
             'is_modified' => 1,
+            'is_chief_approvaled' => $request->is_chief_approvaled,
+            'is_law_violated' => $request->is_law_violated,
         ]);
         return;
     }
