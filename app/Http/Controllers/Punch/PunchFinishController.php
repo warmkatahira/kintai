@@ -35,7 +35,6 @@ class PunchFinishController extends Controller
         $PunchFinishInputService = new PunchFinishInputService;
         // 現在の日時を取得
         $nowDate = CarbonImmutable::now();
-        $nowDate = $nowDate->copy()->setTime(18, 10, 0);
         // 退勤時間をフォーマット
         $finish_time = $PunchFinishInputService->formatFinishTime($nowDate);
         // 勤怠情報を取得
