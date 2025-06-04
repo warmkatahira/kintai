@@ -30,6 +30,7 @@
                         @endif
                         <p class="col-span-1 text-xl text-center pt-1">稼働(時)</p>
                         <input id="working_time" name="working_time" class="col-span-2 text-2xl text-left bg-transparent" readonly>
+                        <input type="hidden" id="default_rest_time" name="default_rest_time" value="{{ $default_rest_time }}">
                         <input type="hidden" id="org_rest_time" name="org_rest_time" value="{{ $default_rest_time }}">
                         <input type="hidden" id="org_working_time" value="{{ $working_time }}">
                         <input type="hidden" name="finish_time_adj" value="{{ $finish_time_adj }}">

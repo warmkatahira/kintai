@@ -121,7 +121,7 @@ class PunchUpdateService
             'finish_time' => session('finish_time'),
             'finish_time_adj' => session('finish_time_adj'),
             'rest_time' => $request->rest_time + session('out_return_time'),
-            'no_rest_time' => $request->has('no_rest_time') ? $request->no_rest_time : $request->org_rest_time - $request->rest_time_select,
+            'no_rest_time' => $request->default_rest_time <= $request->rest_time_select ? 0 : $request->default_rest_time - $request->rest_time_select,
             'add_rest_time' => isset($request->add_rest_time) ? $request->add_rest_time : 0,
             'out_time' => session('out_time'),
             'out_time_adj' => session('out_time_adj'),

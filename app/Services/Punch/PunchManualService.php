@@ -28,7 +28,7 @@ class PunchManualService
             'out_return_time' => session('out_return_time'),
             'is_early_worked' => $is_early_worked,
             'rest_time' => $request->rest_time + session('out_return_time'),
-            'no_rest_time' => $request->has('no_rest_time') ? $request->no_rest_time : $request->org_rest_time - $request->rest_time_select,
+            'no_rest_time' => $request->default_rest_time <= $request->rest_time_select ? 0 : $request->default_rest_time - $request->rest_time_select,
             'add_rest_time' => isset($request->add_rest_time) ? $request->add_rest_time : 0,
             'working_time' => $request->working_time * 60,
             'is_early_worked' => $is_early_worked,
