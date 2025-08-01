@@ -76,12 +76,12 @@ class PunchFinishEnterService
     }
 
     // 退勤情報を勤怠テーブルに更新
-    public function updatePunchFinishForKintai($request, $over_time, $late_night)
+    public function updatePunchFinishForKintai($request, $over_time, $late_night, $kintai)
     {
         Kintai::where('kintai_id', $request->kintai_id)->update([
             'finish_time' => $request->finish_time,
             'finish_time_adj' => $request->finish_time_adj,
-            'rest_time' => $request->rest_time,
+            'rest_time' => $request->rest_time + $kintai->out_return_time,
             'no_rest_time' => $request->default_rest_time <= $request->rest_time_select ? 0 : $request->default_rest_time - $request->rest_time_select,
             'add_rest_time' => isset($request->add_rest_time) ? $request->add_rest_time : 0,
             'working_time' => $request->working_time * 60, // 0.25単位から分単位に変換
