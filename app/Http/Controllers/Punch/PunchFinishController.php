@@ -125,8 +125,10 @@ class PunchFinishController extends Controller
         // ロジポート社員の場合とそれ以外でメッセージを可変 2025/08/06改修
         if($kintai->employee->base_id == '06_LP' && $kintai->employee->employee_category_id == EmployeeCategoryEnum::FULL_TIME_EMPLOYEE){
             session()->flash('message', '備品の戻し忘れはありませんか？');
+            session()->flash('message_text_color', 'text-red-500');
         }else{
             session()->flash('message', '1日お疲れ様でした');
+            session()->flash('message_text_color', 'text-black');
         }
         return redirect()->route('punch_finish.index');
     }

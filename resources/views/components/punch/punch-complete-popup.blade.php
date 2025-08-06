@@ -32,7 +32,7 @@
                 @if(session('punch_type') == '出勤' && session('no_finish_kintai_count') > 0)
                     <p class="text-4xl text-center col-start-2 col-span-10 row-span-1 mt-7 bg-red-200 text-red-600 border-8 border-dotted border-red-600 pt-4">退勤漏れがあります。所長へ報告して下さい。</p>
                 @endif
-                <p class="col-start-1 col-span-12 text-center text-7xl tracking-in-expand mt-7">{{ session('message') }}</p>
+                <p class="col-start-1 col-span-12 text-center text-7xl tracking-in-expand mt-7 {{ session('message_text_color') }}">{{ session('message') }}</p>
             </div>
         </div>
     @endif
