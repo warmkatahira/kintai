@@ -13,6 +13,7 @@ use App\Models\CustomerGroup;
 use App\Models\Employee;
 use App\Services\Punch\PunchFinishInputService;
 use App\Services\Punch\PunchFinishEnterService;
+use App\Enums\EmployeeCategoryEnum;
 
 class PunchFinishController extends Controller
 {
@@ -117,11 +118,16 @@ class PunchFinishController extends Controller
         $hours_data = $PunchFinishEnterService->getWorkableTimes($kintai);
         session()->flash('punch_type', '退勤');
         session()->flash('employee_name', $kintai->employee->employee_last_name.$kintai->employee->employee_first_name);
-        session()->flash('message', '1日お疲れ様でした');
         session()->flash('monthly_workable_time', $hours_data['monthly_workable_time']);
         session()->flash('workable_times', $hours_data['monthly_workable_time'] == 0 ? 0 : $hours_data['workable_times']);
         session()->flash('total_month_working_time', $hours_data['total_month_working_time']);
         session()->flash('total_over_time', $hours_data['total_over_time']);
+        // ロジポート社員の場合とそれ以外でメッセージを可変 2025/08/06改修
+        if($kintai->employee->base_id == '06_LP' && $kintai->employee->employee_category_id == EmployeeCategoryEnum::FULL_TIME_EMPLOYEE){
+            session()->flash('message', '備品の戻し忘れはありませんか？');
+        }else{
+            session()->flash('message', '1日お疲れ様でした');
+        }
         return redirect()->route('punch_finish.index');
     }
 }
