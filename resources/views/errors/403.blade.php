@@ -8,11 +8,10 @@
             <input type="hidden" name="info" value="{{ $exception->getMessage() }}">
             <button class="text-base w-full py-3 mt-3 bg-theme-sub text-red-600">
                 <i class="las la-envelope mr-1 la-lg"></i>システム担当者へ連絡<br>
-                <span class="text-sm">
-                    このボタンでシステム担当者へ自動で情報が送信されます。<br>
-                    対応完了後、メール又は電話でご連絡します。
-                </span>
+                <p class="text-sm mt-2">このボタンでシステム担当者へ自動で情報が送信されます。</p>
+                <p class="text-lg mt-3 underline">この画面のままにしておくと、対応完了後に<br>自動でログイン後の画面になります。</p>
             </button>
         </form>
     </div>
 </x-guest-layout>
+@vite(['resources/js/window_update.js'])

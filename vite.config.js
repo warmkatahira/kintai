@@ -50,6 +50,7 @@ export default defineConfig({
             'resources/js/other/temporary_use.js',
             'resources/js/temporary_company_mgt/temporary_company_create.js',
             'resources/js/temporary_company_mgt/temporary_company_update.js',
+            'resources/js/window_update.js',
 		]),
 	],
 });

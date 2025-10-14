@@ -192,6 +192,11 @@
     "isEntry": true,
     "src": "resources/js/user_mgt/user_update.js"
   },
+  "resources/js/window_update.js": {
+    "file": "assets/window_update-46c8f934.js",
+    "isEntry": true,
+    "src": "resources/js/window_update.js"
+  },
   "resources/sass/navigation.scss": {
     "file": "assets/navigation-4c11498d.css",
     "isEntry": true,
