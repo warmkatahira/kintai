@@ -19,13 +19,13 @@ class CheckAccessIp
     public function handle(Request $request, Closure $next): Response
     {
         // 開発環境ではチェックしないようにしている
-        /* if(env('APP_ENV') == 'local'){
+        if(env('APP_ENV') == 'local'){
             return $next($request);
         }
         // userのno_ip_checkがtrueならチェックをしない
         if(Auth::user()->no_ip_check){
             return $next($request);
-        } */
+        }
         // 接続しているネットワークのIPを取得
         $ip = $request->ip();
         // IPを条件にしてレコードを取得（有効フラグが1であるかも確認）
