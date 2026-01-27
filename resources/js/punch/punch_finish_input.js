@@ -14,6 +14,52 @@ const punch_enter_form = document.getElementById('punch_enter_form');
 
 // 荷主稼働時間入力モーダルを開く
 $(".working_time_input_modal_open").on("click",function(){
+    // valueが「ueni-pia-kyohai」の場合
+    if($(this).val() === 'ueni-pia-kyohai'){
+        try {
+            // 残り入力時間を取得
+            const total = Number($('#input_time_left').html());
+            // 残り入力時間がない場合
+            if(total == 0){
+                return;
+            }
+            // 既に存在する荷主ではないかチェック
+            if($('#working_time_input_260122-004').length || $('#working_time_input_260122-005').length) {
+                throw new Error('「ウエニ貿易」か「PIA(ドンキ)」が既に存在しています。');
+            }
+            // 今の日付を取得
+            const now = new Date();
+             // 0始まりなので+1
+            const month = now.getMonth() + 1;
+            // 偶数月なら「true」奇数月なら「false」
+            const isEvenMonth = month % 2 === 0;
+            // 残り入力時間を半分にする
+            const half = total / 2;
+            // 変数を初期化
+            let ueni = 0;
+            let pia  = 0;
+            // 偶数月であれば「ウエニ」に余りを寄せる、奇数月なら「PIA」に余りよ寄せる
+            if(isEvenMonth){
+                // 0.25刻みに切り捨て
+                pia = Math.floor(half / 0.25) * 0.25;
+                // もう片方（余りを寄せる）
+                ueni = total - pia;
+            }else{
+                // 0.25刻みに切り捨て
+                ueni = Math.floor(half / 0.25) * 0.25;
+                // もう片方（余りを寄せる）
+                pia = total - ueni;
+            }
+            // 入力されたボタンを作る
+            createInputCustomerButton('PIA(ドンキ)', '260122-005', pia.toFixed(2));
+            createInputCustomerButton('ウエニ貿易', '260122-004', ueni.toFixed(2));
+            // 残り入力時間を0に更新
+            $('#input_time_left').html(0.00);
+        } catch (e) {
+            alert(e.message);
+        }
+        return;
+    }
     $('#working_time_input_modal').removeClass('hidden');
     // 入力対象の荷主情報を出力
     $('#input_customer_id').val($(this).val());
@@ -59,19 +105,8 @@ $("#working_time_input_enter").on("click",function(){
         if(Number($('#input_time_left').html()) < Number($('#input_working_time').html())){
             throw new Error('入力時間が稼働時間を超えています。');
         }
-        // 表示させる要素を作成して表示
-        const working_time_input = document.createElement('button');
-        working_time_input.id = 'working_time_input_' + input_customer_id.value;
-        working_time_input.classList.add('working_time_info_delete', 'col-span-4', 'py-5', 'text-center', 'bg-blue-200', 'text-xl', 'rounded-lg', 'cursor-pointer', 'working_time_input_' + input_customer_id.value);
-        working_time_input.innerHTML = input_customer_name.innerHTML + "<br>" + input_working_time.innerHTML;
-        // 送信する要素を作成して表示
-        const working_time_hidden = document.createElement('input');
-        working_time_hidden.type = 'hidden';
-        working_time_hidden.id = 'working_time_input_' + input_customer_id.value + '_hidden';
-        working_time_hidden.classList.add('working_time_input', 'working_time_input_' + input_customer_id.value);
-        working_time_hidden.value = input_working_time.innerHTML;
-        working_time_hidden.name = 'working_time_input' + '[' + input_customer_id.value + ']';
-        input_working_time_info.append(working_time_input, working_time_hidden);
+        // 時間入力した荷主稼働時間のボタンを作成
+        createInputCustomerButton(input_customer_name.innerHTML, input_customer_id.value, input_working_time.innerHTML);
         // 残り入力時間を更新
         $('#input_time_left').html((Number($('#input_time_left').html()) - Number($('#input_working_time').html())).toFixed(2));
         // モーダルを閉じる
@@ -80,6 +115,23 @@ $("#working_time_input_enter").on("click",function(){
         alert(e.message);
     }
 });
+
+// 時間入力した荷主稼働時間のボタンを作成
+function createInputCustomerButton(customer_name, customer_id, input_time){
+    // 表示させる要素を作成して表示
+    const working_time_input = document.createElement('button');
+    working_time_input.id = 'working_time_input_' + customer_id;
+    working_time_input.classList.add('working_time_info_delete', 'col-span-4', 'py-5', 'text-center', 'bg-blue-200', 'text-xl', 'rounded-lg', 'cursor-pointer', 'working_time_input_' + customer_id);
+    working_time_input.innerHTML = customer_name + "<br>" + input_time;
+    // 送信する要素を作成して表示
+    const working_time_hidden = document.createElement('input');
+    working_time_hidden.type = 'hidden';
+    working_time_hidden.id = 'working_time_input_' + customer_id + '_hidden';
+    working_time_hidden.classList.add('working_time_input', 'working_time_input_' + customer_id);
+    working_time_hidden.value = input_time;
+    working_time_hidden.name = 'working_time_input' + '[' + customer_id + ']';
+    input_working_time_info.append(working_time_input, working_time_hidden);
+}
 
 // 押下された荷主稼働時間要素を削除
 $(document).on("click", ".working_time_info_delete", function () {
