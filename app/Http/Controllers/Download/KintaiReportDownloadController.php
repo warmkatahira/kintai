@@ -22,8 +22,6 @@ class KintaiReportDownloadController extends Controller
 
     public function download(Request $request)
     {
-        // 最大実行時間を設定（300秒までの実行を許可）
-        set_time_limit(300);
         // インスタンス化
         $KintaiReportDownloadService = new KintaiReportDownloadService;
         $CommonService = new CommonService;
