@@ -122,6 +122,8 @@ return [
             ],
 
             'compression_method' => ZipArchive::CM_DEFAULT,
+
+            'compression_level' => 9,
         ],
 
         /*
