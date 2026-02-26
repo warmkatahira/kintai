@@ -105,6 +105,8 @@ return [
          */
         'database_dump_file_extension' => '',
 
+        'database_dump_filename_base' => 'database',
+
         'destination' => [
 
             /*
