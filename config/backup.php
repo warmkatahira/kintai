@@ -120,6 +120,8 @@ return [
             'disks' => [
                 'sakura-vps',
             ],
+
+            'compression_method' => ZipArchive::CM_DEFAULT,
         ],
 
         /*
