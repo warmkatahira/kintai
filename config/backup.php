@@ -287,6 +287,17 @@ return [
 
             'delete_oldest_backups_when_more_than_n_backups' => 10,
         ],
+
+        /*
+         * The number of attempts, in case the cleanup command encounters an exception
+         */
+        'tries' => 1,
+
+        /*
+         * The number of seconds to wait before attempting a new cleanup if the previous try failed
+         * Set to `0` for none
+         */
+        'retry_delay' => 0,
     ],
 
 ];
