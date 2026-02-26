@@ -145,6 +145,10 @@ return [
          * available on your system.
          */
         'encryption' => 'default',
+
+        'tries' => 1,
+
+        'retry_delay' => 0,
     ],
 
     /*
