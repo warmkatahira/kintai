@@ -15,7 +15,9 @@ class Kernel extends ConsoleKernel
         // DBバックアップを格納するフォルダを作成（毎月1日AM 00:00）
         $schedule->command('backup:create-folder')->monthlyOn(1, '00:00');
         // DBバックアップを取得（毎日AM 03:00）
-        $schedule->command('backup:run --disable-notifications --only-db --only-to-disk=db_backup_normal')->dailyAt('19:40');
+        $schedule->exec(
+            'mysqldump kintai | gzip > /var/backup/kintai/db/normal/kintai_$(date +\%Y\%m\%d_\%H\%M\%S).sql.gz'
+        )->dailyAt('19:50');
         // DBバックアップを年月のフォルダへ移動（毎日AM 03:10）
         $schedule->command('backup:move')->dailyAt('03:10');
         // 当月分の勤怠を確認し、異常があればメールを送信（毎日AM 04:00）
