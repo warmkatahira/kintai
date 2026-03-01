@@ -118,7 +118,7 @@ return [
              * The disk names on which the backups will be stored.
              */
             'disks' => [
-                'sakura-vps',
+                'db_backup_normal',
             ],
 
             'compression_method' => ZipArchive::CM_DEFAULT,

@@ -56,14 +56,11 @@ return [
             'throw' => false,
         ],
 
-        'sakura-vps' => [
+        // DBバックアップ用(1日1回の定期用)
+        'db_backup_normal' => [
             'driver' => 'local',
-            'root' => '/var/backup/laravel',
+            'root' => '/var/backup/kintai/db/normal',
             'throw' => false,
-            'permissions' => [
-                'file' => 0644, // ファイルのデフォルトパーミッション
-                'dir' => 0775,  // ディレクトリのデフォルトパーミッション
-            ],
         ],
 
         // 操作ログ用
