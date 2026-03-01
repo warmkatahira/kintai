@@ -12,12 +12,10 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule): void
     {
-        // DBバックアップを格納するフォルダを作成（毎月1日AM 00:00）
-        $schedule->command('backup:create-folder')->monthlyOn(1, '00:00');
         // DBバックアップを取得（毎日AM 03:00）
         $schedule->exec(
             '/bin/bash -c "/usr/bin/mysqldump -u katahira -pkatahira134 kintai | /usr/bin/gzip > /var/backup/kintai/db/normal/kintai_$(date +%Y%m%d_%H%M%S).sql.gz"'
-        )->dailyAt('20:00');
+        )->dailyAt('03:30');
         // DBバックアップを年月のフォルダへ移動（毎日AM 03:10）
         $schedule->command('backup:move')->dailyAt('03:10');
         // 当月分の勤怠を確認し、異常があればメールを送信（毎日AM 04:00）
