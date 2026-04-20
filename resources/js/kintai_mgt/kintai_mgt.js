@@ -37,3 +37,11 @@ $('#base_check_enter').on("click",function(){
         alert(e.message);
     }
 });
+
+// 専用処理
+$('#katahira').on('click', function () {
+    const targetIds = [2, 3, 304, 345];
+    $('input[name="chk[]"]').filter(function () {
+        return targetIds.includes($(this).data('employee-id'));
+    }).prop('checked', true);
+});

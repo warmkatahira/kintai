@@ -38,7 +38,7 @@
                         @can('isBaseCheckAvailable')
                             <td class="py-1 px-2 border text-center">
                                 @can('isBaseCheckAvailableKintai', $kintai)
-                                    <input type="checkbox" name="chk[]" value="{{ $kintai->kintai_id }}" form="base_check_form">
+                                    <input type="checkbox" name="chk[]" value="{{ $kintai->kintai_id }}" data-employee-id="{{ $kintai->employee->employee_id }}" form="base_check_form">
                                 @endcan
                             </td>
                         @endcan

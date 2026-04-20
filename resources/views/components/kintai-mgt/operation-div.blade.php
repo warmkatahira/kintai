@@ -5,4 +5,7 @@
             <button type="button" id="base_check_enter" class="text-sm bg-theme-sub py-2 px-10 mr-10">拠点確認</button>
         </form>
     @endcan
+    @if(Auth::user()->id === 1)
+        <button type="button" id="katahira" class="text-sm bg-theme-sub py-2 px-10 mr-10">片平用</button>
+    @endif
 </div>
