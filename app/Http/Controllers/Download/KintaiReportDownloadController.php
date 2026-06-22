@@ -22,6 +22,8 @@ class KintaiReportDownloadController extends Controller
 
     public function download(Request $request)
     {
+        set_time_limit(300);
+        $start = microtime(true);
         // インスタンス化
         $KintaiReportDownloadService = new KintaiReportDownloadService;
         $CommonService = new CommonService;
@@ -32,7 +34,7 @@ class KintaiReportDownloadController extends Controller
         // 月の情報を取得
         $month_date = $KintaiReportDownloadService->getMonthDate($start_end_of_month['start'], $start_end_of_month['end']);
         // 出力対象の従業員を取得
-        $employees = $KintaiReportDownloadService->getDownloadEmployee($start_end_of_month['start'], $start_end_of_month['end'], $request->base_id, $request->date);
+        $employees = $KintaiReportDownloadService->getDownloadEmployee($start_end_of_month['start'], $start_end_of_month['end'], $request->base_id, $request->date)->get();
         // 出力する勤怠情報を取得
         $kintais = $KintaiReportDownloadService->getDownloadKintai($base['base']['base_name'], $month_date, $employees, $start_end_of_month['start'], $start_end_of_month['end']);
         // nullであれば、出力するデータがないので、処理を中断
@@ -46,12 +48,15 @@ class KintaiReportDownloadController extends Controller
         $over40 = $KintaiReportDownloadService->getOver40($month_date, $employees, $start_end_of_month['start'], $start_end_of_month['end']);
         // 対象月の祝日を取得
         $holidays = $KintaiReportDownloadService->getHolidays($start_end_of_month['start'], $start_end_of_month['end']);
+        // 日付情報を取得
+        $date_info = $KintaiReportDownloadService->getDateInfo($month_date, $holidays);
         // 国民の祝日に大洋製薬の稼働がある日を取得
         $taiyo_working_times = $KintaiReportDownloadService->getTaiyoWorkingTimeAtHoliday($request->base_id, $month_date, $employees, $start_end_of_month['start'], $start_end_of_month['end']);
         // ファイル名を取得
         $filename = $KintaiReportDownloadService->getDownloadFileName($request->date, $base['base']['base_name']);
         // PDF出力ビューに情報を渡す
-        $pdf = $KintaiReportDownloadService->passDownloadInfo($kintais, $request->date, $base, $over40, $holidays, $taiyo_working_times);
+        $pdf = $KintaiReportDownloadService->passDownloadInfo($kintais, $request->date, $base, $over40, $holidays, $taiyo_working_times, $date_info);
+        logger()->info('処理時間: ' . round(microtime(true) - $start, 3) . '秒');
         // ファイル名を設定してPDFをダウンロード
         return $pdf->download($filename);
     }
