@@ -73,8 +73,8 @@ class KintaiReportDownloadService
     {
         // 勤怠提出テーブルから、ダウンロード条件のレコードを取得
         $kintai_close = KintaiClose::where('base_id', $base_id)
-                        ->where('close_date', $date)
-                        ->first();
+                            ->where('close_date', $date)
+                            ->first();
         // nullだったら未提出なので、現状の営業所所属従業員を取得
         if(is_null($kintai_close)){
             $employees = Employee::where('employees.base_id', $base_id)
@@ -103,158 +103,182 @@ class KintaiReportDownloadService
 
     public function getDownloadKintai($base_name, $month_date, $employees, $start_day, $end_day)
     {
-        // 従業員分だけループ処理
-        $employees = $employees->get();
-        foreach($employees as $employee){
-            // 勤怠情報を格納する配列をセット
-            $kintais[$employee->employee_id] = [];
-            $kintais[$employee->employee_id]['employee_no'] = $employee->employee_no;
-            $kintais[$employee->employee_id]['employee_name'] = $employee->employee_last_name.$employee->employee_first_name;
-            $kintais[$employee->employee_id]['base_id'] = $employee->base_id;
-            $kintais[$employee->employee_id]['base_name'] = $base_name;
-            $kintais[$employee->employee_id]['employee_category_id'] = $employee->employee_category_id;
-            $kintais[$employee->employee_id]['employee_category_name'] = $employee->employee_category_name;
-            // 月の日数分だけループ処理
-            foreach($month_date as $date){
-                // 該当日の勤怠を取得
-                $kintai = Kintai::where('work_day', $date)->where('employee_id', $employee->employee_id)->first();
-                // 時短勤務者であり、勤怠があって、時短情報が無効の場合、残業時間を0にする
-                if($employee->over_time_start != 0 && !is_null($kintai) && !Gate::allows('isShortTimeInfoAvailable')){
+        // 従業員が存在しない場合
+        if ($employees->isEmpty()) {
+            return null;
+        }
+        // employee_idを取得
+        $employee_ids = $employees->pluck('employee_id')->all();
+        // 月全体の勤怠を一括取得
+        $all_kintais = Kintai::whereIn('employee_id', $employee_ids)
+                            ->whereDate('work_day', '>=', $start_day)
+                            ->whereDate('work_day', '<=', $end_day)
+                            ->get()
+                            ->groupBy('employee_id');
+        // 集計を一括取得（employee_idごとにSUM）
+        $totals = Kintai::whereIn('employee_id', $employee_ids)
+                        ->whereDate('work_day', '>=', $start_day)
+                        ->whereDate('work_day', '<=', $end_day)
+                        ->selectRaw('
+                            employee_id,
+                            SUM(working_time) as total_working_time,
+                            SUM(over_time) as total_over_time,
+                            SUM(late_night_over_time) as total_late_night_over_time,
+                            SUM(late_night_working_time) as total_late_night_working_time
+                        ')
+                        ->groupBy('employee_id')
+                        ->get()
+                        ->keyBy('employee_id');
+        // 応援稼働を一括取得
+        $all_support = $this->getSupportWorkingTimeBulk($employee_ids, $start_day, $end_day);
+        // 祝日稼働を一括取得
+        $all_national_holiday = $this->getNationalHolidayTotalWorkingTimeBulk($employee_ids, $start_day, $end_day);
+        $isShortTimeAvailable = Gate::allows('isShortTimeInfoAvailable');
+        // 従業員の分だけループ処理
+        foreach ($employees as $employee) {
+            // emoloyee_idを取得
+            $eid = $employee->employee_id;
+            // 勤怠情報を格納する配列を用意
+            $kintais[$eid] = [
+                'employee_no'            => $employee->employee_no,
+                'employee_name'          => $employee->employee_last_name . $employee->employee_first_name,
+                'base_id'                => $employee->base_id,
+                'base_name'              => $base_name,
+                'employee_category_id'   => $employee->employee_category_id,
+                'employee_category_name' => $employee->employee_category_name,
+                'kintai'                 => [],
+            ];
+            // 従業員の勤怠をwork_dayをキーにしたコレクションに
+            $employee_kintais = ($all_kintais[$eid] ?? collect())->keyBy('work_day');
+            // 月の日付の分だけループ処理
+            foreach ($month_date as $date) {
+                // 1日の勤怠を取得
+                $kintai = $employee_kintais->get($date);
+                if ($employee->over_time_start != 0 && !is_null($kintai) && !$isShortTimeAvailable) {
                     $kintai->over_time = 0;
                 }
-                // 配列に格納
-                $kintais[$employee->employee_id]['kintai'][$date] = $kintai;
+                $kintais[$eid]['kintai'][$date] = $kintai;
             }
-            // 稼働日数を取得（配列の数 - 配列のnullの数）
-            $kintais[$employee->employee_id]['working_days'] = count($kintais[$employee->employee_id]['kintai']) - count(array_keys($kintais[$employee->employee_id]['kintai'], null));
-            // 総稼働時間を取得
-            $kintais[$employee->employee_id]['total_working_time'] = Kintai::where('employee_id', $employee->employee_id)
-                                                                        ->whereDate('work_day', '>=', $start_day)
-                                                                        ->whereDate('work_day', '<=', $end_day)
-                                                                        ->sum('working_time');
-            // 総残業時間を取得
-            $kintais[$employee->employee_id]['total_over_time'] = Kintai::where('employee_id', $employee->employee_id)
-                                                                        ->whereDate('work_day', '>=', $start_day)
-                                                                        ->whereDate('work_day', '<=', $end_day)
-                                                                        ->sum('over_time');
-            // 総深夜残業時間を取得
-            $kintais[$employee->employee_id]['total_late_night_over_time'] = Kintai::where('employee_id', $employee->employee_id)
-                                                                        ->whereDate('work_day', '>=', $start_day)
-                                                                        ->whereDate('work_day', '<=', $end_day)
-                                                                        ->sum('late_night_over_time');
-            // 総深夜稼働時間を取得
-            $kintais[$employee->employee_id]['total_late_night_working_time'] = Kintai::where('employee_id', $employee->employee_id)
-                                                                        ->whereDate('work_day', '>=', $start_day)
-                                                                        ->whereDate('work_day', '<=', $end_day)
-                                                                        ->sum('late_night_working_time');
-            // 時短勤務者であり、時短情報が無効の場合、総残業時間を0にする
-            if($employee->over_time_start != 0 && !Gate::allows('isShortTimeInfoAvailable')){
-                $kintais[$employee->employee_id]['total_over_time'] = 0;
+            // 稼働日数
+            $kintais[$eid]['working_days'] = collect($kintais[$eid]['kintai'])->filter()->count();
+            $total = $totals->get($eid);
+            $kintais[$eid]['total_working_time']            = $total?->total_working_time ?? 0;
+            $kintais[$eid]['total_over_time']               = $total?->total_over_time ?? 0;
+            $kintais[$eid]['total_late_night_over_time']    = $total?->total_late_night_over_time ?? 0;
+            $kintais[$eid]['total_late_night_working_time'] = $total?->total_late_night_working_time ?? 0;
+            if ($employee->over_time_start != 0 && !$isShortTimeAvailable) {
+                $kintais[$eid]['total_over_time'] = 0;
             }
-            // 応援稼働時間を取得 
-            $kintais[$employee->employee_id]['support_working_time'] = $this->getSupportWorkingTime($employee->employee_id, $start_day, $end_day);
-            // 国民の祝日の総稼働時間を取得
-            $kintais[$employee->employee_id]['national_holiday_total_working_time'] = $this->getNationalHolidayTotalWorkingTime($employee->employee_id, $start_day, $end_day);
+            $kintais[$eid]['support_working_time']                 = $all_support[$eid] ?? collect();
+            $kintais[$eid]['national_holiday_total_working_time']  = $all_national_holiday[$eid] ?? 0;
         }
-        // 出力するデータがなければ、nullを返す
         return isset($kintais) ? $kintais : null;
     }
 
-    public function getSupportWorkingTime($employee_id, $start_day, $end_day)
+    public function getSupportWorkingTimeBulk(array $employee_ids, $start_day, $end_day)
     {
-        // 従業員を取得
-        $employee = Employee::getSpecify($employee_id);
-        // 応援稼働時間を取得
-        $support_working_times = Kintai::whereDate('work_day', '>=', $start_day)
-                ->whereDate('work_day', '<=', $end_day)
-                ->joinSub($employee, 'EMPLOYEE', function ($join) {
-                    $join->on('kintais.employee_id', '=', 'EMPLOYEE.employee_id');
-                })
-                ->join('kintai_details', 'kintai_details.kintai_id', 'kintais.kintai_id')
-                ->join('bases', 'bases.base_id', 'kintai_details.customer_id')
-                ->select(DB::raw("sum(customer_working_time) as total_customer_working_time, EMPLOYEE.employee_id, EMPLOYEE.employee_no, bases.base_id, DATE_FORMAT(work_day, '%Y-%m') as date, bases.base_name"))
-                ->groupBy('EMPLOYEE.employee_id', 'EMPLOYEE.employee_no', 'bases.base_id', 'bases.base_name', 'date')
-                ->orderBy('EMPLOYEE.employee_no', 'asc')
-                ->orderBy('bases.base_id', 'asc')
-                ->get();
-        return $support_working_times;
+        $rows = Kintai::whereIn('kintais.employee_id', $employee_ids)
+                        ->whereDate('work_day', '>=', $start_day)
+                        ->whereDate('work_day', '<=', $end_day)
+                        ->join('kintai_details', 'kintai_details.kintai_id', 'kintais.kintai_id')
+                        ->join('bases', 'bases.base_id', 'kintai_details.customer_id')
+                        ->selectRaw("
+                            kintais.employee_id,
+                            bases.base_id,
+                            bases.base_name,
+                            DATE_FORMAT(work_day, '%Y-%m') as date,
+                            SUM(customer_working_time) as total_customer_working_time
+                        ")
+                        ->groupBy('kintais.employee_id', 'bases.base_id', 'bases.base_name', 'date')
+                        ->orderBy('bases.base_id')
+                        ->get()
+                        ->groupBy('employee_id');
+        return $rows;
     }
 
     // 国民の祝日に稼働した時間を取得
-    public function getNationalHolidayTotalWorkingTime($employee_id, $start_day, $end_day)
+    public function getNationalHolidayTotalWorkingTimeBulk(array $employee_ids, $start_day, $end_day)
     {
-        // 従業員を取得
-        $employee = Employee::getSpecify($employee_id);
-        // 国民の祝日を取得
         $national_holidays = Holiday::whereDate('holiday', '>=', $start_day)
-                                ->whereDate('holiday', '<=', $end_day)
-                                ->where('is_national_holiday', 1);
-        // 稼働時間を取得
-        $national_holiday_total_working_time = Kintai::joinSub($employee, 'EMPLOYEE', function ($join) {
-                    $join->on('kintais.employee_id', '=', 'EMPLOYEE.employee_id');
-                })
-                ->whereDate('work_day', '>=', $start_day)
-                ->whereDate('work_day', '<=', $end_day)
-                ->joinSub($national_holidays, 'HOLIDAY', function ($join) {
-                    $join->on('kintais.work_day', '=', 'HOLIDAY.holiday');
-                })
-                ->sum('working_time');
-        return $national_holiday_total_working_time;
+                                    ->whereDate('holiday', '<=', $end_day)
+                                    ->where('is_national_holiday', 1);
+        $rows = Kintai::whereIn('kintais.employee_id', $employee_ids)
+                        ->whereDate('work_day', '>=', $start_day)
+                        ->whereDate('work_day', '<=', $end_day)
+                        ->joinSub($national_holidays, 'HOLIDAY', function ($join) {
+                            $join->on('kintais.work_day', '=', 'HOLIDAY.holiday');
+                        })
+                        ->selectRaw('employee_id, SUM(working_time) as total')
+                        ->groupBy('employee_id')
+                        ->get()
+                        ->keyBy('employee_id');
+        return $rows->map(fn($r) => $r->total)->all();
     }
 
     public function getOver40($month_date, $employees, $start_day, $end_day)
     {
-        // 従業員数分だけループ処理
-        foreach($employees->get() as $employee){
-            // 従業員区分がパートのみを対象とする
-            if($employee->employee_category_id == EmployeeCategoryEnum::PART_TIME_EMPLOYEE){
-                // 合計時間を格納する変数をセット
-                $total_over40 = 0;
-                $total_special_working_time = 0;
-                // 情報を格納する配列をセット
-                $over40[$employee->employee_id] = [];
-                // 月の日数分だけループ処理
-                foreach($month_date as $date){
-                    // 日付をインスタンス化
-                    $to_day = new CarbonImmutable($date);
-                    // 日曜日だったら、週40時間超過情報を取得
-                    if($to_day->isSunday()){
-                        // 同週の月曜日の日付を取得
-                        $from_day = new CarbonImmutable($to_day);
-                        $from_day = $from_day->subDays(6);
-                        // フォーマット変換
-                        $from_day = $from_day->toDateString();
-                        $to_day = $to_day->toDateString();
-                        // 週40時間超過情報を取得
-                        $over40[$employee->employee_id][$date] = Kintai::where('employee_id', $employee->employee_id)
-                                                                    ->whereDate('work_day', '>=', $from_day)
-                                                                    ->whereDate('work_day', '<=', $to_day)
-                                                                    ->select(DB::raw("
-                                                                        sum(special_working_time) as total_special_working_time,
-                                                                        sum(working_time) as total_working_time,
-                                                                        sum(over_time) as total_over_time,
-                                                                        GREATEST((sum(working_time) - sum(over_time) - 2400), 0) as over40,
-                                                                        IF(
-                                                                            (sum(special_working_time) - GREATEST((sum(working_time) - sum(over_time) - 2400), 0)) < 0 
-                                                                            OR (sum(special_working_time) IS NULL), 
-                                                                            0, 
-                                                                            (sum(special_working_time) - GREATEST((sum(working_time) - sum(over_time) - 2400), 0))
-                                                                        ) as special_minus_over40,
-                                                                        DATE_FORMAT(work_day, '%v') as date"))
-                                                                    ->groupBy('employee_id', 'date')
-                                                                    ->first();
-                        // 0より大きいかつnullでなければ合計時間に足す
-                        $total_over40 += !is_null($over40[$employee->employee_id][$date]) && $over40[$employee->employee_id][$date]->over40 > 0 ? $over40[$employee->employee_id][$date]->over40 : 0;
-                        // nullでなければ合計時間に足す
-                        $total_special_working_time += !is_null($over40[$employee->employee_id][$date]) ? $over40[$employee->employee_id][$date]->special_minus_over40 : 0;
-                    }
-                }
-                // 合計時間を配列にセット
-                $over40[$employee->employee_id]['total_over40'] = $total_over40;
-                $over40[$employee->employee_id]['total_special_working_time'] = $total_special_working_time;
+        $over40 = [];
+        $part_employees = $employees->filter(
+            fn($e) => $e->employee_category_id == EmployeeCategoryEnum::PART_TIME_EMPLOYEE
+        );
+        if ($part_employees->isEmpty()) {
+            return $over40;
+        }
+        $employee_ids = $part_employees->pluck('employee_id')->all();
+        // 週単位で必要な日付範囲を収集
+        $week_ranges = [];
+        foreach ($month_date as $date) {
+            $day = new CarbonImmutable($date);
+            if ($day->isSunday()) {
+                $from = $day->subDays(6)->toDateString();
+                $to   = $day->toDateString();
+                $week_ranges[$to] = [$from, $to];
             }
         }
-        return isset($over40) ? $over40 : array();
+        // 週ごと・従業員ごとに一括集計
+        foreach ($week_ranges as $sunday => [$from, $to]) {
+            $rows = Kintai::whereIn('employee_id', $employee_ids)
+                ->whereDate('work_day', '>=', $from)
+                ->whereDate('work_day', '<=', $to)
+                ->selectRaw("
+                    employee_id,
+                    SUM(special_working_time) as total_special_working_time,
+                    SUM(working_time) as total_working_time,
+                    SUM(over_time) as total_over_time,
+                    GREATEST((SUM(working_time) - SUM(over_time) - 2400), 0) as over40,
+                    IF(
+                        (SUM(special_working_time) - GREATEST((SUM(working_time) - SUM(over_time) - 2400), 0)) < 0
+                        OR (SUM(special_working_time) IS NULL),
+                        0,
+                        (SUM(special_working_time) - GREATEST((SUM(working_time) - SUM(over_time) - 2400), 0))
+                    ) as special_minus_over40,
+                    DATE_FORMAT(work_day, '%v') as date
+                ")
+                ->groupBy('employee_id', 'date')
+                ->get()
+                ->keyBy('employee_id');
+            foreach ($employee_ids as $eid) {
+                if (!isset($over40[$eid])) {
+                    $over40[$eid] = [];
+                }
+                $over40[$eid][$sunday] = $rows->get($eid);
+            }
+        }
+        // 合計を計算
+        foreach ($employee_ids as $eid) {
+            $total_over40 = 0;
+            $total_special = 0;
+            foreach ($week_ranges as $sunday => $_) {
+                $row = $over40[$eid][$sunday] ?? null;
+                if ($row) {
+                    $total_over40   += $row->over40 > 0 ? $row->over40 : 0;
+                    $total_special  += $row->special_minus_over40 ?? 0;
+                }
+            }
+            $over40[$eid]['total_over40']                = $total_over40;
+            $over40[$eid]['total_special_working_time']  = $total_special;
+        }
+        return $over40;
     }
 
     public function getHolidays($start_day, $end_day)
@@ -270,6 +294,21 @@ class KintaiReportDownloadService
         return isset($holiday_info) ? $holiday_info : array();
     }
 
+    public function getDateInfo($month_date, $holidays)
+    {
+        $date_info = [];
+        foreach ($month_date as $date) {
+            $carbon = CarbonImmutable::parse($date);
+            $is_holiday_style = $carbon->dayOfWeekIso >= 6 || isset($holidays[$date]);
+            $date_info[$date] = [
+                'formatted'  => $carbon->isoFormat('Y年MM月DD日(ddd)'),
+                'is_sunday'  => $carbon->isSunday(),
+                'cell_style' => $is_holiday_style ? 'background-color: #CCFFFF' : '',
+            ];
+        }
+        return $date_info;
+    }
+
     public function getTaiyoWorkingTimeAtHoliday($base, $month_date, $employees, $start_day, $end_day)
     {
         // 第1営業所のみ処理を実施
@@ -279,7 +318,7 @@ class KintaiReportDownloadService
                                         ->whereDate('holiday', '<=', $end_day)
                                         ->where('is_national_holiday', 1);
             // 従業員数分だけループ処理
-            foreach($employees->get() as $employee){
+            foreach($employees as $employee){
                 // 従業員区分がパートのみを対象とする
                 if($employee->employee_category_id == EmployeeCategoryEnum::PART_TIME_EMPLOYEE){
                     // 国民の祝日に大洋製薬の稼働がある日を取得
@@ -313,10 +352,10 @@ class KintaiReportDownloadService
         return $filename;
     }
 
-    public function passDownloadInfo($kintais, $month, $base, $over40, $holidays, $taiyo_working_times)
+    public function passDownloadInfo($kintais, $month, $base, $over40, $holidays, $taiyo_working_times, $date_info)
     {
         // PDF出力ビューに情報を渡す
-        $pdf = PDF::loadView('download.kintai_report.report', compact('kintais', 'month', 'base', 'over40', 'holidays', 'taiyo_working_times'));
+        $pdf = PDF::loadView('download.kintai_report.report', compact('kintais', 'month', 'base', 'over40', 'holidays', 'taiyo_working_times', 'date_info'));
         return $pdf;
     }
 }

@@ -114,7 +114,6 @@
                 flex-direction: row;
             }
         </style>
-        <!-- Styles -->
         <link rel="stylesheet" href="{{ public_path('css/app.css') }}">
     </head>
     <body style="font-family: ipaexg">
@@ -217,26 +216,25 @@
                 <tbody>
                     @foreach($kintai['kintai'] as $work_day => $value)
                         <tr>
-                            <td style="{{ CarbonImmutable::parse($work_day)->dayOfWeekIso >= 6 || isset($holidays[$work_day]) ? 'background-color: #CCFFFF' : '' }}" class="center">{{ CarbonImmutable::parse($work_day)->isoFormat('Y年MM月DD日(ddd)') }}</td>
-                            <td style="{{ CarbonImmutable::parse($work_day)->dayOfWeekIso >= 6 || isset($holidays[$work_day]) ? 'background-color: #CCFFFF' : '' }}" class="center">{{ is_null($value) ? '' : substr($value->begin_time_adj, 0, 5) }}</td>
-                            <td style="{{ CarbonImmutable::parse($work_day)->dayOfWeekIso >= 6 || isset($holidays[$work_day]) ? 'background-color: #CCFFFF' : '' }}" class="center">{{ is_null($value) ? '' : substr($value->finish_time_adj, 0, 5) }}{{-- {{ is_null($value) ? '' : (CarbonImmutable::parse(substr($value->finish_time_adj, 0, 5)) >= Carbon\CarbonImmutable::createFromTime(22, 15) ? ' 深' : '') }} --}}</td>
-                            <td style="{{ CarbonImmutable::parse($work_day)->dayOfWeekIso >= 6 || isset($holidays[$work_day]) ? 'background-color: #CCFFFF' : '' }}" class="center">{{ !isset($value->finish_time_adj) ? '' : number_format($value->rest_time / 60, 2) }}</td>
+                            <td style="{{ $date_info[$work_day]['cell_style'] }}" class="center">{{ $date_info[$work_day]['formatted'] }}</td>
+                            <td style="{{ $date_info[$work_day]['cell_style'] }}" class="center">{{ is_null($value) ? '' : substr($value->begin_time_adj, 0, 5) }}</td>
+                            <td style="{{ $date_info[$work_day]['cell_style'] }}" class="center">{{ is_null($value) ? '' : substr($value->finish_time_adj, 0, 5) }}</td>
+                            <td style="{{ $date_info[$work_day]['cell_style'] }}" class="center">{{ !isset($value->finish_time_adj) ? '' : number_format($value->rest_time / 60, 2) }}</td>
                             @if($base['base']->is_add_rest_available)
-                                <td style="{{ CarbonImmutable::parse($work_day)->dayOfWeekIso >= 6 || isset($holidays[$work_day]) ? 'background-color: #CCFFFF' : '' }}" class="center">{{ !isset($value->finish_time_adj) ? '' : number_format($value->add_rest_time / 60, 2) }}</td>
+                                <td style="{{ $date_info[$work_day]['cell_style'] }}" class="center">{{ !isset($value->finish_time_adj) ? '' : number_format($value->add_rest_time / 60, 2) }}</td>
                             @endif
-                            <td style="{{ CarbonImmutable::parse($work_day)->dayOfWeekIso >= 6 || isset($holidays[$work_day]) ? 'background-color: #CCFFFF' : '' }}" class="center">{{ is_null($value) ? '' : substr($value->out_time_adj, 0, 5) }}</td>
-                            <td style="{{ CarbonImmutable::parse($work_day)->dayOfWeekIso >= 6 || isset($holidays[$work_day]) ? 'background-color: #CCFFFF' : '' }}" class="center">{{ is_null($value) ? '' : substr($value->return_time_adj, 0, 5) }}</td>
-                            <td style="{{ CarbonImmutable::parse($work_day)->dayOfWeekIso >= 6 || isset($holidays[$work_day]) ? 'background-color: #CCFFFF' : '' }}" class="center">{{ !isset($value->finish_time_adj) ? '' : number_format($value->working_time / 60, 2) }}{{ !isset($value->finish_time_adj) ? '' : (number_format($value->working_time / 60, 2) <= 6.25 && $kintai['employee_category_id'] == App\Enums\EmployeeCategoryEnum::FULL_TIME_EMPLOYEE ? ' 少' : '') }}</td>
-                            <td style="{{ CarbonImmutable::parse($work_day)->dayOfWeekIso >= 6 || isset($holidays[$work_day]) ? 'background-color: #CCFFFF' : '' }}" class="center">{{ !isset($value->finish_time_adj) ? '' : number_format($value->special_working_time / 60, 2) }}</td>
-                            <td style="{{ CarbonImmutable::parse($work_day)->dayOfWeekIso >= 6 || isset($holidays[$work_day]) ? 'background-color: #CCFFFF' : '' }}" class="center">{{ !isset($value->finish_time_adj) ? '' : number_format(($value->over_time + $value->late_night_working_time) / 60, 2) }}</td>
-                            <td style="{{ CarbonImmutable::parse($work_day)->dayOfWeekIso >= 6 || isset($holidays[$work_day]) ? 'background-color: #CCFFFF' : '' }}" class="center">{{ is_null($value) ? '' : ($value->is_early_worked == 1 ? '○' : '') }}</td>
-                            <td style="{{ CarbonImmutable::parse($work_day)->dayOfWeekIso >= 6 || isset($holidays[$work_day]) ? 'background-color: #CCFFFF' : '' }}" class="left">{{ is_null($value) ? '' : $value->comment }}</td>
+                            <td style="{{ $date_info[$work_day]['cell_style'] }}" class="center">{{ is_null($value) ? '' : substr($value->out_time_adj, 0, 5) }}</td>
+                            <td style="{{ $date_info[$work_day]['cell_style'] }}" class="center">{{ is_null($value) ? '' : substr($value->return_time_adj, 0, 5) }}</td>
+                            <td style="{{ $date_info[$work_day]['cell_style'] }}" class="center">{{ !isset($value->finish_time_adj) ? '' : number_format($value->working_time / 60, 2) }}{{ !isset($value->finish_time_adj) ? '' : (number_format($value->working_time / 60, 2) <= 6.25 && $kintai['employee_category_id'] == App\Enums\EmployeeCategoryEnum::FULL_TIME_EMPLOYEE ? ' 少' : '') }}</td>
+                            <td style="{{ $date_info[$work_day]['cell_style'] }}" class="center">{{ !isset($value->finish_time_adj) ? '' : number_format($value->special_working_time / 60, 2) }}</td>
+                            <td style="{{ $date_info[$work_day]['cell_style'] }}" class="center">{{ !isset($value->finish_time_adj) ? '' : number_format(($value->over_time + $value->late_night_working_time) / 60, 2) }}</td>
+                            <td style="{{ $date_info[$work_day]['cell_style'] }}" class="center">{{ is_null($value) ? '' : ($value->is_early_worked == 1 ? '○' : '') }}</td>
+                            <td style="{{ $date_info[$work_day]['cell_style'] }}" class="left">{{ is_null($value) ? '' : $value->comment }}</td>
                             @if($kintai['employee_category_id'] == App\Enums\EmployeeCategoryEnum::PART_TIME_EMPLOYEE)
-                                <td style="{{ CarbonImmutable::parse($work_day)->dayOfWeekIso >= 6 || isset($holidays[$work_day]) ? 'background-color: #CCFFFF' : '' }}" class="center">{{ CarbonImmutable::parse($work_day)->isSunday() && isset($over40[$employee_id]) ? (isset($over40[$employee_id][$work_day]) ? ($over40[$employee_id][$work_day]->over40 > 0 ? number_format($over40[$employee_id][$work_day]->over40 / 60, 2) : '0.00') : '0.00') : '' }}</td>
+                                <td style="{{ $date_info[$work_day]['cell_style'] }}" class="center">{{ $date_info[$work_day]['is_sunday'] && isset($over40[$employee_id]) ? (isset($over40[$employee_id][$work_day]) ? ($over40[$employee_id][$work_day]->over40 > 0 ? number_format($over40[$employee_id][$work_day]->over40 / 60, 2) : '0.00') : '0.00') : '' }}</td>
                             @endif
-                            <!-- 第1営業所のみ表示 -->
                             @if($kintai['base_id'] == '01_1st' && $kintai['employee_category_id'] == App\Enums\EmployeeCategoryEnum::PART_TIME_EMPLOYEE)
-                                <td style="{{ CarbonImmutable::parse($work_day)->dayOfWeekIso >= 6 || isset($holidays[$work_day]) ? 'background-color: #CCFFFF' : '' }}" class="center">{{ isset($taiyo_working_times[$employee_id][$work_day]) ? '○' : '' }}</td>
+                                <td style="{{ $date_info[$work_day]['cell_style'] }}" class="center">{{ isset($taiyo_working_times[$employee_id][$work_day]) ? '○' : '' }}</td>
                             @endif
                         </tr>
                     @endforeach
