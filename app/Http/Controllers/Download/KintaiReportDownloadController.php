@@ -22,8 +22,6 @@ class KintaiReportDownloadController extends Controller
 
     public function download(Request $request)
     {
-        set_time_limit(300);
-        $start = microtime(true);
         // インスタンス化
         $KintaiReportDownloadService = new KintaiReportDownloadService;
         $CommonService = new CommonService;
@@ -56,7 +54,6 @@ class KintaiReportDownloadController extends Controller
         $filename = $KintaiReportDownloadService->getDownloadFileName($request->date, $base['base']['base_name']);
         // PDF出力ビューに情報を渡す
         $pdf = $KintaiReportDownloadService->passDownloadInfo($kintais, $request->date, $base, $over40, $holidays, $taiyo_working_times, $date_info);
-        logger()->info('処理時間: ' . round(microtime(true) - $start, 3) . '秒');
         // ファイル名を設定してPDFをダウンロード
         return $pdf->download($filename);
     }
