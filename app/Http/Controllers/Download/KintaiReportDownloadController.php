@@ -22,6 +22,7 @@ class KintaiReportDownloadController extends Controller
 
     public function download(Request $request)
     {
+        set_time_limit(1000);
         // インスタンス化
         $KintaiReportDownloadService = new KintaiReportDownloadService;
         $CommonService = new CommonService;
