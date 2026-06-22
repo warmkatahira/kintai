@@ -114,6 +114,7 @@
                 flex-direction: row;
             }
         </style>
+        <link rel="stylesheet" href="{{ public_path('css/app.css') }}">
     </head>
     <body style="font-family: ipaexg">
         <!-- 表紙 -->
