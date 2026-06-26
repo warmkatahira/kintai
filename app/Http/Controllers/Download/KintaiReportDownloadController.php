@@ -22,7 +22,6 @@ class KintaiReportDownloadController extends Controller
 
     public function download(Request $request)
     {
-        ini_set('memory_limit', '1024M');
         // インスタンス化
         $KintaiReportDownloadService = new KintaiReportDownloadService;
         $CommonService = new CommonService;
