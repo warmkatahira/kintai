@@ -23,7 +23,7 @@ class Base extends Model
     // 全て取得
     public static function getAll()
     {
-        return self::orderBy('base_id', 'asc');
+        return self::where('base_id', '!=', '09_LSP')->orderBy('base_id', 'asc');
     }
     // 指定されたレコードを取得
     public static function getSpecify($base_id)
