@@ -2,7 +2,7 @@
 
 <x-app-layout>
     <x-page-header content="勤怠表ダウンロード"/>
-    <form method="GET" action="{{ route('kintai_report_download.download') }}" id="download_form" class="m-0">
+    <form method="GET" action="{{ route('kintai_report_download.download') }}" id="download_form" class="m-0" target="_blank">
         <div class="flex flex-row mb-2">
             <p class="w-40 bg-black text-white text-center py-2 text-sm">拠点</p>
             <select name="base_id" class="text-sm w-60">
