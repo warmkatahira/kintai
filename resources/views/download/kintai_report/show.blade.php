@@ -1,80 +1,97 @@
 <x-document-layout>
     {{-- 表紙 --}}
     <div class="page-container p-6">
-        <p class="text-3xl font-bold p-4 border-b border-black">
+        <p class="text-3xl p-4 border-b border-black">
             {{ '勤怠表≪'.CarbonImmutable::parse($month)->isoFormat('Y年MM月').'≫' }}
         </p>
         <div class="p-4">
             <table class="border-collapse mb-6">
                 <tr>
-                    <td class="bg-black text-white font-bold text-lg text-center align-middle w-28 border-2 border-black px-4 py-3">拠点</td>
-                    <td class="text-2xl font-bold align-middle border-2 border-black border-l-0 px-6 py-3 min-w-[220px]">{{ $base['base']->base_name }}</td>
+                    <td class="bg-black text-white text-lg text-center align-middle w-28 border-2 border-black px-4 py-3">拠点</td>
+                    <td class="text-2xl align-middle border-2 border-black border-l-0 px-6 py-3 min-w-[220px]">{{ $base['base']->base_name }}</td>
                 </tr>
             </table>
 
             <div class="flex flex-wrap gap-4 mb-8">
                 @foreach($base['total_employee'] as $employee_category_name => $total_employee)
                     <div class="border-2 border-black w-40 text-center">
-                        <div class="bg-black text-white font-bold text-base py-2">{{ $employee_category_name }}</div>
-                        <div class="text-3xl font-bold py-3">{{ $total_employee }}<span class="text-sm font-normal ml-0.5">人</span></div>
+                        <div class="bg-black text-white text-base py-2">{{ $employee_category_name }}</div>
+                        <div class="text-3xl py-3">{{ $total_employee }}<span class="text-sm font-normal ml-0.5">人</span></div>
                     </div>
                 @endforeach
             </div>
 
-            <div class="border-t-2 border-black pt-5 max-w-md">
-                <p class="text-xs text-gray-600 mb-4">※集計後、以下を手入力してください</p>
-                <table class="border-collapse">
-                    <tr>
-                        <td class="text-base font-bold w-32 pb-5 align-bottom">合計人数</td>
-                        <td class="border-b border-black w-44 pb-5 align-bottom"></td>
-                        <td class="text-sm pl-2 pb-5 align-bottom">人</td>
-                    </tr>
-                    <tr>
-                        <td class="text-base font-bold w-32 pb-5 align-bottom">合計金額</td>
-                        <td class="border-b border-black w-44 pb-5 align-bottom"></td>
-                        <td class="text-sm pl-2 pb-5 align-bottom">円</td>
-                    </tr>
-                </table>
+            <div class="">
+                <p class="text-xl text-gray-600 mb-8">※集計後、以下を手入力してください</p>
+                <div class="w-3/5 flex flex-col gap-10">
+                    <div class="flex flex-row justify-between">
+                        <p class="text-xl w-32">合計人数</p>
+                        <p class="border-b border-black w-52"></p>
+                        <p class="text-base pl-2">人</p>
+                    </div>
+                    <div class="flex flex-row justify-between">
+                        <p class="text-xl w-32">合計金額</p>
+                        <p class="border-b border-black w-52"></p>
+                        <p class="text-base pl-2">円</p>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 
     {{-- 各従業員勤怠表 --}}
     @foreach($kintais as $employee_id => $kintai)
+        @php
+            // 総祝日稼働時間
+            $national_holiday_time = $kintai['national_holiday_total_working_time'];
+            // 総特別稼働時間
+            $special_time = isset($over40[$employee_id]['total_special_working_time'])
+                ? $over40[$employee_id]['total_special_working_time']
+                : 0;
+            // 総残業時間(通常残業+週40時間超過分+深夜稼働分の合算)
+            $total_over_time = ($kintai['total_over_time'] + (!isset($over40[$employee_id]) ? 0 : $over40[$employee_id]['total_over40'])) + $kintai['total_late_night_working_time'];
+            // 定時時間以外(残業・祝日稼働・特別稼働のいずれか)が発生しているか判定
+            $has_extra_time = $total_over_time > 0 || $national_holiday_time > 0 || $special_time > 0;
+        @endphp
         <div class="page-container p-6">
-            <p class="text-3xl mb-2">勤怠表</p>
+            <div class="flex flex-row">
+                <p class="text-3xl mb-2">勤怠表</p>
+                @if($has_extra_time)
+                    <span class="ml-auto inline-flex items-center gap-1 bg-amber-100 text-amber-800 text-sm px-3 py-1 rounded border border-amber-400">定時時間以外あり</span>
+                @endif
+            </div>
             <table class="border-separate mb-1" style="border-spacing: 0 4px;">
                 <tr>
                     <td class="bg-black text-white text-xs w-32 border border-black px-3">拠点</td>
-                    <td class="text-xs border border-black px-3 w-28">{{ $kintai['base_name'] }}</td>
+                    <td class="text-xs border border-black px-3 w-56">{{ $kintai['base_name'] }}</td>
                 </tr>
                 <tr>
                     <td class="bg-black text-white text-xs w-32 border border-black px-3">従業員番号</td>
-                    <td class="text-xs border border-black px-3 w-28">{{ $kintai['employee_no'] }}</td>
+                    <td class="text-xs border border-black px-3 w-56">{{ $kintai['employee_no'] }}</td>
                 </tr>
                 <tr>
                     <td class="bg-black text-white text-xs w-32 border border-black px-3">従業員区分</td>
-                    <td class="text-xs border border-black px-3 w-28">{{ $kintai['employee_category_name'] }}</td>
+                    <td class="text-xs border border-black px-3 w-56">{{ $kintai['employee_category_name'] }}</td>
                 </tr>
                 <tr>
                     <td class="bg-black text-white text-xs w-32 border border-black px-3">従業員名</td>
-                    <td class="text-xs border border-black px-3 w-28">{{ $kintai['employee_name'] }}</td>
+                    <td class="text-xs border border-black px-3 w-56">{{ $kintai['employee_name'] }}</td>
                 </tr>
                 <tr>
                     <td class="bg-black text-white text-xs w-32 border border-black px-3">稼働日数</td>
-                    <td class="text-xs border border-black px-3 w-28">{{ $kintai['working_days'] }}日</td>
+                    <td class="text-xs border border-black px-3 w-56">{{ $kintai['working_days'] }}日</td>
                 </tr>
             </table>
 
-            <table class="border-separate mt-2" style="border-spacing: 16px 0;">
+            <table class="border-separate mt-2" style="border-spacing: 0 0;">
                 <tr>
-                    <td class="bg-black text-white text-xs text-center w-32 border border-black px-3">総稼働時間</td>
+                    <td class="bg-black text-white text-xs w-32 border border-black px-3">総稼働時間</td>
                     <td class="text-xs border border-black px-3 w-28">{{ number_format($kintai['total_working_time'] / 60, 2) }}時間</td>
 
-                    <td class="bg-black text-white text-xs text-center w-32 border border-black px-3">総祝日稼働時間</td>
+                    <td class="bg-black text-white text-xs w-32 border border-black px-3">総祝日稼働時間</td>
                     <td class="text-xs border border-black px-3 w-28">{{ number_format($kintai['national_holiday_total_working_time'] / 60, 2) }}時間</td>
 
-                    <td class="bg-black text-white text-xs text-center w-32 border border-black px-3">総特別稼働時間</td>
+                    <td class="bg-black text-white text-xs w-32 border border-black px-3">総特別稼働時間</td>
                     <td class="text-xs border border-black px-3 w-28">
                         @if(isset($over40[$employee_id]['total_special_working_time']))
                             {{ number_format($over40[$employee_id]['total_special_working_time'] / 60, 2) }}時間
@@ -85,19 +102,19 @@
                 </tr>
             </table>
 
-            <table class="border-separate mt-2" style="border-spacing: 16px 0;">
+            <table class="border-separate mt-2" style="border-spacing: 0 0;">
                 <tr>
-                    <td class="bg-black text-white text-xs text-center w-32 border border-black px-3">総残業時間</td>
+                    <td class="bg-black text-white text-xs w-32 border border-black px-3">総残業時間</td>
                     <td class="text-xs border border-black px-3 w-28">
                         {{ number_format((($kintai['total_over_time'] + (!isset($over40[$employee_id]) ? 0 : $over40[$employee_id]['total_over40'])) + $kintai['total_late_night_working_time']) / 60, 2) }}時間
                     </td>
 
-                    <td class="bg-black text-white text-xs text-center w-32 border border-black px-3">通常残業時間</td>
+                    <td class="bg-black text-white text-xs w-32 border border-black px-3">通常残業時間</td>
                     <td class="text-xs border border-black px-3 w-28">
                         {{ number_format(((($kintai['total_over_time'] + (!isset($over40[$employee_id]) ? 0 : $over40[$employee_id]['total_over40'])) + $kintai['total_late_night_working_time']) - $kintai['total_late_night_over_time']) / 60, 2) }}時間
                     </td>
 
-                    <td class="bg-black text-white text-xs text-center w-32 border border-black px-3">深夜残業時間</td>
+                    <td class="bg-black text-white text-xs w-32 border border-black px-3">深夜残業時間</td>
                     <td class="text-xs border border-black px-3 w-28">{{ number_format(($kintai['total_late_night_over_time']) / 60, 2) }}時間</td>
                 </tr>
             </table>
@@ -105,25 +122,25 @@
             <table class="border-collapse mt-3 w-full text-xs">
                 <thead>
                     <tr>
-                        <th class="bg-sky-300 border border-black px-3 py-1">出勤日</th>
-                        <th class="bg-sky-300 border border-black px-3 py-1">出勤</th>
-                        <th class="bg-sky-300 border border-black px-3 py-1">退勤</th>
-                        <th class="bg-sky-300 border border-black px-3 py-1">休憩</th>
+                        <th class="bg-sky-300 border border-black px-3 py-1 font-thin">出勤日</th>
+                        <th class="bg-sky-300 border border-black px-3 py-1 font-thin">出勤</th>
+                        <th class="bg-sky-300 border border-black px-3 py-1 font-thin">退勤</th>
+                        <th class="bg-sky-300 border border-black px-3 py-1 font-thin">休憩</th>
                         @if($base['base']->is_add_rest_available)
-                            <th class="bg-sky-300 border border-black px-3 py-1">追休</th>
+                            <th class="bg-sky-300 border border-black px-3 py-1 font-thin">追休</th>
                         @endif
-                        <th class="bg-sky-300 border border-black px-3 py-1">外出</th>
-                        <th class="bg-sky-300 border border-black px-3 py-1">戻り</th>
-                        <th class="bg-sky-300 border border-black px-3 py-1">稼働</th>
-                        <th class="bg-sky-300 border border-black px-3 py-1">特別</th>
-                        <th class="bg-sky-300 border border-black px-3 py-1">残業</th>
-                        <th class="bg-sky-300 border border-black px-3 py-1">早出</th>
-                        <th class="bg-sky-300 border border-black px-3 py-1">コメント</th>
+                        <th class="bg-sky-300 border border-black px-3 py-1 font-thin">外出</th>
+                        <th class="bg-sky-300 border border-black px-3 py-1 font-thin">戻り</th>
+                        <th class="bg-sky-300 border border-black px-3 py-1 font-thin">稼働</th>
+                        <th class="bg-sky-300 border border-black px-3 py-1 font-thin">特別</th>
+                        <th class="bg-sky-300 border border-black px-3 py-1 font-thin">残業</th>
+                        <th class="bg-sky-300 border border-black px-3 py-1 font-thin">早出</th>
+                        <th class="bg-sky-300 border border-black px-3 py-1 font-thin">コメント</th>
                         @if($kintai['employee_category_id'] == App\Enums\EmployeeCategoryEnum::PART_TIME_EMPLOYEE)
-                            <th class="bg-sky-300 border border-black px-3 py-1">超過</th>
+                            <th class="bg-sky-300 border border-black px-3 py-1 font-thin">超過</th>
                         @endif
                         @if($kintai['base_id'] == '01_1st' && $kintai['employee_category_id'] == App\Enums\EmployeeCategoryEnum::PART_TIME_EMPLOYEE)
-                            <th class="bg-sky-300 border border-black px-3 py-1">大洋</th>
+                            <th class="bg-sky-300 border border-black px-3 py-1 font-thin">大洋</th>
                         @endif
                     </tr>
                 </thead>
@@ -175,30 +192,30 @@
         {{-- 応援稼働がある場合、別ページで出力 --}}
         @if(count($kintai['support_working_time']) != 0)
             <div class="page-container p-6">
-                <p class="text-3xl font-bold mb-4">応援稼働時間表</p>
-                <table class="border-collapse mb-1">
+                <p class="text-3xl mb-4">応援稼働時間表</p>
+                <table class="border-separate mb-1" style="border-spacing: 0 4px;">
                     <tr>
-                        <td class="bg-black text-white font-bold text-xs text-center w-20 border border-black px-3">年月</td>
-                        <td class="text-xs font-bold border border-black border-l-0 px-3 w-28">{{ CarbonImmutable::parse($month)->isoFormat('Y年MM月') }}</td>
+                        <td class="bg-black text-white text-xs w-28 border border-black px-3">年月</td>
+                        <td class="text-xs border border-black border-l-0 px-3 w-56">{{ CarbonImmutable::parse($month)->isoFormat('Y年MM月') }}</td>
                     </tr>
                     <tr>
-                        <td class="bg-black text-white font-bold text-xs text-center w-20 border border-black px-3">拠点</td>
-                        <td class="text-xs font-bold border border-black border-l-0 px-3 w-28">{{ $kintai['base_name'] }}</td>
+                        <td class="bg-black text-white text-xs w-28 border border-black px-3">拠点</td>
+                        <td class="text-xs border border-black border-l-0 px-3 w-56">{{ $kintai['base_name'] }}</td>
                     </tr>
                     <tr>
-                        <td class="bg-black text-white font-bold text-xs text-center w-20 border border-black px-3">従業員番号</td>
-                        <td class="text-xs font-bold border border-black border-l-0 px-3 w-28">{{ $kintai['employee_no'] }}</td>
+                        <td class="bg-black text-white text-xs w-28 border border-black px-3">従業員番号</td>
+                        <td class="text-xs border border-black border-l-0 px-3 w-56">{{ $kintai['employee_no'] }}</td>
                     </tr>
                     <tr>
-                        <td class="bg-black text-white font-bold text-xs text-center w-20 border border-black px-3">従業員名</td>
-                        <td class="text-xs font-bold border border-black border-l-0 px-3 w-28">{{ $kintai['employee_name'] }}</td>
+                        <td class="bg-black text-white text-xs w-28 border border-black px-3">従業員名</td>
+                        <td class="text-xs border border-black border-l-0 px-3 w-56">{{ $kintai['employee_name'] }}</td>
                     </tr>
                 </table>
                 <table class="border-collapse w-full text-xs mt-2">
                     <thead>
                         <tr>
-                            <th class="bg-sky-300 border border-black px-3 py-1">応援先拠点名</th>
-                            <th class="bg-sky-300 border border-black px-3 py-1">稼働時間</th>
+                            <th class="bg-sky-300 border border-black px-3 py-1 font-thin">応援先拠点名</th>
+                            <th class="bg-sky-300 border border-black px-3 py-1 font-thin">稼働時間</th>
                         </tr>
                     </thead>
                     <tbody>
