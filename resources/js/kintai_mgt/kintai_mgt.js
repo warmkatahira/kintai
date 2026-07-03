@@ -40,7 +40,7 @@ $('#base_check_enter').on("click",function(){
 
 // 専用処理
 $('#katahira').on('click', function () {
-    const targetIds = [2, 3, 304, 345];
+    const targetIds = [2, 3, 190, 304, 345];
     $('input[name="chk[]"]').filter(function () {
         return targetIds.includes($(this).data('employee-id'));
     }).prop('checked', true);
