@@ -301,7 +301,7 @@ class KintaiReportDownloadService
             $carbon = CarbonImmutable::parse($date);
             $is_holiday_style = $carbon->dayOfWeekIso >= 6 || isset($holidays[$date]);
             $date_info[$date] = [
-                'formatted'  => $carbon->isoFormat('Y年MM月DD日(ddd)'),
+                'formatted'  => $carbon->isoFormat('MM月DD日(ddd)'),
                 'is_sunday'  => $carbon->isSunday(),
                 'cell_style' => $is_holiday_style ? 'background-color: #CCFFFF' : '',
             ];

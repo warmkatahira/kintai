@@ -53,9 +53,9 @@
             // 定時時間以外(残業・祝日稼働・特別稼働のいずれか)が発生しているか判定
             $has_extra_time = $total_over_time > 0 || $national_holiday_time > 0 || $special_time > 0;
         @endphp
-        <div class="page-container p-6">
+        <div class="page-container py-4 px-2">
             <div class="flex flex-row">
-                <p class="text-3xl mb-2">勤怠表</p>
+                <p class="text-xl mb-2">{{ '勤怠表≪'.CarbonImmutable::parse($month)->isoFormat('Y年MM月').'≫' }}</p>
                 @if($has_extra_time)
                     <span class="ml-auto inline-flex items-center gap-1 bg-amber-100 text-amber-800 text-sm px-3 py-1 rounded border border-amber-400">定時時間以外あり</span>
                 @endif
@@ -122,54 +122,66 @@
             <table class="border-collapse mt-3 w-full text-xs">
                 <thead>
                     <tr>
-                        <th class="bg-sky-300 border border-black px-3 py-1 font-thin">出勤日</th>
-                        <th class="bg-sky-300 border border-black px-3 py-1 font-thin">出勤</th>
-                        <th class="bg-sky-300 border border-black px-3 py-1 font-thin">退勤</th>
-                        <th class="bg-sky-300 border border-black px-3 py-1 font-thin">休憩</th>
+                        <th class="bg-sky-300 border border-black px-0 py-1 font-thin whitespace-nowrap">出勤日</th>
+                        <th class="bg-sky-300 border border-black px-1 py-1 font-thin whitespace-nowrap">有給</th>
+                        <th class="bg-sky-300 border border-black px-1 py-1 font-thin">出勤</th>
+                        <th class="bg-sky-300 border border-black px-1 py-1 font-thin">退勤</th>
+                        <th class="bg-sky-300 border border-black px-1 py-1 font-thin">休憩</th>
                         @if($base['base']->is_add_rest_available)
-                            <th class="bg-sky-300 border border-black px-3 py-1 font-thin">追休</th>
+                            <th class="bg-sky-300 border border-black px-1 py-1 font-thin">追休</th>
                         @endif
-                        <th class="bg-sky-300 border border-black px-3 py-1 font-thin">外出</th>
-                        <th class="bg-sky-300 border border-black px-3 py-1 font-thin">戻り</th>
-                        <th class="bg-sky-300 border border-black px-3 py-1 font-thin">稼働</th>
-                        <th class="bg-sky-300 border border-black px-3 py-1 font-thin">特別</th>
-                        <th class="bg-sky-300 border border-black px-3 py-1 font-thin">残業</th>
-                        <th class="bg-sky-300 border border-black px-3 py-1 font-thin">早出</th>
-                        <th class="bg-sky-300 border border-black px-3 py-1 font-thin">コメント</th>
+                        <th class="bg-sky-300 border border-black px-1 py-1 font-thin">外出</th>
+                        <th class="bg-sky-300 border border-black px-1 py-1 font-thin">戻り</th>
+                        <th class="bg-sky-300 border border-black px-1 py-1 font-thin">稼働</th>
+                        <th class="bg-sky-300 border border-black px-1 py-1 font-thin">特別</th>
+                        <th class="bg-sky-300 border border-black px-1 py-1 font-thin">残業</th>
+                        <th class="bg-sky-300 border border-black px-1 py-1 font-thin">早出</th>
+                        <th class="bg-sky-300 border border-black px-1 py-1 font-thin">コメント</th>
                         @if($kintai['employee_category_id'] == App\Enums\EmployeeCategoryEnum::PART_TIME_EMPLOYEE)
-                            <th class="bg-sky-300 border border-black px-3 py-1 font-thin">超過</th>
-                        @endif
-                        @if($kintai['base_id'] == '01_1st' && $kintai['employee_category_id'] == App\Enums\EmployeeCategoryEnum::PART_TIME_EMPLOYEE)
-                            <th class="bg-sky-300 border border-black px-3 py-1 font-thin">大洋</th>
+                            <th class="bg-sky-300 border border-black px-1 py-1 font-thin">超過</th>
                         @endif
                     </tr>
                 </thead>
                 <tbody>
                     @foreach($kintai['kintai'] as $work_day => $value)
                         <tr style="{{ $date_info[$work_day]['cell_style'] }}">
-                            <td class="border border-black px-3 py-0.5 text-center">{{ $date_info[$work_day]['formatted'] }}</td>
-                            <td class="border border-black px-3 py-0.5 text-center">{{ is_null($value) ? '' : substr($value->begin_time_adj, 0, 5) }}</td>
-                            <td class="border border-black px-3 py-0.5 text-center">{{ is_null($value) ? '' : substr($value->finish_time_adj, 0, 5) }}</td>
-                            <td class="border border-black px-3 py-0.5 text-center">{{ !isset($value->finish_time_adj) ? '' : number_format($value->rest_time / 60, 2) }}</td>
+                            <td class="border border-black px-0 py-0.5 text-center whitespace-nowrap">{{ $date_info[$work_day]['formatted'] }}</td>
+                            <td class="border border-black px-1 py-0.5 w-10"></td>
+                            <td class="border border-black px-1 py-0.5 text-center">{{ is_null($value) ? '' : substr($value->begin_time_adj, 0, 5) }}</td>
+                            <td class="border border-black px-1 py-0.5 text-center">{{ is_null($value) ? '' : substr($value->finish_time_adj, 0, 5) }}</td>
+                            <td class="border border-black px-1 py-0.5 text-center">{{ !isset($value->finish_time_adj) ? '' : number_format($value->rest_time / 60, 2) }}</td>
                             @if($base['base']->is_add_rest_available)
-                                <td class="border border-black px-3 py-0.5 text-center">{{ !isset($value->finish_time_adj) ? '' : number_format($value->add_rest_time / 60, 2) }}</td>
+                                <td class="border border-black px-1 py-0.5 text-center">{{ !isset($value->finish_time_adj) ? '' : number_format($value->add_rest_time / 60, 2) }}</td>
                             @endif
-                            <td class="border border-black px-3 py-0.5 text-center">{{ is_null($value) ? '' : substr($value->out_time_adj, 0, 5) }}</td>
-                            <td class="border border-black px-3 py-0.5 text-center">{{ is_null($value) ? '' : substr($value->return_time_adj, 0, 5) }}</td>
-                            <td class="border border-black px-3 py-0.5 text-center">
+                            <td class="border border-black px-1 py-0.5 text-center">{{ is_null($value) ? '' : substr($value->out_time_adj, 0, 5) }}</td>
+                            <td class="border border-black px-1 py-0.5 text-center">{{ is_null($value) ? '' : substr($value->return_time_adj, 0, 5) }}</td>
+                            <td class="border border-black px-1 py-0.5 text-center">
                                 {{ !isset($value->finish_time_adj) ? '' : number_format($value->working_time / 60, 2) }}{{ !isset($value->finish_time_adj) ? '' : (number_format($value->working_time / 60, 2) <= 6.25 && $kintai['employee_category_id'] == App\Enums\EmployeeCategoryEnum::FULL_TIME_EMPLOYEE ? ' 少' : '') }}
                             </td>
-                            <td class="border border-black px-3 py-0.5 text-center">{{ !isset($value->finish_time_adj) ? '' : number_format($value->special_working_time / 60, 2) }}</td>
-                            <td class="border border-black px-3 py-0.5 text-center">{{ !isset($value->finish_time_adj) ? '' : number_format(($value->over_time + $value->late_night_working_time) / 60, 2) }}</td>
-                            <td class="border border-black px-3 py-0.5 text-center">{{ is_null($value) ? '' : ($value->is_early_worked == 1 ? '○' : '') }}</td>
-                            <td class="border border-black px-3 py-0.5 text-left">{{ is_null($value) ? '' : $value->comment }}</td>
+                            <td class="border border-black px-1 py-0.5 text-center">{{ !isset($value->finish_time_adj) ? '' : number_format($value->special_working_time / 60, 2) }}</td>
+                            <td class="border border-black px-1 py-0.5 text-center">{{ !isset($value->finish_time_adj) ? '' : number_format(($value->over_time + $value->late_night_working_time) / 60, 2) }}</td>
+                            <td class="border border-black px-1 py-0.5 text-center">{{ is_null($value) ? '' : ($value->is_early_worked == 1 ? '○' : '') }}</td>
+                            <td class="border border-black px-1 py-0.5 text-left">
+                                @php
+                                    $is_taiyo = $kintai['base_id'] == '01_1st'
+                                        && $kintai['employee_category_id'] == App\Enums\EmployeeCategoryEnum::PART_TIME_EMPLOYEE
+                                        && isset($taiyo_working_times[$employee_id][$work_day]);
+                                    $comment = is_null($value) ? '' : $value->comment;
+                                    $prefix = $is_taiyo ? '【祝日大洋】' : '';
+                                    // 崩れない「合計表示幅」の上限。プレフィックス有無で限界が違うので分ける。
+                                    //   プレフィックスあり: 15（本体は 15-12=3 相当。テスト済みでOK）
+                                    //   プレフィックスなし: 13（本体まるごと。全角が多くても崩れない値）
+                                    $max_width = $is_taiyo ? 19 : 17;
+                                    $comment_short = mb_strimwidth($comment, 0, max(0, $max_width - mb_strwidth($prefix)), '…');
+                                @endphp
+                                <div class="whitespace-nowrap" title="{{ $comment }}">
+                                    @if($is_taiyo)<span class="font-bold text-red-600">{{ $prefix }}</span>@endif{{ $comment_short }}
+                                </div>
+                            </td>
                             @if($kintai['employee_category_id'] == App\Enums\EmployeeCategoryEnum::PART_TIME_EMPLOYEE)
-                                <td class="border border-black px-3 py-0.5 text-center">
+                                <td class="border border-black px-1 py-0.5 text-center">
                                     {{ $date_info[$work_day]['is_sunday'] && isset($over40[$employee_id]) ? (isset($over40[$employee_id][$work_day]) ? ($over40[$employee_id][$work_day]->over40 > 0 ? number_format($over40[$employee_id][$work_day]->over40 / 60, 2) : '0.00') : '0.00') : '' }}
                                 </td>
-                            @endif
-                            @if($kintai['base_id'] == '01_1st' && $kintai['employee_category_id'] == App\Enums\EmployeeCategoryEnum::PART_TIME_EMPLOYEE)
-                                <td class="border border-black px-3 py-0.5 text-center">{{ isset($taiyo_working_times[$employee_id][$work_day]) ? '○' : '' }}</td>
                             @endif
                         </tr>
                     @endforeach
@@ -211,18 +223,18 @@
                         <td class="text-xs border border-black border-l-0 px-3 w-56">{{ $kintai['employee_name'] }}</td>
                     </tr>
                 </table>
-                <table class="border-collapse w-full text-xs mt-2">
+                <table class="border-collapse w-auto text-xs mt-2">
                     <thead>
                         <tr>
-                            <th class="bg-sky-300 border border-black px-3 py-1 font-thin">応援先拠点名</th>
-                            <th class="bg-sky-300 border border-black px-3 py-1 font-thin">稼働時間</th>
+                            <th class="bg-sky-300 border border-black px-3 py-1 font-thin whitespace-nowrap">応援先拠点名</th>
+                            <th class="bg-sky-300 border border-black px-3 py-1 font-thin whitespace-nowrap">稼働時間</th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach($kintai['support_working_time'] as $support_working_time)
                             <tr>
-                                <td class="border border-black px-3 py-0.5">{{ $support_working_time->base_name }}</td>
-                                <td class="border border-black px-3 py-0.5 text-right">{{ number_format($support_working_time->total_customer_working_time / 60, 2) }}時間</td>
+                                <td class="border border-black px-3 py-0.5 whitespace-nowrap">{{ $support_working_time->base_name }}</td>
+                                <td class="border border-black px-3 py-0.5 text-right whitespace-nowrap">{{ number_format($support_working_time->total_customer_working_time / 60, 2) }}時間</td>
                             </tr>
                         @endforeach
                     </tbody>
