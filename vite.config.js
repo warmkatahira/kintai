@@ -51,6 +51,7 @@ export default defineConfig({
             'resources/js/temporary_company_mgt/temporary_company_create.js',
             'resources/js/temporary_company_mgt/temporary_company_update.js',
             'resources/js/window_update.js',
+            'resources/sass/kintai_report.scss',
 		]),
 	],
 });

@@ -1,6 +1,6 @@
 {
   "resources/css/app.css": {
-    "file": "assets/app-8deda185.css",
+    "file": "assets/app-e7c89936.css",
     "isEntry": true,
     "src": "resources/css/app.css"
   },
@@ -85,7 +85,7 @@
     "src": "resources/js/customer_mgt/customer_update.js"
   },
   "resources/js/download/download.js": {
-    "file": "assets/download-40a168f4.js",
+    "file": "assets/download-96e977cc.js",
     "isEntry": true,
     "src": "resources/js/download/download.js"
   },
@@ -196,6 +196,11 @@
     "file": "assets/window_update-46c8f934.js",
     "isEntry": true,
     "src": "resources/js/window_update.js"
+  },
+  "resources/sass/kintai_report.scss": {
+    "file": "assets/kintai_report-ef07ab84.css",
+    "isEntry": true,
+    "src": "resources/sass/kintai_report.scss"
   },
   "resources/sass/navigation.scss": {
     "file": "assets/navigation-4c11498d.css",

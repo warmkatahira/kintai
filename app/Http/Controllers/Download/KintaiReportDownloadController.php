@@ -50,11 +50,15 @@ class KintaiReportDownloadController extends Controller
         $date_info = $KintaiReportDownloadService->getDateInfo($month_date, $holidays);
         // 国民の祝日に大洋製薬の稼働がある日を取得
         $taiyo_working_times = $KintaiReportDownloadService->getTaiyoWorkingTimeAtHoliday($request->base_id, $month_date, $employees, $start_end_of_month['start'], $start_end_of_month['end']);
-        // ファイル名を取得
-        $filename = $KintaiReportDownloadService->getDownloadFileName($request->date, $base['base']['base_name']);
-        // PDF出力ビューに情報を渡す
-        $pdf = $KintaiReportDownloadService->passDownloadInfo($kintais, $request->date, $base, $over40, $holidays, $taiyo_working_times, $date_info);
-        // ファイル名を設定してPDFをダウンロード
-        return $pdf->download($filename);
+        // ブラウザ表示ビューを返す(PDF生成はしない)
+        return view('download.kintai_report.show')->with([
+            'kintais' => $kintais,
+            'month' => $request->date,
+            'base' => $base,
+            'over40' => $over40,
+            'holidays' => $holidays,
+            'taiyo_working_times' => $taiyo_working_times,
+            'date_info' => $date_info,
+        ]);
     }
 }
