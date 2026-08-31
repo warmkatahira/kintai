@@ -20,6 +20,15 @@ class KintaiReportDownloadController extends Controller
         ]);
     }
 
+    public function checkSubmitted(Request $request)
+    {
+        $KintaiReportDownloadService = new KintaiReportDownloadService;
+
+        return response()->json([
+            'is_submitted' => $KintaiReportDownloadService->isSubmitted($request->base_id, $request->date),
+        ]);
+    }
+
     public function download(Request $request)
     {
         // インスタンス化

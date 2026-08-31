@@ -18,6 +18,16 @@ use App\Enums\EmployeeCategoryEnum;
 
 class KintaiReportDownloadService
 {
+    /**
+     * 対象営業所・対象月の勤怠が提出済みかどうか
+     */
+    public function isSubmitted($base_id, $date)
+    {
+        return KintaiClose::where('base_id', $base_id)
+                    ->where('close_date', $date)
+                    ->exists();
+    }
+    
     public function getBase($base_id, $date)
     {
         // 出力対象の営業所を取得

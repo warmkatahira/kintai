@@ -16,5 +16,5 @@
             <input type="month" name="date" class="w-60 text-sm" value="{{ CarbonImmutable::now()->isoFormat('YYYY-MM') }}">
         </div>
     </form>
-    <button type="button" id="download_enter" class="w-40 bg-blue-200 text-center rounded-lg mt-5 py-3">ダウンロード</button>
+    <button type="button" id="download_enter" data-check-url="{{ route('kintai_report_download.check_submitted') }}" class="w-40 bg-blue-200 text-center rounded-lg mt-5 py-3">ダウンロード</button>
 </x-app-layout>

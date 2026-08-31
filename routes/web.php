@@ -246,6 +246,7 @@ Route::middleware(['auth', 'userStatusCheck', 'OperationLogRecord', 'IPCheck'])-
             Route::controller(KintaiReportDownloadController::class)->prefix('kintai_report_download')->name('kintai_report_download.')->group(function(){
                 Route::get('', 'index')->name('index');
                 Route::get('download', 'download')->name('download');
+                Route::get('check_submitted', 'checkSubmitted')->name('check_submitted');
             });
         });
         Route::middleware(['DataDownloadAvailable'])->group(function () {
