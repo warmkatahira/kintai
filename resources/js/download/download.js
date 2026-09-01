@@ -35,3 +35,8 @@ $('#download_enter').on("click", function(){
             $button.prop('disabled', false);
         });
 });
+
+// ダウンロードボタンが押下されたら
+$('#download_data_enter').on("click", function(){
+    $("#download_data_form").submit();
+});

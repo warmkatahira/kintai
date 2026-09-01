@@ -1,2 +1,0 @@
-$("#download_enter").on("click",function(){const n=$(this),o=n.data("check-url"),e=$('#download_form select[name="base_id"]').val(),t=$('#download_form input[name="date"]').val();if(!t){window.alert("ダウンロード年月を選択してください。");return}n.prop("disabled",!0),$.get(o,{base_id:e,date:t}).done(function(a){!a.is_submitted&&!window.confirm(`選択された年月の勤怠は、まだ提出（締め）されていません。
-確定前のデータが出力されますが、ダウンロードしますか？`)||$("#download_form").submit()}).fail(function(){window.alert("提出状況の確認に失敗しました。時間をおいて再度お試しください。")}).always(function(){n.prop("disabled",!1)})});

@@ -3,7 +3,7 @@
 <x-app-layout>
     <x-page-header content="データダウンロード"/>
     <x-validation-error-msg />
-    <form method="GET" action="{{ route('data_download.download') }}" id="download_form" class="m-0">
+    <form method="GET" action="{{ route('data_download.download') }}" id="download_data_form" class="m-0">
         <div class="flex flex-row mb-2">
             <p class="w-40 bg-black text-white text-center py-2 text-sm">拠点</p>
             <select name="base_id" class="text-sm w-60">
@@ -35,5 +35,5 @@
             </select>
         </div>
     </form>
-    <button type="button" id="download_enter" class="w-40 bg-blue-200 text-center rounded-lg mt-5 py-3">ダウンロード</button>
+    <button type="button" id="download_data_enter" class="w-40 bg-blue-200 text-center rounded-lg mt-5 py-3">ダウンロード</button>
 </x-app-layout>
