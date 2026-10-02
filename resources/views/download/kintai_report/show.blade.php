@@ -189,16 +189,50 @@
             </table>
 
             {{-- 勤務表下部の計算欄 --}}
-            <div class="mt-2">
-                <div class="border-b border-black mb-1">
-                    <div class="flex flex-wrap gap-x-20 py-1"><span class="text-sm w-24">時給単価</span><span class="text-sm">×</span><span class="text-sm">=</span></div>
-                    <div class="flex flex-wrap gap-x-20 py-1 border-t border-black"><span class="text-sm w-24">時給単価</span><span class="text-sm">×</span><span class="text-sm">=</span></div>
-                    <div class="flex flex-wrap gap-x-20 py-1 border-t border-black"><span class="text-sm w-24">時給単価</span><span class="text-sm">×</span><span class="text-sm">=</span></div>
-                    <div class="flex flex-wrap gap-x-20 py-1 border-t border-black"><span class="text-sm w-24">時給単価</span><span class="text-sm">×</span><span class="text-sm">=</span></div>
-                    <div class="flex flex-wrap gap-x-20 py-1 border-t border-black"><span class="text-sm w-24">交通費</span><span class="text-sm">×</span><span class="text-sm">=</span></div>
+            @if($kintai['employee_category_id'] == App\Enums\EmployeeCategoryEnum::PART_TIME_EMPLOYEE)
+                {{-- パート：従来どおり時給単価欄 --}}
+                <div class="mt-2">
+                    <div class="border-b border-black mb-1">
+                        <div class="flex flex-wrap gap-x-20 py-1"><span class="text-sm w-24">時給単価</span><span class="text-sm">×</span><span class="text-sm">=</span></div>
+                        <div class="flex flex-wrap gap-x-20 py-1 border-t border-black"><span class="text-sm w-24">時給単価</span><span class="text-sm">×</span><span class="text-sm">=</span></div>
+                        <div class="flex flex-wrap gap-x-20 py-1 border-t border-black"><span class="text-sm w-24">時給単価</span><span class="text-sm">×</span><span class="text-sm">=</span></div>
+                        <div class="flex flex-wrap gap-x-20 py-1 border-t border-black"><span class="text-sm w-24">時給単価</span><span class="text-sm">×</span><span class="text-sm">=</span></div>
+                        <div class="flex flex-wrap gap-x-20 py-1 border-t border-black"><span class="text-sm w-24">交通費</span><span class="text-sm">×</span><span class="text-sm">=</span></div>
+                    </div>
+                    <div class="flex gap-x-64"><span class="text-sm w-24">合計</span><span class="text-sm">=</span></div>
                 </div>
-                <div class="flex gap-x-64"><span class="text-sm w-24">合計</span><span class="text-sm">=</span></div>
-            </div>
+            @else
+                {{-- パート以外：集計欄 --}}
+                @php
+                    $summary_items = [
+                        ['label' => '出勤日数',   'value' => null, 'unit' => '日'],
+                        ['label' => '有給',       'value' => null, 'unit' => '日'],
+                        ['label' => '振休',       'value' => null, 'unit' => '日'],
+                        ['label' => '欠勤',       'value' => null, 'unit' => '日'],
+                        ['label' => '早退',       'value' => null, 'unit' => '回'],
+                        ['label' => '遅刻',       'value' => null, 'unit' => '回'],
+                        ['label' => '法定内残業', 'value' => null, 'unit' => '時間'],
+                        ['label' => '法定外残業', 'value' => null, 'unit' => '時間'],
+                        ['label' => '深夜残業',   'value' => null, 'unit' => '時間'],
+                        ['label' => '60時間超',   'value' => null, 'unit' => '時間'],
+                        ['label' => '超過',   'value' => null, 'unit' => '時間'],
+                    ];
+                @endphp
+                <table class="border-collapse mt-3 w-full text-xs">
+                    <tbody>
+                        @foreach(array_chunk($summary_items, 3) as $row)
+                            <tr>
+                                @foreach($row as $item)
+                                    <td class="bg-black text-white border border-black px-3 py-1.5 w-28 whitespace-nowrap">{{ $item['label'] }}</td>
+                                    <td class="border border-black px-3 py-1.5 text-right">
+                                        {{ $item['value'] }}<span class="pl-1">{{ $item['unit'] }}</span>
+                                    </td>
+                                @endforeach
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            @endif
         </div>
 
         {{-- 応援稼働がある場合、別ページで出力 --}}
