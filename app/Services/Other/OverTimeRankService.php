@@ -8,6 +8,7 @@ use Carbon\CarbonImmutable;
 use App\Models\Employee;
 use App\Models\Kintai;
 use App\Enums\EmployeeCategoryEnum;
+use App\Services\KintaiMgt\KintaiDispScopeService;
 use Illuminate\Support\Facades\Gate;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
@@ -85,6 +86,9 @@ class OverTimeRankService
         }
         
         
+        // 勤怠表示範囲の条件を追加
+        $KintaiDispScopeService = new KintaiDispScopeService;
+        $KintaiDispScopeService->applyScope($employees);
         // 時短情報が無効な場合、時短勤務者以外を対象とする
         if (!Gate::allows('isShortTimeInfoAvailable')) {
             $employees->where('over_time_start', 0);
@@ -99,8 +103,10 @@ class OverTimeRankService
         }
         // 従業員名条件がある場合
         if (session('search_employee_name') != null) {
-            $employees->where('employee_last_name', 'LIKE', '%'.session('search_employee_name').'%')
-                    ->orWhere('employee_first_name', 'LIKE', '%'.session('search_employee_name').'%');
+            $employees->where(function($query) {
+                $query->where('employee_last_name', 'LIKE', '%'.session('search_employee_name').'%')
+                      ->orWhere('employee_first_name', 'LIKE', '%'.session('search_employee_name').'%');
+            });
         }
         // 残業時間が多い順に並び替え
         return $employees->orderBy('total_over_time', 'desc')->orderBy('base_id', 'asc')->orderBy('employee_category_id', 'asc')->orderBy('employee_no', 'asc')->paginate(500);

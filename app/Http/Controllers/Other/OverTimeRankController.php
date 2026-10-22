@@ -9,6 +9,7 @@ use App\Services\CommonService;
 use App\Models\Base;
 use App\Models\EmployeeCategory;
 use Carbon\CarbonImmutable;
+use App\Services\KintaiMgt\KintaiDispScopeService;
 
 class OverTimeRankController extends Controller
 {
@@ -21,8 +22,8 @@ class OverTimeRankController extends Controller
         $OverTimeRankService->deleteSearchSession();
         // 初期条件をセット
         $OverTimeRankService->setDefaultCondition();
-        // 拠点情報を取得
-        $bases = Base::getAll()->get();
+        // 拠点情報を取得（勤怠表示範囲が全拠点でない場合は自拠点のみ）
+        $bases = (new KintaiDispScopeService)->getDispBases();
         // 従業員区分情報を取得
         $employee_categories = EmployeeCategory::getAll()->get();
         // 月初・月末の日付を取得
@@ -57,8 +58,8 @@ class OverTimeRankController extends Controller
         $OverTimeRankService->deleteSearchSession();
         // 検索条件をセット
         $OverTimeRankService->setSearchCondition($request);
-        // 拠点情報を取得
-        $bases = Base::getAll()->get();
+        // 拠点情報を取得（勤怠表示範囲が全拠点でない場合は自拠点のみ）
+        $bases = (new KintaiDispScopeService)->getDispBases();
         // 従業員区分情報を取得
         $employee_categories = EmployeeCategory::getAll()->get();
         // 月初・月末の日付を取得

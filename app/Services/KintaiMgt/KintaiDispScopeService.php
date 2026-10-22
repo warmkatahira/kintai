@@ -4,6 +4,7 @@ namespace App\Services\KintaiMgt;
 
 use Illuminate\Support\Facades\Auth;
 use App\Models\Kintai;
+use App\Models\Base;
 use App\Enums\RoleEnum;
 
 class KintaiDispScopeService
@@ -30,6 +31,15 @@ class KintaiDispScopeService
         }
         // 想定外の値の場合は何も表示しない
         return $query->whereRaw('0 = 1');
+    }
+
+    // 勤怠表示範囲で選択可能な拠点を取得（全拠点でない場合は自拠点のみ）
+    public function getDispBases()
+    {
+        if(Auth::user()->role->kintai_disp_scope == RoleEnum::KINTAI_DISP_SCOPE_ALL){
+            return Base::getAll()->get();
+        }
+        return Base::getSpecify(Auth::user()->base_id)->get();
     }
 
     // 指定された勤怠IDの中から表示可能な勤怠IDのみを取得

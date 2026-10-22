@@ -260,7 +260,7 @@ Route::middleware(['auth', 'userStatusCheck', 'OperationLogRecord', 'IPCheck'])-
     // ★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆ その他 ★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆
     Route::middleware(['OtherFuncAvailable'])->group(function () {
         // -+-+-+-+-+-+-+-+-+-+-+-+ 残業ランキング -+-+-+-+-+-+-+-+-+-+-+-+
-        Route::controller(OverTimeRankController::class)->prefix('over_time_rank')->name('over_time_rank.')->group(function(){
+        Route::middleware(['OtherEmployeeKintaiDispAvailable'])->controller(OverTimeRankController::class)->prefix('over_time_rank')->name('over_time_rank.')->group(function(){
             Route::get('', 'index')->name('index');
             Route::get('search', 'search')->name('search');
             Route::get('download', 'download')->name('download');
@@ -272,7 +272,7 @@ Route::middleware(['auth', 'userStatusCheck', 'OperationLogRecord', 'IPCheck'])-
             Route::get('detail', 'detail')->name('detail');
         });
         // -+-+-+-+-+-+-+-+-+-+-+-+ 荷主割合確認 -+-+-+-+-+-+-+-+-+-+-+-+
-        Route::controller(CustomerRateCheckController::class)->prefix('customer_rate_check')->name('customer_rate_check.')->group(function(){
+        Route::middleware(['OtherEmployeeKintaiDispAvailable'])->controller(CustomerRateCheckController::class)->prefix('customer_rate_check')->name('customer_rate_check.')->group(function(){
             Route::get('', 'index')->name('index');
             Route::get('search', 'search')->name('search');
             Route::get('download', 'download')->name('download');

@@ -3,6 +3,7 @@
 namespace App\Providers;
 
  use Illuminate\Support\Facades\Gate;
+use App\Enums\RoleEnum;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 
 class AuthServiceProvider extends ServiceProvider
@@ -159,6 +160,10 @@ class AuthServiceProvider extends ServiceProvider
         // 特別稼働時間表示有効のみ許可
         Gate::define('isSpecialWorkingTimeDispAvailable', function($user){
             return ($user->role->is_special_woriking_time_disp_available == 1);
+        });
+        // 勤怠表示範囲が自分のみ以外（他の従業員の勤怠を表示できる）のみ許可
+        Gate::define('isOtherEmployeeKintaiDispAvailable', function($user){
+            return ($user->role->kintai_disp_scope != RoleEnum::KINTAI_DISP_SCOPE_SELF);
         });
     }
 }

@@ -8,6 +8,7 @@ use App\Services\Other\CustomerRateCheckService;
 use App\Models\Base;
 use App\Models\EmployeeCategory;
 use Carbon\CarbonImmutable;
+use App\Services\KintaiMgt\KintaiDispScopeService;
 
 class CustomerRateCheckController extends Controller
 {
@@ -19,8 +20,8 @@ class CustomerRateCheckController extends Controller
         $CustomerRateCheckService->deleteSearchSession();
         // 初期条件をセット
         $CustomerRateCheckService->setDefaultCondition();
-        // 拠点情報を取得
-        $bases = Base::getAll()->get();
+        // 拠点情報を取得（勤怠表示範囲が全拠点でない場合は自拠点のみ）
+        $bases = (new KintaiDispScopeService)->getDispBases();
         // 従業員区分情報を取得
         $employee_categories = EmployeeCategory::getAll()->get();
         // 表示させる従業員情報を取得
@@ -43,8 +44,8 @@ class CustomerRateCheckController extends Controller
         $CustomerRateCheckService->deleteSearchSession();
         // 初期条件をセット
         $CustomerRateCheckService->setSearchCondition($request);
-        // 拠点情報を取得
-        $bases = Base::getAll()->get();
+        // 拠点情報を取得（勤怠表示範囲が全拠点でない場合は自拠点のみ）
+        $bases = (new KintaiDispScopeService)->getDispBases();
         // 従業員区分情報を取得
         $employee_categories = EmployeeCategory::getAll()->get();
         // 表示させる従業員情報を取得
