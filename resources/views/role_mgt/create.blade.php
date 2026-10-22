@@ -15,6 +15,7 @@
                 @csrf
                 <x-create-input label="権限名" type="text" id="role_name" :db="null" required="1" tippy="0" />
                 <x-role-mgt.create-select label="勤怠管理機能" id="is_kintai_mgt_func_available" :forValue="$roles" :db="null" required="1" tippy="0" />
+                <x-role-mgt.create-select label="勤怠表示範囲" id="kintai_disp_scope" :forValue="$kintai_disp_scopes" :db="null" required="1" tippy="0" />
                 <x-role-mgt.create-select label="拠点確認" id="is_base_check_available" :forValue="$roles" :db="null" required="1" tippy="0" />
                 <x-role-mgt.create-select label="勤怠操作" id="is_kintai_operation_available" :forValue="$roles" :db="null" required="1" tippy="0" />
                 <x-role-mgt.create-select label="コメント操作" id="is_comment_operation_available" :forValue="$roles" :db="null" required="1" tippy="0" />

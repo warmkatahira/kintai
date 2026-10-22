@@ -14,13 +14,14 @@ use App\Services\KintaiMgt\KintaiMgtService;
 use App\Services\Punch\PunchFinishInputService;
 use Carbon\CarbonImmutable;
 use App\Enums\KintaiMgtEnum;
+use App\Enums\RoleEnum;
 
 class KintaiMgtController extends Controller
 {
     public function __construct()
     {
         // ミドルウェアを適用するメソッドを指定
-        $this->middleware('FindByKintai')->only(['detail']);
+        $this->middleware(['FindByKintai', 'KintaiDispScopeAvailable'])->only(['detail']);
     }
 
     public function index()
@@ -36,8 +37,8 @@ class KintaiMgtController extends Controller
         $kintais = $KintaiMgtService->getKintaiSearch(null);
         // 従業員区分情報を取得
         $employee_categories = EmployeeCategory::getAll()->get();
-        // 拠点情報を取得
-        $bases = Base::getAll()->get();
+        // 拠点情報を取得（勤怠表示範囲が全拠点でない場合は自拠点のみ）
+        $bases = Auth::user()->role->kintai_disp_scope == RoleEnum::KINTAI_DISP_SCOPE_ALL ? Base::getAll()->get() : Base::getSpecify(Auth::user()->base_id)->get();
         // Enumに定義してある条件値を取得
         $target_conditions = KintaiMgtEnum::TARGET_CONDITIONS;
         $base_check_conditions = KintaiMgtEnum::BASE_CHECK_CONDITIONS;
@@ -79,8 +80,8 @@ class KintaiMgtController extends Controller
         $kintais = $KintaiMgtService->getKintaiSearch();
         // 従業員区分情報を取得
         $employee_categories = EmployeeCategory::getAll()->get();
-        // 拠点情報を取得
-        $bases = Base::getAll()->get();
+        // 拠点情報を取得（勤怠表示範囲が全拠点でない場合は自拠点のみ）
+        $bases = Auth::user()->role->kintai_disp_scope == RoleEnum::KINTAI_DISP_SCOPE_ALL ? Base::getAll()->get() : Base::getSpecify(Auth::user()->base_id)->get();
         // Enumに定義してある条件値を取得
         $target_conditions = KintaiMgtEnum::TARGET_CONDITIONS;
         $base_check_conditions = KintaiMgtEnum::BASE_CHECK_CONDITIONS;

@@ -53,6 +53,7 @@ class RoleCreateRequest extends FormRequest
             'is_all_base_operation_available' => 'required|boolean',
             'is_add_rest_time_disp_available' => 'required|boolean',
             'is_special_woriking_time_disp_available' => 'required|boolean',
+            'kintai_disp_scope' => 'required|in:1,2,3',
         ];
     }
 
@@ -62,6 +63,7 @@ class RoleCreateRequest extends FormRequest
             'required' => ':attributeは必須です。',
             'max' => ":attributeは:max文字以内で入力して下さい。",
             'boolean' => ':attributeが正しくありません。',
+            'in' => ':attributeが正しくありません。',
         ];
     }
 
@@ -96,6 +98,7 @@ class RoleCreateRequest extends FormRequest
             'is_all_base_operation_available' => '全拠点操作',
             'is_add_rest_time_disp_available' => '追加休憩時間表示',
             'is_special_woriking_time_disp_available' => '特別稼働時間表示',
+            'kintai_disp_scope' => '勤怠表示範囲',
         ];
     }
 }

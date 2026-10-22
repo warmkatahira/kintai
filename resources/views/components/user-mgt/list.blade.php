@@ -7,6 +7,7 @@
                     <th class="font-thin py-3 px-2 text-center">更新</th>
                     <th class="font-thin py-3 px-2 text-center">拠点</th>
                     <th class="font-thin py-3 px-2 text-center">ユーザーID</th>
+                    <th class="font-thin py-3 px-2 text-center">従業員番号</th>
                     <th class="font-thin py-3 px-2 text-center">ユーザー名</th>
                     <th class="font-thin py-3 px-2 text-center">メールアドレス</th>
                     <th class="font-thin py-3 px-2 text-center">権限</th>
@@ -23,6 +24,7 @@
                         </td>
                         <td class="py-1 px-2 border text-left">{{ $user->base->base_name }}</td>
                         <td class="py-1 px-2 border text-left">{{ $user->user_id }}</td>
+                        <td class="py-1 px-2 border text-center">{{ $user->employee_no }}</td>
                         <td class="py-1 px-2 border text-left">{{ $user->last_name.' '.$user->first_name }}</td>
                         <td class="py-1 px-2 border text-left">{{ $user->email }}</td>
                         <td class="py-1 px-2 border text-left">@if(!is_null($user->role)) {{ $user->role->role_name }}@endif</td>

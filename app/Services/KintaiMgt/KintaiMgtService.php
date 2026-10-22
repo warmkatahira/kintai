@@ -11,6 +11,7 @@ use App\Models\Employee;
 use App\Models\Base;
 use App\Models\Customer;
 use App\Enums\KintaiMgtEnum;
+use App\Services\KintaiMgt\KintaiDispScopeService;
 
 class KintaiMgtService
 {
@@ -86,6 +87,9 @@ class KintaiMgtService
                         ->whereDate('work_day', '<=', session('search_work_day_to'))
                         ->join('employees', 'employees.employee_id', 'kintais.employee_id')
                         ->join('employee_categories', 'employee_categories.employee_category_id', 'employees.employee_category_id');
+        // 勤怠表示範囲の条件を追加
+        $KintaiDispScopeService = new KintaiDispScopeService;
+        $KintaiDispScopeService->applyScope($kintais);
         // 拠点条件がある場合
         if (!empty(session('search_base_id'))) {
             $kintais->where('base_id', session('search_base_id'));

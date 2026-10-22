@@ -8,6 +8,7 @@
                     <th class="font-thin py-3 px-2 text-center">権限名</th>
                     <th class="font-thin py-3 px-2 text-center">ユーザー数</th>
                     <th class="font-thin py-3 px-2 text-center">勤怠管理機能</th>
+                    <th class="font-thin py-3 px-2 text-center">勤怠表示範囲</th>
                     <th class="font-thin py-3 px-2 text-center">拠点確認</th>
                     <th class="font-thin py-3 px-2 text-center">勤怠操作</th>
                     <th class="font-thin py-3 px-2 text-center">コメント操作</th>
@@ -34,7 +35,7 @@
                     <th class="font-thin py-3 px-2 text-center">全拠点操作</th>
                     <th class="font-thin py-3 px-2 text-center">追加休憩時間表示</th>
                     <th class="font-thin py-3 px-2 text-center">派遣会社管理</th>
-                    <th class="font-thin py-3 px-2 text-center">特別稼働時間表示<th>
+                    <th class="font-thin py-3 px-2 text-center">特別稼働時間表示</th>
                 </tr>
             </thead>
             <tbody class="bg-white">
@@ -46,6 +47,7 @@
                         <td class="py-1 px-2 border text-center">{{ $role->role_name }}</td>
                         <td class="py-1 px-2 border text-center">{{ $role->users->count() }}</td>
                         <td class="py-1 px-2 border text-center {{ App\Enums\RoleEnum::get_class($role->is_kintai_mgt_func_available) }}">{{ App\Enums\RoleEnum::get_jp($role->is_kintai_mgt_func_available) }}</td>
+                        <td class="py-1 px-2 border text-center {{ App\Enums\RoleEnum::get_kintai_disp_scope_class($role->kintai_disp_scope) }}">{{ App\Enums\RoleEnum::get_kintai_disp_scope_jp($role->kintai_disp_scope) }}</td>
                         <td class="py-1 px-2 border text-center {{ App\Enums\RoleEnum::get_class($role->is_base_check_available) }}">{{ App\Enums\RoleEnum::get_jp($role->is_base_check_available) }}</td>
                         <td class="py-1 px-2 border text-center {{ App\Enums\RoleEnum::get_class($role->is_kintai_operation_available) }}">{{ App\Enums\RoleEnum::get_jp($role->is_kintai_operation_available) }}</td>
                         <td class="py-1 px-2 border text-center {{ App\Enums\RoleEnum::get_class($role->is_comment_operation_available) }}">{{ App\Enums\RoleEnum::get_jp($role->is_comment_operation_available) }}</td>

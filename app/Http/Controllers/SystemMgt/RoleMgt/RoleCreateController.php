@@ -16,8 +16,13 @@ class RoleCreateController extends Controller
         $roles = collect(RoleEnum::PULLDOWN_LIST)->map(function ($item) {
             return (object) $item;
         });
+        // 勤怠表示範囲情報を取得($xx->aaの形式でアクセスできるようにしている)
+        $kintai_disp_scopes = collect(RoleEnum::KINTAI_DISP_SCOPE_PULLDOWN_LIST)->map(function ($item) {
+            return (object) $item;
+        });
         return view('role_mgt.create')->with([
             'roles' => $roles,
+            'kintai_disp_scopes' => $kintai_disp_scopes,
         ]);
     }
 

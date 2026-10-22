@@ -17,9 +17,9 @@ class Role extends Model
         'is_base_check_available',
         'is_kintai_operation_available',
         'is_comment_operation_available',
-        'is_employee_mgt_available',
+        'is_employee_mgt_func_available',
         'is_employee_operation_available',
-        'is_base_mgt_available',
+        'is_base_mgt_func_available',
         'is_manual_punch_available',
         'is_customer_mgt_func_available',
         'is_kintai_close_available',
@@ -27,7 +27,7 @@ class Role extends Model
         'is_kintai_report_download_available',
         'is_data_download_available',
         'is_other_func_available',
-        'is_accounting_func_available',
+        'is_accounting_mgt_func_available',
         'is_system_mgt_func_available',
         'is_user_mgt_available',
         'is_role_mgt_available',
@@ -41,6 +41,7 @@ class Role extends Model
         'is_add_rest_time_disp_available',
         'is_temporary_company_mgt_available',
         'is_special_woriking_time_disp_available',
+        'kintai_disp_scope',
     ];
     // 全て取得
     public static function getAll()

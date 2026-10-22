@@ -29,6 +29,7 @@ class User extends Authenticatable
         'password',
         'role_id',
         'base_id',
+        'employee_no',
         'status',
         'last_login_at',
         'no_ip_check',
