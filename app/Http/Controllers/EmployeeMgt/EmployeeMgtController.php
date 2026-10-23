@@ -16,6 +16,7 @@ use App\Services\CommonService;
 use App\Enums\StatusEnum;
 use Illuminate\Support\Facades\Auth;
 use App\Enums\EmployeeMgtEnum;
+use App\Services\KintaiMgt\KintaiDispScopeService;
 
 class EmployeeMgtController extends Controller
 {
@@ -33,8 +34,8 @@ class EmployeeMgtController extends Controller
         $EmployeeMgtService->deleteSearchSession();
         // 初期条件をセット
         $EmployeeMgtService->setDefaultCondition();
-        // 拠点情報を取得
-        $bases = Base::getAll()->get();
+        // 拠点情報を取得（勤怠表示範囲が全拠点でない場合は自拠点のみ）
+        $bases = (new KintaiDispScopeService)->getDispBases();
         // 従業員区分を取得
         $employee_categories = EmployeeCategory::getAll()->get();
         // 従業員を取得
@@ -64,8 +65,8 @@ class EmployeeMgtController extends Controller
         $EmployeeMgtService->deleteSearchSession();
         // 検索条件をセット
         $EmployeeMgtService->setSearchCondition($request);
-        // 拠点情報を取得
-        $bases = Base::getAll()->get();
+        // 拠点情報を取得（勤怠表示範囲が全拠点でない場合は自拠点のみ）
+        $bases = (new KintaiDispScopeService)->getDispBases();
         // 従業員区分を取得
         $employee_categories = EmployeeCategory::getAll()->get();
         // 従業員を取得

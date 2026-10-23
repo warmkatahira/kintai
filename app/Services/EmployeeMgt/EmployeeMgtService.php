@@ -13,6 +13,7 @@ use App\Models\Kintai;
 use App\Models\KintaiDetail;
 use App\Services\CommonService;
 use App\Enums\EmployeeMgtEnum;
+use App\Services\KintaiMgt\KintaiDispScopeService;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class EmployeeMgtService
@@ -74,6 +75,9 @@ class EmployeeMgtService
                 $join->on('employees.employee_id', '=', 'TODAY.employee_id');
             })
             ->select('employees.*', 'TIME.total_over_time', 'TIME.total_working_time', DB::raw('CASE WHEN TODAY.begin_time_adj IS NULL THEN "" ELSE "出勤" END as today_working_status'));
+        // 勤怠表示範囲の条件を追加
+        $KintaiDispScopeService = new KintaiDispScopeService;
+        $KintaiDispScopeService->applyScope($employees);
         // 拠点条件がある場合
         if (session('search_base_id') != null) {
             $employees->where('base_id', session('search_base_id'));
@@ -84,8 +88,10 @@ class EmployeeMgtService
         }
         // 従業員名条件がある場合
         if (session('search_employee_name') != null) {
-            $employees->where('employee_last_name', 'LIKE', '%'.session('search_employee_name').'%')
-                    ->orWhere('employee_first_name', 'LIKE', '%'.session('search_employee_name').'%');
+            $employees->where(function($query) {
+                $query->where('employee_last_name', 'LIKE', '%'.session('search_employee_name').'%')
+                      ->orWhere('employee_first_name', 'LIKE', '%'.session('search_employee_name').'%');
+            });
         }
         // 区分条件がある場合
         if (session('search_employee_category_id') != null) {
