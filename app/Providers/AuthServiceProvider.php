@@ -165,5 +165,9 @@ class AuthServiceProvider extends ServiceProvider
         Gate::define('isOtherEmployeeKintaiDispAvailable', function($user){
             return ($user->role->kintai_disp_scope != RoleEnum::KINTAI_DISP_SCOPE_SELF);
         });
+        // 打刻画面の勤怠表示（今日の勤怠・今月の勤怠）有効のみ許可
+        Gate::define('isPunchKintaiDispAvailable', function($user){
+            return ($user->role->is_punch_kintai_disp_available == 1);
+        });
     }
 }

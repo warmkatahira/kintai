@@ -54,6 +54,7 @@ class RoleCreateRequest extends FormRequest
             'is_add_rest_time_disp_available' => 'required|boolean',
             'is_special_woriking_time_disp_available' => 'required|boolean',
             'kintai_disp_scope' => 'required|in:1,2,3',
+            'is_punch_kintai_disp_available' => 'required|boolean',
         ];
     }
 
@@ -99,6 +100,7 @@ class RoleCreateRequest extends FormRequest
             'is_add_rest_time_disp_available' => '追加休憩時間表示',
             'is_special_woriking_time_disp_available' => '特別稼働時間表示',
             'kintai_disp_scope' => '勤怠表示範囲',
+            'is_punch_kintai_disp_available' => '打刻画面の勤怠表示',
         ];
     }
 }

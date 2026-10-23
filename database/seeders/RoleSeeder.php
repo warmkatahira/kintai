@@ -124,6 +124,7 @@ class RoleSeeder extends Seeder
         ]);
         Role::create([
             'role_name' => '社員',
+            'is_punch_kintai_disp_available' => 0,
             'is_kintai_mgt_func_available' => 1,
             'is_base_check_available' => 1,
             'is_kintai_operation_available' => 0,

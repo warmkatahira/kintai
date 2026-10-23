@@ -123,14 +123,16 @@ Route::middleware(['auth', 'userStatusCheck', 'OperationLogRecord', 'IPCheck'])-
         Route::get('', 'index')->name('index');
         Route::post('enter', 'enter')->name('enter')->middleware('kintaiCloseCheck');
     });
-    // -+-+-+-+-+-+-+-+-+-+-+-+ 今日の勤怠 -+-+-+-+-+-+-+-+-+-+-+-+
-    Route::controller(TodayKintaiController::class)->prefix('today_kintai')->name('today_kintai.')->group(function(){
-        Route::get('', 'index')->name('index');
-    });
-    // -+-+-+-+-+-+-+-+-+-+-+-+ 今月の勤怠 -+-+-+-+-+-+-+-+-+-+-+-+
-    Route::controller(ThisMonthKintaiController::class)->prefix('this_month_kintai')->name('this_month_kintai.')->group(function(){
-        Route::get('', 'index')->name('index');
-        Route::get('detail', 'detail')->name('detail');
+    Route::middleware(['PunchKintaiDispAvailable'])->group(function () {
+        // -+-+-+-+-+-+-+-+-+-+-+-+ 今日の勤怠 -+-+-+-+-+-+-+-+-+-+-+-+
+        Route::controller(TodayKintaiController::class)->prefix('today_kintai')->name('today_kintai.')->group(function(){
+            Route::get('', 'index')->name('index');
+        });
+        // -+-+-+-+-+-+-+-+-+-+-+-+ 今月の勤怠 -+-+-+-+-+-+-+-+-+-+-+-+
+        Route::controller(ThisMonthKintaiController::class)->prefix('this_month_kintai')->name('this_month_kintai.')->group(function(){
+            Route::get('', 'index')->name('index');
+            Route::get('detail', 'detail')->name('detail');
+        });
     });
     // ★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆ 勤怠管理 ★☆★☆★☆★☆★☆★☆★☆★☆★☆★☆
     Route::middleware(['KintaiMgtFuncAvailable'])->group(function () {

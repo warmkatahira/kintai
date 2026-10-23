@@ -42,6 +42,7 @@ class Role extends Model
         'is_temporary_company_mgt_available',
         'is_special_woriking_time_disp_available',
         'kintai_disp_scope',
+        'is_punch_kintai_disp_available',
     ];
     // 全て取得
     public static function getAll()
