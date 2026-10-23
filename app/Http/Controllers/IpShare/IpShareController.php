@@ -12,7 +12,9 @@ class IpShareController extends Controller
     {
         $access_token = '4a5298afe510a3cd79ef2b683e1e2287';
         $url = 'https://api.chatwork.com/v2/rooms/354903263/messages';
-        $message = "[info][title]IP変更連絡[/title]".$request->info."[/info]";
+        // 場所が選択されていれば情報に付与する
+        $info = $request->filled('location') ? $request->info.'/'.$request->location : $request->info;
+        $message = "[info][title]IP変更連絡[/title]".$info."[/info]";
         // メッセージを投稿
         $data = array('body' => $message);
         $options = array(

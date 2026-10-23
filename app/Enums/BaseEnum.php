@@ -14,4 +14,9 @@ class BaseEnum
         self::REST => self::REST_JP,
         self::NO_REST => self::NO_REST_JP,
     ];
+    // IP制限時の連絡で選択する場所を拠点ごとに定義
+    const IP_SHARE_LOCATION_LIST = [
+        '01_1st' => ['A棟', 'B棟'],
+        '02_2nd' => ['現場', '事務所'],
+    ];
 }
