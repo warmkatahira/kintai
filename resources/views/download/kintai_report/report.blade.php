@@ -231,7 +231,7 @@
                             <td style="{{ $date_info[$work_day]['cell_style'] }}" class="center">{{ is_null($value) ? '' : ($value->is_early_worked == 1 ? '○' : '') }}</td>
                             <td style="{{ $date_info[$work_day]['cell_style'] }}" class="left">{{ is_null($value) ? '' : $value->comment }}</td>
                             @if($kintai['employee_category_id'] == App\Enums\EmployeeCategoryEnum::PART_TIME_EMPLOYEE)
-                                <td style="{{ $date_info[$work_day]['cell_style'] }}" class="center">{{ $date_info[$work_day]['is_sunday'] && isset($over40[$employee_id]) ? (isset($over40[$employee_id][$work_day]) ? ($over40[$employee_id][$work_day]->over40 > 0 ? number_format($over40[$employee_id][$work_day]->over40 / 60, 2) : '0.00') : '0.00') : '' }}</td>
+                                <td style="{{ $date_info[$work_day]['cell_style'] }}" class="center">{{ $date_info[$work_day]['is_week_end'] && isset($over40[$employee_id]) ? (isset($over40[$employee_id][$work_day]) ? ($over40[$employee_id][$work_day]->over40 > 0 ? number_format($over40[$employee_id][$work_day]->over40 / 60, 2) : '0.00') : '0.00') : '' }}</td>
                             @endif
                             @if($kintai['base_id'] == '01_1st' && $kintai['employee_category_id'] == App\Enums\EmployeeCategoryEnum::PART_TIME_EMPLOYEE)
                                 <td style="{{ $date_info[$work_day]['cell_style'] }}" class="center">{{ isset($taiyo_working_times[$employee_id][$work_day]) ? '○' : '' }}</td>

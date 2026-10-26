@@ -180,7 +180,7 @@
                             </td>
                             @if($kintai['employee_category_id'] == App\Enums\EmployeeCategoryEnum::PART_TIME_EMPLOYEE)
                                 <td class="border border-black px-1 py-0.5 text-center">
-                                    {{ $date_info[$work_day]['is_sunday'] && isset($over40[$employee_id]) ? (isset($over40[$employee_id][$work_day]) ? ($over40[$employee_id][$work_day]->over40 > 0 ? number_format($over40[$employee_id][$work_day]->over40 / 60, 2) : '0.00') : '0.00') : '' }}
+                                    {{ $date_info[$work_day]['is_week_end'] && isset($over40[$employee_id]) ? (isset($over40[$employee_id][$work_day]) ? ($over40[$employee_id][$work_day]->over40 > 0 ? number_format($over40[$employee_id][$work_day]->over40 / 60, 2) : '0.00') : '0.00') : '' }}
                                 </td>
                             @endif
                         </tr>

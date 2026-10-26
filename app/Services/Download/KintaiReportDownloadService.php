@@ -239,14 +239,14 @@ class KintaiReportDownloadService
         $week_ranges = [];
         foreach ($month_date as $date) {
             $day = new CarbonImmutable($date);
-            if ($day->isSunday()) {
+            if ($day->isSaturday()) {
                 $from = $day->subDays(6)->toDateString();
                 $to   = $day->toDateString();
                 $week_ranges[$to] = [$from, $to];
             }
         }
         // 週ごと・従業員ごとに一括集計
-        foreach ($week_ranges as $sunday => [$from, $to]) {
+        foreach ($week_ranges as $saturday => [$from, $to]) {
             $rows = Kintai::whereIn('employee_id', $employee_ids)
                 ->whereDate('work_day', '>=', $from)
                 ->whereDate('work_day', '<=', $to)
@@ -261,25 +261,24 @@ class KintaiReportDownloadService
                         OR (SUM(special_working_time) IS NULL),
                         0,
                         (SUM(special_working_time) - GREATEST((SUM(working_time) - SUM(over_time) - 2400), 0))
-                    ) as special_minus_over40,
-                    DATE_FORMAT(work_day, '%v') as date
+                    ) as special_minus_over40
                 ")
-                ->groupBy('employee_id', 'date')
+                ->groupBy('employee_id')
                 ->get()
                 ->keyBy('employee_id');
             foreach ($employee_ids as $eid) {
                 if (!isset($over40[$eid])) {
                     $over40[$eid] = [];
                 }
-                $over40[$eid][$sunday] = $rows->get($eid);
+                $over40[$eid][$saturday] = $rows->get($eid);
             }
         }
         // 合計を計算
         foreach ($employee_ids as $eid) {
             $total_over40 = 0;
             $total_special = 0;
-            foreach ($week_ranges as $sunday => $_) {
-                $row = $over40[$eid][$sunday] ?? null;
+            foreach ($week_ranges as $saturday => $_) {
+                $row = $over40[$eid][$saturday] ?? null;
                 if ($row) {
                     $total_over40   += $row->over40 > 0 ? $row->over40 : 0;
                     $total_special  += $row->special_minus_over40 ?? 0;
@@ -312,7 +311,7 @@ class KintaiReportDownloadService
             $is_holiday_style = $carbon->dayOfWeekIso >= 6 || isset($holidays[$date]);
             $date_info[$date] = [
                 'formatted'  => $carbon->isoFormat('MM月DD日(ddd)'),
-                'is_sunday'  => $carbon->isSunday(),
+                'is_week_end' => $carbon->isSaturday(),
                 'cell_style' => $is_holiday_style ? 'background-color: #CCFFFF' : '',
             ];
         }
