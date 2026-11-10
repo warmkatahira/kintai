@@ -1,6 +1,6 @@
 {
   "resources/css/app.css": {
-    "file": "assets/app-0471bcbb.css",
+    "file": "assets/app-ad6a416b.css",
     "isEntry": true,
     "src": "resources/css/app.css"
   },
@@ -186,6 +186,11 @@
     "file": "assets/temporary_company_update-9d6110cd.js",
     "isEntry": true,
     "src": "resources/js/temporary_company_mgt/temporary_company_update.js"
+  },
+  "resources/js/user_mgt/no_ip_check_bulk_update.js": {
+    "file": "assets/no_ip_check_bulk_update-6056f2c9.js",
+    "isEntry": true,
+    "src": "resources/js/user_mgt/no_ip_check_bulk_update.js"
   },
   "resources/js/user_mgt/user_update.js": {
     "file": "assets/user_update-dffb9a69.js",

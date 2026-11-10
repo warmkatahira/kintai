@@ -1,0 +1,1 @@
+$(".no_ip_check_bulk_enter").on("click",function(){if(!$("#bulk_base_id").val()){window.alert("拠点を選択してください。");return}const e=$("#bulk_base_id option:selected").text();window.confirm(e+"のステータスが有効な全ユーザーのIPチェックなしを「"+$(this).data("label")+"」にしますか？")==!0&&($("#no_ip_check_bulk_value").val($(this).data("value")),$("#no_ip_check_bulk_update_form").submit())});
