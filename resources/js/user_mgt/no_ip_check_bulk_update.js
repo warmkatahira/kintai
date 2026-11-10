@@ -8,7 +8,7 @@ $('.no_ip_check_bulk_enter').on("click",function(){
     }
     const base_name = $('#bulk_base_id option:selected').text();
     // 処理を実行するか確認
-    const result = window.confirm(base_name + "の全ユーザーのIPチェックなしを「" + $(this).data('label') + "」にしますか？");
+    const result = window.confirm(base_name + "のステータスが有効な全ユーザーのIPチェックなしを「" + $(this).data('label') + "」にしますか？");
     // 「はい」が押下されたらsubmit、「いいえ」が押下されたら処理キャンセル
     if(result == true) {
         $('#no_ip_check_bulk_value').val($(this).data('value'));

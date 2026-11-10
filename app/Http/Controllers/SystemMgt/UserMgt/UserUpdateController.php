@@ -64,13 +64,13 @@ class UserUpdateController extends Controller
         ]);
         // インスタンス化
         $UserUpdateService = new UserUpdateService;
-        // 拠点のユーザーのIPチェックなしを一括更新
+        // 拠点のユーザー（ステータスが有効のみ）のIPチェックなしを一括更新
         $count = $UserUpdateService->updateNoIpCheckByBase($request->bulk_base_id, $request->no_ip_check);
         // 拠点名を取得
         $base = Base::getSpecify($request->bulk_base_id)->first();
         return redirect(session('back_url_1', route('user_mgt.index')))->with([
             'alert_type' => 'success',
-            'alert_message' => $base->base_name.'のユーザー（'.$count.'件）のIPチェックなしを「'.NoIpCheckEnum::get_jp($request->no_ip_check).'」に更新しました。',
+            'alert_message' => $base->base_name.'の有効ユーザー（'.$count.'件）のIPチェックなしを「'.NoIpCheckEnum::get_jp($request->no_ip_check).'」に更新しました。',
         ]);
     }
 }

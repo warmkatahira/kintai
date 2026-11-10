@@ -5,6 +5,7 @@ namespace App\Services\UserMgt;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use App\Models\User;
+use App\Enums\StatusEnum;
 
 
 class UserUpdateService
@@ -25,11 +26,13 @@ class UserUpdateService
         return;
     }
 
-    // 拠点のユーザーのIPチェックなしを一括更新
+    // 拠点のユーザー（ステータスが有効のみ）のIPチェックなしを一括更新
     public function updateNoIpCheckByBase($base_id, $no_ip_check)
     {
-        return User::where('base_id', $base_id)->update([
-            'no_ip_check' => $no_ip_check,
-        ]);
+        return User::where('base_id', $base_id)
+                    ->where('status', StatusEnum::ACTIVE)
+                    ->update([
+                        'no_ip_check' => $no_ip_check,
+                    ]);
     }
 }
