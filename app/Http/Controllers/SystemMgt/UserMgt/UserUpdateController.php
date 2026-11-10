@@ -51,4 +51,26 @@ class UserUpdateController extends Controller
             'alert_message' => 'ユーザー情報を更新しました。',
         ]);
     }
+
+    public function no_ip_check_bulk_update(Request $request)
+    {
+        // バリデーション
+        $request->validate([
+            'bulk_base_id' => 'required|exists:bases,base_id',
+            'no_ip_check' => 'required|in:'.NoIpCheckEnum::DEACTIVE.','.NoIpCheckEnum::ACTIVE,
+        ], [], [
+            'bulk_base_id' => '拠点',
+            'no_ip_check' => 'IPチェックなし',
+        ]);
+        // インスタンス化
+        $UserUpdateService = new UserUpdateService;
+        // 拠点のユーザーのIPチェックなしを一括更新
+        $count = $UserUpdateService->updateNoIpCheckByBase($request->bulk_base_id, $request->no_ip_check);
+        // 拠点名を取得
+        $base = Base::getSpecify($request->bulk_base_id)->first();
+        return redirect(session('back_url_1', route('user_mgt.index')))->with([
+            'alert_type' => 'success',
+            'alert_message' => $base->base_name.'のユーザー（'.$count.'件）のIPチェックなしを「'.NoIpCheckEnum::get_jp($request->no_ip_check).'」に更新しました。',
+        ]);
+    }
 }

@@ -309,6 +309,7 @@ Route::middleware(['auth', 'userStatusCheck', 'OperationLogRecord', 'IPCheck'])-
             Route::controller(UserUpdateController::class)->prefix('user_update')->name('user_update.')->group(function(){
                 Route::get('', 'index')->name('index');
                 Route::post('update', 'update')->name('update');
+                Route::post('no_ip_check_bulk_update', 'no_ip_check_bulk_update')->name('no_ip_check_bulk_update');
             });
         });
         Route::middleware(['RoleMgtAvailable'])->group(function () {

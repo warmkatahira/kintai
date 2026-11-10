@@ -36,6 +36,7 @@ export default defineConfig({
             'resources/js/customer_group_mgt/customer_group_create.js',
             'resources/js/customer_group_mgt/customer_group_update.js',
             'resources/js/user_mgt/user_update.js',
+            'resources/js/user_mgt/no_ip_check_bulk_update.js',
             'resources/js/role_mgt/role_create.js',
             'resources/js/role_mgt/role_update.js',
             'resources/js/holiday_mgt/holiday_mgt.js',
