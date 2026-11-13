@@ -53,6 +53,10 @@ class KintaiReportDownloadController extends Controller
         }
         // 週40時間超過情報を取得
         $over40 = $KintaiReportDownloadService->getOver40($month_date, $employees, $start_end_of_month['start'], $start_end_of_month['end']);
+        // 有給取得情報を取得
+        $paid_leaves = $KintaiReportDownloadService->getPaidLeaves($employees, $start_end_of_month['start'], $start_end_of_month['end']);
+        // 時給計算(通常・残業・深夜残業・有給)を取得
+        $wages = $KintaiReportDownloadService->getWages($kintais, $over40, $paid_leaves);
         // 対象月の祝日を取得
         $holidays = $KintaiReportDownloadService->getHolidays($start_end_of_month['start'], $start_end_of_month['end']);
         // 日付情報を取得
@@ -68,6 +72,8 @@ class KintaiReportDownloadController extends Controller
             'holidays' => $holidays,
             'taiyo_working_times' => $taiyo_working_times,
             'date_info' => $date_info,
+            'paid_leaves' => $paid_leaves,
+            'wages' => $wages,
         ]);
     }
 }

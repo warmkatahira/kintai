@@ -6,6 +6,7 @@ use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 use App\Rules\MonthlyWorkableTimeRule;
 use App\Rules\OverTimeStartRule;
+use App\Enums\CommutingAllowanceEnum;
 
 class EmployeeCreateRequest extends FormRequest
 {
@@ -34,6 +35,10 @@ class EmployeeCreateRequest extends FormRequest
             'employee_first_name' => 'required|max:10',
             'monthly_workable_time' => ['required', new MonthlyWorkableTimeRule($this->monthly_workable_time)],
             'over_time_start' => ['nullable', new OverTimeStartRule($this->over_time_start)],
+            'hourly_wage' => ['nullable', 'integer', 'min:0', 'max:99999'],
+            'paid_leave_working_time' => ['nullable', 'numeric', 'min:0', 'max:24', 'multiple_of:0.25'],
+            'commuting_allowance_type' => ['nullable', Rule::in(array_keys(CommutingAllowanceEnum::TYPE_LIST))],
+            'commuting_allowance_amount' => ['nullable', 'required_if:commuting_allowance_type,'.implode(',', [CommutingAllowanceEnum::MONTHLY_FIXED, CommutingAllowanceEnum::WORKING_DAYS, CommutingAllowanceEnum::COMMENT_DAYS]), 'integer', 'min:0', 'max:999999'],
         ];
     }
 
@@ -44,6 +49,17 @@ class EmployeeCreateRequest extends FormRequest
             'max' => ":attributeは:max文字以内で入力して下さい。",
             'exists' => ':attributeが存在しません。',
             'unique' => ':attributeは既に使用されています。',
+            'in' => ':attributeの値が不正です。',
+            'integer' => ':attributeは整数で入力して下さい。',
+            'hourly_wage.min' => ':attributeは:min以上で入力して下さい。',
+            'hourly_wage.max' => ':attributeは:max以下で入力して下さい。',
+            'numeric' => ':attributeは数値で入力して下さい。',
+            'paid_leave_working_time.min' => ':attributeは:min以上で入力して下さい。',
+            'paid_leave_working_time.max' => ':attributeは:max以下で入力して下さい。',
+            'multiple_of' => ':attributeは:value単位で入力して下さい。',
+            'commuting_allowance_amount.min' => ':attributeは:min以上で入力して下さい。',
+            'commuting_allowance_amount.max' => ':attributeは:max以下で入力して下さい。',
+            'required_if' => '交通費の支給形態が「なし」以外の場合、:attributeは必須です。',
         ];
     }
 
@@ -57,6 +73,10 @@ class EmployeeCreateRequest extends FormRequest
             'employee_first_name' => '従業員名(名)',
             'monthly_workable_time' => '月間稼働可能時間',
             'over_time_start' => '残業開始時間',
+            'hourly_wage' => '時給単価',
+            'paid_leave_working_time' => '有給時稼働時間',
+            'commuting_allowance_type' => '交通費支給形態',
+            'commuting_allowance_amount' => '交通費金額',
         ];
     }
 }

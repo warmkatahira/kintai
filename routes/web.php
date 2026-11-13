@@ -25,6 +25,7 @@ use Illuminate\Support\Facades\Route;
     use App\Http\Controllers\EmployeeMgt\EmployeeMgtController;
     use App\Http\Controllers\EmployeeMgt\EmployeeCreateController;
     use App\Http\Controllers\EmployeeMgt\EmployeeUpdateController;
+    use App\Http\Controllers\EmployeeMgt\EmployeeCsvController;
 // +-+-+-+-+-+-+-+- 拠点管理 +-+-+-+-+-+-+-+-
     // +-+-+-+-+-+-+-+- 手動打刻 +-+-+-+-+-+-+-+-
     use App\Http\Controllers\BaseMgt\PunchManual\PunchManualBeginOnlyController;
@@ -66,6 +67,10 @@ use Illuminate\Support\Facades\Route;
     use App\Http\Controllers\SystemMgt\RoleMgt\RoleUpdateController;
     // +-+-+-+-+-+-+-+- 休日管理 +-+-+-+-+-+-+-+-
     use App\Http\Controllers\SystemMgt\HolidayMgt\HolidayMgtController;
+    // +-+-+-+-+-+-+-+- 有給管理 +-+-+-+-+-+-+-+-
+    use App\Http\Controllers\SystemMgt\PaidLeaveMgt\PaidLeaveMgtController;
+    // +-+-+-+-+-+-+-+- 給与計算データダウンロード +-+-+-+-+-+-+-+-
+    use App\Http\Controllers\SystemMgt\PayrollDataDownload\PayrollDataDownloadController;
     // +-+-+-+-+-+-+-+- アクセス管理 +-+-+-+-+-+-+-+-
     use App\Http\Controllers\SystemMgt\AccessMgt\AccessMgtController;
     use App\Http\Controllers\SystemMgt\AccessMgt\IpLimitCreateController;
@@ -181,6 +186,13 @@ Route::middleware(['auth', 'userStatusCheck', 'OperationLogRecord', 'IPCheck'])-
             Route::controller(EmployeeUpdateController::class)->prefix('employee_update')->name('employee_update.')->group(function(){
                 Route::get('', 'index')->name('index')->middleware('EmployeeUpdateAvailable');
                 Route::post('update', 'update')->name('update');
+            });
+        });
+        Route::middleware(['EmployeeCsvMgtAvailable'])->group(function () {
+            // -+-+-+-+-+-+-+-+-+-+-+-+ 従業員CSV管理 -+-+-+-+-+-+-+-+-+-+-+-+
+            Route::controller(EmployeeCsvController::class)->prefix('employee_csv')->name('employee_csv.')->group(function(){
+                Route::get('download', 'download')->name('download');
+                Route::post('upload', 'upload')->name('upload');
             });
         });
     });
@@ -334,6 +346,23 @@ Route::middleware(['auth', 'userStatusCheck', 'OperationLogRecord', 'IPCheck'])-
                 Route::get('', 'index')->name('index');
                 Route::get('download', 'download')->name('download');
                 Route::post('upload', 'upload')->name('upload');
+            });
+        });
+        Route::middleware(['PaidLeaveMgtAvailable'])->group(function () {
+            // -+-+-+-+-+-+-+-+-+-+-+-+ 有給管理 -+-+-+-+-+-+-+-+-+-+-+-+
+            Route::controller(PaidLeaveMgtController::class)->prefix('paid_leave_mgt')->name('paid_leave_mgt.')->group(function(){
+                Route::get('', 'index')->name('index');
+                Route::get('search', 'search')->name('search');
+                Route::get('download', 'download')->name('download');
+                Route::post('upload', 'upload')->name('upload');
+                Route::post('delete', 'delete')->name('delete');
+            });
+        });
+        Route::middleware(['PayrollDataDownloadAvailable'])->group(function () {
+            // -+-+-+-+-+-+-+-+-+-+-+-+ 給与計算データダウンロード -+-+-+-+-+-+-+-+-+-+-+-+
+            Route::controller(PayrollDataDownloadController::class)->prefix('payroll_data_download')->name('payroll_data_download.')->group(function(){
+                Route::get('', 'index')->name('index');
+                Route::get('download', 'download')->name('download');
             });
         });
         Route::middleware(['AccessMgtAvailable'])->group(function () {

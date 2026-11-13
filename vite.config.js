@@ -40,6 +40,7 @@ export default defineConfig({
             'resources/js/role_mgt/role_create.js',
             'resources/js/role_mgt/role_update.js',
             'resources/js/holiday_mgt/holiday_mgt.js',
+            'resources/js/paid_leave_mgt/paid_leave_mgt.js',
             'resources/js/kintai_close/kintai_close.js',
             'resources/js/download/download.js',
             'resources/css/kintai_report_output.css',

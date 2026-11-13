@@ -12,9 +12,12 @@ use App\Models\EmployeeCategory;
 use App\Models\Holiday;
 use App\Models\KintaiClose;
 use App\Models\KintaiCloseEmployee;
+use App\Models\PaidLeave;
 use Carbon\CarbonImmutable;
 use Illuminate\Support\Facades\Gate;
 use App\Enums\EmployeeCategoryEnum;
+use App\Enums\CommutingAllowanceEnum;
+use App\Enums\WageEnum;
 
 class KintaiReportDownloadService
 {
@@ -91,7 +94,7 @@ class KintaiReportDownloadService
                             ->where('is_available', 1)
                             ->join('bases', 'bases.base_id', 'employees.base_id')
                             ->join('employee_categories', 'employee_categories.employee_category_id', 'employees.employee_category_id')
-                            ->select('employee_id', 'employee_no', 'employee_last_name', 'employee_first_name', 'bases.base_id', 'base_name', 'employees.employee_category_id', 'over_time_start', 'employee_category_name')
+                            ->select('employee_id', 'employee_no', 'employee_last_name', 'employee_first_name', 'bases.base_id', 'base_name', 'employees.employee_category_id', 'over_time_start', 'employee_category_name', 'hourly_wage', 'paid_leave_working_time', 'commuting_allowance_type', 'commuting_allowance_amount')
                             ->orderBy('employees.employee_category_id', 'asc')
                             ->orderBy('employee_no', 'asc');
         }
@@ -104,7 +107,7 @@ class KintaiReportDownloadService
                             ->join('bases', 'bases.base_id', 'kintai_closes.base_id')
                             ->join('employee_categories', 'employee_categories.employee_category_id', 'kintai_close_employees.employee_category_id')
                             ->join('employees', 'employees.employee_id', 'kintai_close_employees.employee_id')
-                            ->select('kintai_close_employees.employee_id', 'employees.employee_no', 'employees.employee_last_name', 'employees.employee_first_name', 'bases.base_id', 'bases.base_name', 'kintai_close_employees.employee_category_id', 'employees.over_time_start', 'employee_categories.employee_category_name')
+                            ->select('kintai_close_employees.employee_id', 'employees.employee_no', 'employees.employee_last_name', 'employees.employee_first_name', 'bases.base_id', 'bases.base_name', 'kintai_close_employees.employee_category_id', 'employees.over_time_start', 'employee_categories.employee_category_name', 'employees.hourly_wage', 'employees.paid_leave_working_time', 'employees.commuting_allowance_type', 'employees.commuting_allowance_amount')
                             ->orderBy('kintai_close_employees.employee_category_id', 'asc')
                             ->orderBy('employees.employee_no', 'asc');
         }
@@ -156,6 +159,8 @@ class KintaiReportDownloadService
                 'base_name'              => $base_name,
                 'employee_category_id'   => $employee->employee_category_id,
                 'employee_category_name' => $employee->employee_category_name,
+                'hourly_wage'            => (int)($employee->hourly_wage ?? 0),
+                'paid_leave_working_time' => (float)($employee->paid_leave_working_time ?? 0),
                 'kintai'                 => [],
             ];
             // 従業員の勤怠をwork_dayをキーにしたコレクションに
@@ -171,6 +176,8 @@ class KintaiReportDownloadService
             }
             // 稼働日数
             $kintais[$eid]['working_days'] = collect($kintais[$eid]['kintai'])->filter()->count();
+            // 交通費
+            $kintais[$eid]['commuting_allowance'] = $this->getCommutingAllowance($employee, $kintais[$eid]['kintai'], $kintais[$eid]['working_days']);
             $total = $totals->get($eid);
             $kintais[$eid]['total_working_time']            = $total?->total_working_time ?? 0;
             $kintais[$eid]['total_over_time']               = $total?->total_over_time ?? 0;
@@ -183,6 +190,95 @@ class KintaiReportDownloadService
             $kintais[$eid]['national_holiday_total_working_time']  = $all_national_holiday[$eid] ?? 0;
         }
         return isset($kintais) ? $kintais : null;
+    }
+
+    // 定時・残業・深夜残業の時間(分)を取得 ※勤怠表上部と同じ計算
+    public function getTimeBreakdown($kintai, $over40_of_employee)
+    {
+        // 総残業時間(通常残業+週40時間超過分+深夜稼働分の合算)
+        $total_over_time = $kintai['total_over_time']
+                            + ($over40_of_employee['total_over40'] ?? 0)
+                            + $kintai['total_late_night_working_time'];
+        // 深夜残業時間
+        $late_night_over_time = $kintai['total_late_night_over_time'];
+        return [
+            // 定時 = 総稼働時間 - 総残業時間
+            'regular'         => $kintai['total_working_time'] - $total_over_time,
+            // 残業 = 総残業時間 - 深夜残業時間
+            'over'            => $total_over_time - $late_night_over_time,
+            // 深夜残業
+            'late_night_over' => $late_night_over_time,
+        ];
+    }
+
+    // 時給計算(通常・残業・深夜残業・有給)をパートの従業員ごとに取得
+    // 戻り値: [employee_id => ['regular' => [...], 'over' => [...], 'late_night_over' => [...], 'paid_leave' => [...]]]
+    //         各要素: ['unit_price' => 単価, 'hours' => 時間, 'amount' => 金額(円未満切り上げ)]
+    //         有給のみ 'days' => 有給取得日数 も持ち、時間は1日あたりの有給時稼働時間(有給取得がない場合はnull)
+    // 時給単価が未設定(0)の従業員は含めない
+    public function getWages($kintais, $over40, $paid_leaves)
+    {
+        $wages = [];
+        // 区分ごとの割増率
+        $rates = [
+            'regular'         => 1,
+            'over'            => WageEnum::OVER_TIME_RATE,
+            'late_night_over' => WageEnum::LATE_NIGHT_OVER_TIME_RATE,
+        ];
+        foreach ($kintais as $employee_id => $kintai) {
+            if ($kintai['employee_category_id'] != EmployeeCategoryEnum::PART_TIME_EMPLOYEE || $kintai['hourly_wage'] == 0) {
+                continue;
+            }
+            $time_breakdown = $this->getTimeBreakdown($kintai, $over40[$employee_id] ?? []);
+            foreach ($rates as $key => $rate) {
+                $unit_price = $kintai['hourly_wage'] * $rate;
+                $minutes = $time_breakdown[$key];
+                $wages[$employee_id][$key] = [
+                    'unit_price' => $unit_price,
+                    'hours'      => $minutes / 60,
+                    // 給与計算Excelに合わせて円未満を切り上げ(ROUNDUP)
+                    // 浮動小数点の誤差で切り上げがずれないよう、一度小数第6位で丸めてから切り上げ
+                    'amount'     => (int)ceil(round($unit_price * $minutes / 60, 6)),
+                ];
+            }
+            // 有給 = 時給単価 × 有給時稼働時間 × 有給取得日数 (給与計算Excelと同じくROUNDUP)
+            $paid_leave_days = array_sum($paid_leaves[$employee_id] ?? []);
+            $wages[$employee_id]['paid_leave'] = $paid_leave_days == 0 ? null : [
+                'unit_price' => $kintai['hourly_wage'],
+                'hours'      => $kintai['paid_leave_working_time'],
+                'days'       => (float)$paid_leave_days,
+                'amount'     => (int)ceil(round($kintai['hourly_wage'] * $kintai['paid_leave_working_time'] * $paid_leave_days, 6)),
+            ];
+        }
+        return $wages;
+    }
+
+    // 交通費を計算(パートのみ)
+    // 戻り値: ['type' => 支給形態, 'unit_price' => 単価(月額固定はnull), 'days' => 日数(月額固定はnull), 'total' => 金額]
+    public function getCommutingAllowance($employee, $month_kintais, $working_days)
+    {
+        $type = (int)($employee->commuting_allowance_type ?? CommutingAllowanceEnum::NONE);
+        $amount = (int)($employee->commuting_allowance_amount ?? 0);
+        // パート以外・支給なしの場合
+        if ($employee->employee_category_id != EmployeeCategoryEnum::PART_TIME_EMPLOYEE || $type == CommutingAllowanceEnum::NONE) {
+            return ['type' => CommutingAllowanceEnum::NONE, 'unit_price' => null, 'days' => null, 'total' => 0];
+        }
+        // 1ヶ月固定の場合
+        if ($type == CommutingAllowanceEnum::MONTHLY_FIXED) {
+            return ['type' => $type, 'unit_price' => null, 'days' => null, 'total' => $amount];
+        }
+        // 出勤日数×単価の場合
+        if ($type == CommutingAllowanceEnum::WORKING_DAYS) {
+            $days = $working_days;
+        }
+        // コメントに交通費(または自走)の記載がある日数×単価の場合
+        if ($type == CommutingAllowanceEnum::COMMENT_DAYS) {
+            // キーワード(交通費・自走など)のいずれかを含む日を数える
+            $days = collect($month_kintais)->filter(
+                fn($kintai) => !is_null($kintai) && \Illuminate\Support\Str::contains((string)$kintai->comment, CommutingAllowanceEnum::COMMENT_KEYWORDS)
+            )->count();
+        }
+        return ['type' => $type, 'unit_price' => $amount, 'days' => $days ?? 0, 'total' => $amount * ($days ?? 0)];
     }
 
     public function getSupportWorkingTimeBulk(array $employee_ids, $start_day, $end_day)
@@ -288,6 +384,27 @@ class KintaiReportDownloadService
             $over40[$eid]['total_special_working_time']  = $total_special;
         }
         return $over40;
+    }
+
+    // 有給取得情報を取得([employee_id][日付] => 取得日数)
+    public function getPaidLeaves($employees, $start_day, $end_day)
+    {
+        $paid_leaves = [];
+        // 従業員番号 => employee_idの対応表を作成
+        $employee_ids = $employees->pluck('employee_id', 'employee_no');
+        if ($employee_ids->isEmpty()) {
+            return $paid_leaves;
+        }
+        // 対象月・対象従業員の有給を取得
+        $rows = PaidLeave::whereIn('employee_no', $employee_ids->keys()->all())
+                    ->whereDate('paid_leave_date', '>=', $start_day)
+                    ->whereDate('paid_leave_date', '<=', $end_day)
+                    ->get();
+        // 配列に格納
+        foreach ($rows as $row) {
+            $paid_leaves[$employee_ids[$row->employee_no]][$row->paid_leave_date] = (float)$row->paid_leave_days;
+        }
+        return $paid_leaves;
     }
 
     public function getHolidays($start_day, $end_day)

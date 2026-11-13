@@ -146,7 +146,11 @@
                     @foreach($kintai['kintai'] as $work_day => $value)
                         <tr style="{{ $date_info[$work_day]['cell_style'] }}">
                             <td class="border border-black px-0 py-0.5 text-center whitespace-nowrap">{{ $date_info[$work_day]['formatted'] }}</td>
-                            <td class="border border-black px-1 py-0.5 w-10"></td>
+                            <td class="border border-black px-1 py-0.5 w-10 text-center">
+                                @if(isset($paid_leaves[$employee_id][$work_day]))
+                                    {{ $paid_leaves[$employee_id][$work_day] >= 1 ? '○' : '半' }}
+                                @endif
+                            </td>
                             <td class="border border-black px-1 py-0.5 text-center">{{ is_null($value) ? '' : substr($value->begin_time_adj, 0, 5) }}</td>
                             <td class="border border-black px-1 py-0.5 text-center">{{ is_null($value) ? '' : substr($value->finish_time_adj, 0, 5) }}</td>
                             <td class="border border-black px-1 py-0.5 text-center">{{ !isset($value->finish_time_adj) ? '' : number_format($value->rest_time / 60, 2) }}</td>
@@ -190,23 +194,77 @@
 
             {{-- 勤務表下部の計算欄 --}}
             @if($kintai['employee_category_id'] == App\Enums\EmployeeCategoryEnum::PART_TIME_EMPLOYEE)
-                {{-- パート：従来どおり時給単価欄 --}}
-                <div class="mt-2">
-                    <div class="border-b border-black mb-1">
-                        <div class="flex flex-wrap gap-x-20 py-1"><span class="text-sm w-24">時給単価</span><span class="text-sm">×</span><span class="text-sm">=</span></div>
-                        <div class="flex flex-wrap gap-x-20 py-1 border-t border-black"><span class="text-sm w-24">時給単価</span><span class="text-sm">×</span><span class="text-sm">=</span></div>
-                        <div class="flex flex-wrap gap-x-20 py-1 border-t border-black"><span class="text-sm w-24">時給単価</span><span class="text-sm">×</span><span class="text-sm">=</span></div>
-                        <div class="flex flex-wrap gap-x-20 py-1 border-t border-black"><span class="text-sm w-24">時給単価</span><span class="text-sm">×</span><span class="text-sm">=</span></div>
-                        <div class="flex flex-wrap gap-x-20 py-1 border-t border-black"><span class="text-sm w-24">交通費</span><span class="text-sm">×</span><span class="text-sm">=</span></div>
-                    </div>
-                    <div class="flex gap-x-64"><span class="text-sm w-24">合計</span><span class="text-sm">=</span></div>
-                </div>
+                {{-- パート：時給単価欄（通常・残業・深夜残業・有給） --}}
+                @php
+                    // 有給取得日数（取得がなければnull）
+                    $paid_leave_days = isset($paid_leaves[$employee_id]) ? array_sum($paid_leaves[$employee_id]) : null;
+                @endphp
+                @php
+                    // 単価の表示形式(円未満がある場合のみ小数第2位まで表示)
+                    $format_yen = fn($value) => (floor($value) == $value ? number_format($value) : number_format($value, 2)).'円';
+                    // 時給計算(時給単価が未設定の場合はnull)
+                    $wage = $wages[$employee_id] ?? null;
+                    // 交通費(従業員マスタの支給形態に応じて計算済み)
+                    $commuting_allowance = $kintai['commuting_allowance'];
+                    // 計算欄の行を作成(unit_price/quantity/amountがnullの場合は手書き用に空欄)
+                    $calc_rows = [];
+                    foreach (['regular' => '通常', 'over' => '残業', 'late_night_over' => '深夜残業'] as $wage_key => $wage_label) {
+                        $calc_rows[] = [
+                            'label'      => $wage_label,
+                            'unit_price' => is_null($wage) ? null : $format_yen($wage[$wage_key]['unit_price']),
+                            'quantity'   => is_null($wage) ? null : number_format($wage[$wage_key]['hours'], 2).'時間',
+                            'amount'     => is_null($wage) ? null : $wage[$wage_key]['amount'],
+                        ];
+                    }
+                    // 有給(時給単価×有給時稼働時間×日数)
+                    $paid_leave_wage = $wage['paid_leave'] ?? null;
+                    $calc_rows[] = [
+                        'label'      => is_null($paid_leave_days) ? '' : '有給（'.(float)$paid_leave_days.'日）',
+                        'unit_price' => is_null($paid_leave_wage) ? null : $format_yen($paid_leave_wage['unit_price']),
+                        'quantity'   => is_null($paid_leave_wage) ? null : number_format($paid_leave_wage['hours'], 2).'時間 × '.$paid_leave_wage['days'].'日',
+                        'amount'     => is_null($paid_leave_wage) ? null : $paid_leave_wage['amount'],
+                    ];
+                    // 交通費
+                    $is_monthly_fixed = $commuting_allowance['type'] == App\Enums\CommutingAllowanceEnum::MONTHLY_FIXED;
+                    $is_no_commuting = $commuting_allowance['type'] == App\Enums\CommutingAllowanceEnum::NONE;
+                    $calc_rows[] = [
+                        'label'      => $is_monthly_fixed ? '交通費（月額）' : '交通費',
+                        'unit_price' => ($is_no_commuting || $is_monthly_fixed) ? null : $format_yen($commuting_allowance['unit_price']),
+                        'quantity'   => ($is_no_commuting || $is_monthly_fixed) ? null : $commuting_allowance['days'].'日',
+                        'amount'     => $is_no_commuting ? null : $commuting_allowance['total'],
+                        'no_times'   => $is_monthly_fixed,
+                    ];
+                    // 合計(時給単価が設定されている場合のみ。通常・残業・深夜残業・有給・交通費の合算)
+                    $calc_total = is_null($wage) ? null : collect($calc_rows)->sum(fn($row) => $row['amount'] ?? 0);
+                @endphp
+                <table class="mt-2 text-sm border-collapse">
+                    <tbody>
+                        @foreach($calc_rows as $row)
+                            <tr class="border-black {{ $loop->first ? '' : 'border-t' }} {{ $loop->last ? 'border-b' : '' }}">
+                                <td class="py-1 pr-3 w-32 whitespace-nowrap">{{ $row['label'] }}</td>
+                                <td class="py-1 px-2 w-28 text-right whitespace-nowrap">{{ $row['unit_price'] }}</td>
+                                <td class="py-1 px-2 w-10 text-center">{{ ($row['no_times'] ?? false) ? '' : '×' }}</td>
+                                <td class="py-1 px-2 w-48 text-right whitespace-nowrap">{{ $row['quantity'] }}</td>
+                                <td class="py-1 px-2 w-10 text-center">=</td>
+                                <td class="py-1 pl-2 w-28 text-right whitespace-nowrap">{{ is_null($row['amount']) ? '' : number_format($row['amount']).'円' }}</td>
+                            </tr>
+                        @endforeach
+                        <tr>
+                            <td class="py-1 pr-3">合計</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td class="py-1 px-2 text-center">=</td>
+                            <td class="py-1 pl-2 text-right whitespace-nowrap font-bold">{{ is_null($calc_total) ? '' : number_format($calc_total).'円' }}</td>
+                        </tr>
+                    </tbody>
+                </table>
             @else
                 {{-- パート以外：集計欄 --}}
                 @php
                     $summary_items = [
                         ['label' => '出勤日数',   'value' => null, 'unit' => '日'],
-                        ['label' => '有給',       'value' => null, 'unit' => '日'],
+                        ['label' => '有給',       'value' => isset($paid_leaves[$employee_id]) ? array_sum($paid_leaves[$employee_id]) : null, 'unit' => '日'],
                         ['label' => '振休',       'value' => null, 'unit' => '日'],
                         ['label' => '欠勤',       'value' => null, 'unit' => '日'],
                         ['label' => '早退',       'value' => null, 'unit' => '回'],

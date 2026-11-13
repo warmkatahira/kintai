@@ -23,6 +23,13 @@
                 @can('isShortTimeInfoAvailable')
                     <x-create-input label="残業開始時間" type="text" id="over_time_start" :db="$employee->over_time_start" required="1" tippy="tippy_over_time_start" />
                 @endcan
+                <!-- 時給単価・有給時稼働時間・交通費(従業員CSV管理が有効な場合のみ) -->
+                @can('isEmployeeCsvMgtAvailable')
+                    <x-create-input label="時給単価(円)(パートのみ)" type="text" id="hourly_wage" :db="$employee->hourly_wage == 0 ? null : $employee->hourly_wage" required="0" tippy="0" />
+                    <x-create-input label="有給時稼働時間(時間)(パートのみ)　※有給1日あたり・0.25単位" type="text" id="paid_leave_working_time" :db="$employee->paid_leave_working_time == 0 ? null : (float)$employee->paid_leave_working_time" required="0" tippy="0" />
+                    <x-create-select-enum label="交通費支給形態(パートのみ)" id="commuting_allowance_type" :forValue="App\Enums\CommutingAllowanceEnum::TYPE_LIST" :db="$employee->commuting_allowance_type" required="0" tippy="0" />
+                    <x-create-input label="交通費金額(円)　※1ヶ月固定は月額、それ以外は1日あたりの単価" type="text" id="commuting_allowance_amount" :db="$employee->commuting_allowance_type == App\Enums\CommutingAllowanceEnum::NONE ? null : $employee->commuting_allowance_amount" required="0" tippy="0" />
+                @endcan
                 <input type="hidden" name="employee_id" value="{{ $employee->employee_id }}">
                 <button type="button" id="employee_update_enter" class="border border-blue-500 text-blue-500 bg-blue-100 py-1 px-10 mt-5">更新</button>
             </form>

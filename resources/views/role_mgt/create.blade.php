@@ -34,6 +34,9 @@
                 <x-role-mgt.create-select label="ユーザー管理" id="is_user_mgt_available" :forValue="$roles" :db="null" required="1" tippy="0" />
                 <x-role-mgt.create-select label="権限管理" id="is_role_mgt_available" :forValue="$roles" :db="null" required="1" tippy="0" />
                 <x-role-mgt.create-select label="休日管理" id="is_holiday_mgt_available" :forValue="$roles" :db="null" required="1" tippy="0" />
+                <x-role-mgt.create-select label="有給管理" id="is_paid_leave_mgt_available" :forValue="$roles" :db="null" required="1" tippy="0" />
+                <x-role-mgt.create-select label="給与計算データダウンロード" id="is_payroll_data_download_available" :forValue="$roles" :db="null" required="1" tippy="0" />
+                <x-role-mgt.create-select label="従業員CSV管理" id="is_employee_csv_mgt_available" :forValue="$roles" :db="null" required="1" tippy="0" />
                 <x-role-mgt.create-select label="アクセス管理" id="is_access_mgt_available" :forValue="$roles" :db="null" required="1" tippy="0" />
                 <x-role-mgt.create-select label="拠点管理" id="is_base_mgt_available" :forValue="$roles" :db="null" required="1" tippy="0" />
                 <x-role-mgt.create-select label="ロック後の勤怠操作" id="is_lock_kintai_operation_available" :forValue="$roles" :db="null" required="1" tippy="0" />

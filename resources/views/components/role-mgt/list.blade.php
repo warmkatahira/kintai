@@ -27,6 +27,9 @@
                     <th class="font-thin py-3 px-2 text-center">ユーザー管理</th>
                     <th class="font-thin py-3 px-2 text-center">権限管理</th>
                     <th class="font-thin py-3 px-2 text-center">休日管理</th>
+                    <th class="font-thin py-3 px-2 text-center">有給管理</th>
+                    <th class="font-thin py-3 px-2 text-center">給与計算データダウンロード</th>
+                    <th class="font-thin py-3 px-2 text-center">従業員CSV管理</th>
                     <th class="font-thin py-3 px-2 text-center">アクセス管理</th>
                     <th class="font-thin py-3 px-2 text-center">拠点管理</th>
                     <th class="font-thin py-3 px-2 text-center">ロック後の勤怠操作</th>
@@ -67,6 +70,9 @@
                         <td class="py-1 px-2 border text-center {{ App\Enums\RoleEnum::get_class($role->is_user_mgt_available) }}">{{ App\Enums\RoleEnum::get_jp($role->is_user_mgt_available) }}</td>
                         <td class="py-1 px-2 border text-center {{ App\Enums\RoleEnum::get_class($role->is_role_mgt_available) }}">{{ App\Enums\RoleEnum::get_jp($role->is_role_mgt_available) }}</td>
                         <td class="py-1 px-2 border text-center {{ App\Enums\RoleEnum::get_class($role->is_holiday_mgt_available) }}">{{ App\Enums\RoleEnum::get_jp($role->is_holiday_mgt_available) }}</td>
+                        <td class="py-1 px-2 border text-center {{ App\Enums\RoleEnum::get_class($role->is_paid_leave_mgt_available) }}">{{ App\Enums\RoleEnum::get_jp($role->is_paid_leave_mgt_available) }}</td>
+                        <td class="py-1 px-2 border text-center {{ App\Enums\RoleEnum::get_class($role->is_payroll_data_download_available) }}">{{ App\Enums\RoleEnum::get_jp($role->is_payroll_data_download_available) }}</td>
+                        <td class="py-1 px-2 border text-center {{ App\Enums\RoleEnum::get_class($role->is_employee_csv_mgt_available) }}">{{ App\Enums\RoleEnum::get_jp($role->is_employee_csv_mgt_available) }}</td>
                         <td class="py-1 px-2 border text-center {{ App\Enums\RoleEnum::get_class($role->is_access_mgt_available) }}">{{ App\Enums\RoleEnum::get_jp($role->is_access_mgt_available) }}</td>
                         <td class="py-1 px-2 border text-center {{ App\Enums\RoleEnum::get_class($role->is_base_mgt_available) }}">{{ App\Enums\RoleEnum::get_jp($role->is_base_mgt_available) }}</td>
                         <td class="py-1 px-2 border text-center {{ App\Enums\RoleEnum::get_class($role->is_lock_kintai_operation_available) }}">{{ App\Enums\RoleEnum::get_jp($role->is_lock_kintai_operation_available) }}</td>

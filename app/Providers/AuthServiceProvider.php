@@ -94,6 +94,18 @@ class AuthServiceProvider extends ServiceProvider
         Gate::define('isHolidayMgtAvailable', function($user){
             return ($user->role->is_holiday_mgt_available == 1);
         });
+        // 有給管理有効のみ許可
+        Gate::define('isPaidLeaveMgtAvailable', function($user){
+            return ($user->role->is_paid_leave_mgt_available == 1);
+        });
+        // 給与計算データダウンロード有効のみ許可
+        Gate::define('isPayrollDataDownloadAvailable', function($user){
+            return ($user->role->is_payroll_data_download_available == 1);
+        });
+        // 従業員CSV管理有効のみ許可
+        Gate::define('isEmployeeCsvMgtAvailable', function($user){
+            return ($user->role->is_employee_csv_mgt_available == 1);
+        });
         // アクセス管理有効のみ許可
         Gate::define('isAccessMgtAvailable', function($user){
             return ($user->role->is_access_mgt_available == 1);

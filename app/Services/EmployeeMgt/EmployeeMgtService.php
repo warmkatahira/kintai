@@ -13,11 +13,34 @@ use App\Models\Kintai;
 use App\Models\KintaiDetail;
 use App\Services\CommonService;
 use App\Enums\EmployeeMgtEnum;
+use App\Enums\EmployeeCategoryEnum;
+use App\Enums\CommutingAllowanceEnum;
 use App\Services\KintaiMgt\KintaiDispScopeService;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class EmployeeMgtService
 {
+    // 登録・更新するパート専用項目(時給単価・有給時稼働時間・交通費)の設定値を取得
+    // パート以外は全て0、交通費の支給形態が「なし」の場合は交通費金額を0にする
+    public function getPartTimeParam($request)
+    {
+        if($request->employee_category_id != EmployeeCategoryEnum::PART_TIME_EMPLOYEE){
+            return [
+                'hourly_wage' => 0,
+                'paid_leave_working_time' => 0,
+                'commuting_allowance_type' => CommutingAllowanceEnum::NONE,
+                'commuting_allowance_amount' => 0,
+            ];
+        }
+        $type = (int)$request->commuting_allowance_type;
+        return [
+            'hourly_wage' => (int)$request->hourly_wage,
+            'paid_leave_working_time' => (float)$request->paid_leave_working_time,
+            'commuting_allowance_type' => $type,
+            'commuting_allowance_amount' => $type == CommutingAllowanceEnum::NONE ? 0 : (int)$request->commuting_allowance_amount,
+        ];
+    }
+
     public function deleteSearchSession()
     {
         // セッションを削除

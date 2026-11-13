@@ -22,6 +22,10 @@ class Employee extends Model
         'employee_category_id',
         'monthly_workable_time',
         'over_time_start',
+        'hourly_wage',
+        'paid_leave_working_time',
+        'commuting_allowance_type',
+        'commuting_allowance_amount',
         'is_available',
         'work_shift_id',
     ];

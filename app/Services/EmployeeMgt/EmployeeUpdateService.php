@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use App\Models\Employee;
 use Illuminate\Support\Facades\Gate;
+use App\Enums\EmployeeCategoryEnum;
 
 
 class EmployeeUpdateService
@@ -22,6 +23,12 @@ class EmployeeUpdateService
             'monthly_workable_time' => $request->monthly_workable_time,
             'is_available' => $request->is_available,
         ];
+        // パート専用項目(時給単価・有給時稼働時間・交通費)の設定値をセット
+        // 従業員CSV管理が有効な場合のみ更新する(無効の場合は入力欄が表示されないため、値を上書きしない)
+        // ただし、パート以外に変更された場合は権限に関係なく0にする
+        if(Gate::allows('isEmployeeCsvMgtAvailable') || $request->employee_category_id != EmployeeCategoryEnum::PART_TIME_EMPLOYEE){
+            $param = array_merge($param, (new EmployeeMgtService)->getPartTimeParam($request));
+        }
         // 時短情報が有効な場合のみ更新する
         if(Gate::allows('isShortTimeInfoAvailable')){
             $param['over_time_start'] = is_null($request->over_time_start) ? 0 : $request->over_time_start;

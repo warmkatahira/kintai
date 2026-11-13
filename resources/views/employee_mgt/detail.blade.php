@@ -33,6 +33,19 @@
                     <x-detail-div label="残業開始時間" :value="number_format($employee->over_time_start, 2)" class="w-40 text-center" />
                 @endcan
             </div>
+            <!-- 時給単価・有給時稼働時間・交通費(パートかつ従業員CSV管理が有効な場合のみ) -->
+            @if($employee->employee_category_id == App\Enums\EmployeeCategoryEnum::PART_TIME_EMPLOYEE && Gate::check('isEmployeeCsvMgtAvailable'))
+                <div class="flex flex-row">
+                    <x-detail-div label="時給単価" :value="number_format($employee->hourly_wage).' 円'" class="w-40 text-right pr-3" />
+                    <x-detail-div label="有給時稼働時間" :value="number_format($employee->paid_leave_working_time, 2).' 時間'" class="w-40 text-right pr-3" />
+                </div>
+                <div class="flex flex-row">
+                    <x-detail-div label="交通費支給形態" :value="App\Enums\CommutingAllowanceEnum::get_jp($employee->commuting_allowance_type)" class="w-40 text-center" />
+                    @if($employee->commuting_allowance_type != App\Enums\CommutingAllowanceEnum::NONE)
+                        <x-detail-div :label="$employee->commuting_allowance_type == App\Enums\CommutingAllowanceEnum::MONTHLY_FIXED ? '交通費(月額)' : '交通費(単価)'" :value="number_format($employee->commuting_allowance_amount).' 円'" class="w-40 text-right pr-3" />
+                    @endif
+                </div>
+            @endif
         </div>
         <!-- 当月稼働情報 -->
         <div class="flex flex-col">

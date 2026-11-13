@@ -72,6 +72,12 @@
                     @can('isHolidayMgtAvailable')
                         <li><a href="{{ route('holiday_mgt.index') }}">休日管理</a></li>
                     @endcan
+                    @can('isPaidLeaveMgtAvailable')
+                        <li><a href="{{ route('paid_leave_mgt.index') }}">有給管理</a></li>
+                    @endcan
+                    @can('isPayrollDataDownloadAvailable')
+                        <li><a href="{{ route('payroll_data_download.index') }}">給与計算データダウンロード</a></li>
+                    @endcan
                     @can('isAccessMgtAvailable')
                         <li><a href="{{ route('access_mgt.index') }}">アクセス管理</a></li>
                     @endcan
