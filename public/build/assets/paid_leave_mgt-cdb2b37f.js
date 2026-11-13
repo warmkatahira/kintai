@@ -1,0 +1,2 @@
+$(".select_file input[type=file]").on("change",function(){if(this.files.length==0)return;if(window.confirm(`有給アップロードを実行しますか？
+※同じ従業員番号・有給取得日のデータは上書きされます。`)==!0){$("#paid_leave_upload_form").submit();return}$("#select_file").val(null)});$(".paid_leave_delete_enter").on("click",function(){var e=$(this).attr("id").split("_");const t=e[e.length-1];window.confirm("削除を実行しますか？")==!0&&$("#paid_leave_delete_form_"+t).submit()});

@@ -1,6 +1,6 @@
 {
   "resources/css/app.css": {
-    "file": "assets/app-ad6a416b.css",
+    "file": "assets/app-7a49ccd4.css",
     "isEntry": true,
     "src": "resources/css/app.css"
   },
@@ -126,6 +126,11 @@
     "file": "assets/temporary_use-ea53b39d.js",
     "isEntry": true,
     "src": "resources/js/other/temporary_use.js"
+  },
+  "resources/js/paid_leave_mgt/paid_leave_mgt.js": {
+    "file": "assets/paid_leave_mgt-cdb2b37f.js",
+    "isEntry": true,
+    "src": "resources/js/paid_leave_mgt/paid_leave_mgt.js"
   },
   "resources/js/punch/punch_begin_type.js": {
     "file": "assets/punch_begin_type-21689e27.js",
